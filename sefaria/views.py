@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import base64
+import hashlib
+import hmac
 import io
 import os
 import zipfile
@@ -39,7 +42,8 @@ import sefaria.system.cache as scache
 from sefaria.system.cache import in_memory_cache
 from sefaria.client.util import jsonResponse, subscribe_to_list, send_email
 from sefaria.forms import SefariaNewUserForm, SefariaNewUserFormAPI
-from sefaria.settings import MAINTENANCE_MESSAGE, USE_VARNISH, MULTISERVER_ENABLED, relative_to_abs_path, RTC_SERVER
+from sefaria.settings import MAINTENANCE_MESSAGE, USE_VARNISH, MULTISERVER_ENABLED, relative_to_abs_path, RTC_SERVER,\
+    DISCOURSE_CONNECT_SECRET, DISCOURSE_HOST
 from sefaria.model.user_profile import UserProfile, user_link
 from sefaria.model.collection import CollectionSet
 from sefaria.export import export_all as start_export_all
@@ -156,6 +160,75 @@ def register(request):
             form = SefariaNewUserForm()
 
     return render_template(request, "registration/register.html", None, {'form': form, 'next': next})
+
+
+@login_required
+def sso(request):
+    import urllib.parse
+    # import django.contrib.auth.views as django_auth_views
+
+    logout = request.GET.get("logout") == "true"
+
+    if logout:
+        # referrer = request.META.get("HTTP_REFERER", "/")
+        # logout_view = django_auth_views.LogoutView
+
+        # logout_view.next_page = referrer
+
+        # return logout_view.as_view()(request)
+        return redirect("/logout")
+
+    sso = request.GET.get("sso")
+    sig = request.GET.get("sig")
+
+    if sso is None or sig is None:
+        raise Http404
+
+    decoded_payload = str(base64.b64decode(sso.encode('ascii')).decode('ascii'))
+    parsed_payload = dict(urllib.parse.parse_qsl(decoded_payload))
+
+    nonce = parsed_payload.get("nonce")
+    return_sso_url = parsed_payload.get("return_sso_url")
+
+    if nonce is None or return_sso_url is None:
+        raise Http404
+
+    signature = hmac.new(DISCOURSE_CONNECT_SECRET.encode('ascii'),
+                         msg=sso.encode('ascii'),
+                         digestmod=hashlib.sha256).hexdigest()
+
+    if sig != signature:
+        raise Http404
+
+    profile = UserProfile(user_obj=request.user)
+
+    # email or public_email?
+    # profile_pic_url or profile_pic_url_small
+    # is profile pic url not updated when profile pic is updated? avatar_force_update
+    # auto set admins to admin?
+    # suppress welcome message?
+    # discourse setting logout redirect (return url?)
+
+    return_payload = {"nonce": nonce,
+                      "email": profile.email,
+                      "external_id": profile.id,
+                      "name": profile.full_name,
+                      "avatar_url": profile.profile_pic_url,
+                      "bio": profile.bio,
+                      "website": profile.website,
+                      "location": profile.location,
+                      "suppress_welcome_message": True}
+
+    return_payload_url_encoded = urllib.parse.urlencode(return_payload)
+    return_payload_base64_encoded = base64.b64encode(return_payload_url_encoded.encode('ascii')).decode('ascii')
+    return_payload_signature = hmac.new(DISCOURSE_CONNECT_SECRET.encode('ascii'),
+                                        msg=return_payload_base64_encoded.encode('ascii'),
+                                        digestmod=hashlib.sha256).hexdigest()
+
+    # should use return_sso_url rather than DISCOURSE_HOST, but util the default host is properly configured, this is what we're doing.
+    return redirect(f"{DISCOURSE_HOST}/session/sso_login"
+                    f"?sso={return_payload_base64_encoded}"
+                    f"&sig={return_payload_signature}")
 
 
 def maintenance_message(request):

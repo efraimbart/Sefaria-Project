@@ -102,6 +102,8 @@ CACHES = {
 
 SITE_PACKAGE = "sites.sefaria"
 
+DISCOURSE_CONNECT_SECRET = ""
+DISCOURSE_HOST = ""
 
 
 
