@@ -182,7 +182,7 @@ def sso(request):
     sig = request.GET.get("sig")
 
     if sso is None or sig is None:
-        raise Http404
+        raise Http404()
 
     decoded_payload = str(base64.b64decode(sso.encode('ascii')).decode('ascii'))
     parsed_payload = dict(urllib.parse.parse_qsl(decoded_payload))
@@ -191,14 +191,14 @@ def sso(request):
     return_sso_url = parsed_payload.get("return_sso_url")
 
     if nonce is None or return_sso_url is None:
-        raise Http404
+        raise Http404()
 
     signature = hmac.new(DISCOURSE_CONNECT_SECRET.encode('ascii'),
                          msg=sso.encode('ascii'),
                          digestmod=hashlib.sha256).hexdigest()
 
     if sig != signature:
-        raise Http404
+        raise Http404()
 
     profile = UserProfile(user_obj=request.user)
 
