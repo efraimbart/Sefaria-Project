@@ -211,6 +211,7 @@ def sso(request):
 
     return_payload = {"nonce": nonce,
                       "email": profile.email,
+                      "username": profile.email,
                       "external_id": profile.id,
                       "name": profile.full_name,
                       "avatar_url": profile.profile_pic_url,
