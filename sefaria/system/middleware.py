@@ -51,6 +51,9 @@ class LanguageSettingsMiddleware(MiddlewareMixin):
         if any([request.path.startswith(start) for start in excluded]):
             request.interfaceLang = "english"
             request.contentLang = "bilingual"
+            request.translation_language_preference = None
+            request.version_preferences_by_corpus = {}
+            request.translation_language_preference_suggestion = None
             return # Save looking up a UserProfile, or redirecting when not needed
 
         profile = UserProfile(id=request.user.id) if request.user.is_authenticated else None
@@ -113,7 +116,15 @@ class LanguageSettingsMiddleware(MiddlewareMixin):
                 if lang in supported_translation_langs:
                     translation_language_preference_suggestion = lang
                     break             
+        if translation_language_preference_suggestion == "en":
+            # dont ever suggest English to our users
+            translation_language_preference_suggestion = None
 
+        # VERSION PREFERENCE
+        import json
+        from urllib.parse import unquote
+        version_preferences_by_corpus_cookie = json.loads(unquote(request.COOKIES.get("version_preferences_by_corpus", "null")))
+        request.version_preferences_by_corpus = (profile is not None and getattr(profile, "version_preferences_by_corpus", None)) or version_preferences_by_corpus_cookie or {}
         request.LANGUAGE_CODE = interface[0:2]
         request.interfaceLang = interface
         request.contentLang   = content

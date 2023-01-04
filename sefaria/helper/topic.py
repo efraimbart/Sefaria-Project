@@ -15,8 +15,10 @@ import structlog
 logger = structlog.get_logger(__name__)
 
 
-def get_topic(v2, topic, with_links, annotate_links, with_refs, group_related, annotate_time_period, ref_link_type_filters, with_indexes):
+def get_topic(v2, topic, with_links=True, annotate_links=True, with_refs=True, group_related=True, annotate_time_period=False, ref_link_type_filters=None, with_indexes=True):
     topic_obj = Topic.init(topic)
+    if topic_obj is None:
+        return {}
     response = topic_obj.contents(annotate_time_period=annotate_time_period)
     response['primaryTitle'] = {
         'en': topic_obj.get_primary_title('en'),
@@ -490,7 +492,7 @@ def tokenize_words_for_tfidf(text, stopwords):
     from sefaria.utils.hebrew import strip_cantillation
 
     try:
-        text = TextChunk._strip_itags(text)
+        text = TextChunk.strip_itags(text)
     except AttributeError:
         pass
     text = strip_cantillation(text, strip_vowels=True)
@@ -794,7 +796,7 @@ def get_top_topic(sheet):
         return t["slug"], score
 
     if len(topics) == 1:
-        max_topic_slug = topics[0]
+        max_topic_slug = topics[0].get("slug")
     elif len(topics) > 1:
         topic_dict = defaultdict(lambda: [(0, 0), 0])
         for t in topics:

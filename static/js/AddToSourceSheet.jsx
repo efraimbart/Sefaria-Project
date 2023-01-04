@@ -142,6 +142,8 @@ class AddToSourceSheetBox extends Component {
     }
     Sefaria.sheets.updateUserSheets(this.state.selectedSheet, Sefaria._uid, true);
     this.setState({showConfirm: true});
+    const channel = new BroadcastChannel('refresh-editor');
+    channel.postMessage("refresh");
   }
   makeTitleRef(){
     const refTitles = (this.props.srefs.length > 0 && (!this.props.srefs[0].startsWith("Sheet"))) ? {
@@ -221,7 +223,7 @@ class AddToSourceSheetBox extends Component {
         </div>
         <div className="button noselect fillWidth" onClick={this.props.nodeRef ? this.copyNodeToSourceSheet : this.addToSourceSheet}>
           <span className="int-en noselect">Add to Sheet</span>
-          <span className="int-he noselect">הוסף לדף המקורות</span>
+          <span className="int-he noselect">הוספה לדף המקורות</span>
         </div>
       </div>);
   }

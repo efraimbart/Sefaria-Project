@@ -22,6 +22,7 @@ const CommunityPage = ({multiPanel, toggleSignUpModal, initialWidth}) => {
   const sidebarModules = [
     {type: "JoinTheConversation"},
     {type: dataLoaded ? "WhoToFollow" : null, props: {toggleSignUpModal}},
+    {type: "Promo"},
     {type: "ExploreCollections"},
     {type: "SupportSefaria", props: {blue: true}},
     {type: "StayConnected"},
@@ -75,6 +76,7 @@ CommunityPage.propTypes = {
 
 const RecentlyPublished = ({multiPanel, toggleSignUpModal}) => {
   const options = Sefaria.interfaceLang === "hebrew" ? {"lang": "hebrew"} : {};
+  options["filtered"] = true;
   const pageSize = 18;
   const [nSheetsLoaded, setNSheetsLoded] = useState(0); // counting sheets loaded from the API, may be different than sheets displayed
   // Start with recent sheets in the cache, if any

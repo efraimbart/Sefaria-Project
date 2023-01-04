@@ -51,7 +51,12 @@ class SearchTextResult extends Component {
             const s = this.props.data._source;
             const textHighlights = this.getHighlights();
             //console.log(textHighlights);
-            Sefaria.track.event("Search", "Search Result Text Click", `${this.props.query} - ${s.ref}/${s.version}/${s.lang}`);
+            if (this.props.searchInBook) {
+              Sefaria.track.event("Search", "Sidebar Search Result Click", `${this.props.query} - ${s.ref}/${s.version}/${s.lang}`);
+            }
+            else {
+              Sefaria.track.event("Search", "Search Result Text Click", `${this.props.query} - ${s.ref}/${s.version}/${s.lang}`);
+            }
             this.props.onResultClick(s.ref, {[s.lang]: s.version}, { textHighlights });
         }
     }
@@ -119,7 +124,9 @@ class SearchTextResult extends Component {
                     <ColorBarBox tref={s.ref}>
                         <div className={snippetClasses} dangerouslySetInnerHTML={snippetMarkup.markup} ></div>
                     </ColorBarBox>
-                    <div className="version">{s.version}</div>
+                    <div className="version">
+                        {Sefaria.interfaceLang==='hebrew' && s.hebrew_version_title || s.version}
+                    </div>
                 </a>
                 {more_results_indicator}
                 {shown_duplicates}

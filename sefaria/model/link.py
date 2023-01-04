@@ -5,7 +5,7 @@ Writes to MongoDB Collection: links
 
 import regex as re
 from bson.objectid import ObjectId
-from sefaria.model.text import AbstractTextRecord
+from sefaria.model.text import AbstractTextRecord, VersionSet
 from sefaria.system.exceptions import DuplicateRecordError, InputError, BookNameError
 from sefaria.system.database import db
 from . import abstract as abst
@@ -42,7 +42,9 @@ class Link(abst.AbstractMongoRecord):
         "inline_reference",  # dict with keys "data-commentator" and "data-order" to match an inline reference (itag)
         "charLevelData",     # list of length 2. Containing 2 dicts coresponding to the refs list, each dict consists of the following keys: ["startChar","endChar","versionTitle","language"]. *if one of the refs is a Pasuk the startChar and endChar keys are startWord and endWord. This attribute was created for the quotation finder
         "score",             # int. represents how "good"/accurate the link is. introduced for quotations finder
-        "inline_citation"    # bool acts as a flag for wrapped refs logic to run on the segments where this citation is inline.
+        "inline_citation",    # bool acts as a flag for wrapped refs logic to run on the segments where this citation is inline.
+        "versions",          # only for cases when type is `essay`: list of versionTitles corresponding to `refs`, where first versionTitle corresponds to Index of first ref, and each value is a dictionary of language and title of version
+        "displayedText"       # only for cases when type is `essay`: dictionary of en and he strings to be displayed
     ]
 
     def _normalize(self):
@@ -57,6 +59,19 @@ class Link(abst.AbstractMongoRecord):
 
     def _validate(self):
         assert super(Link, self)._validate()
+
+        if self.type == "essay":   # when type is 'essay', versionTitles should correspond to indices referred to in self.refs
+            assert hasattr(self, "versions") and hasattr(self, "displayedText"), "You must set versions and displayedText fields for type 'essay'."
+            assert "en" in self.displayedText[0] and "he" in self.displayedText[0] and "en" in self.displayedText[1] and "he" in self.displayedText[1], \
+                "displayedText field must be a list of dictionaries with 'he' and 'en' fields."
+            for ref, version in zip(self.refs, self.versions):
+                versionTitle = version["title"]
+                versionLanguage = version["language"] if "language" in version else None
+                index_title = text.Ref(ref).index.title
+                if versionTitle not in ["ALL", "NONE"]:
+                    assert VersionSet({"title": index_title, "versionTitle": versionTitle, "language": versionLanguage}).count() > 0, \
+                        f"No version found for book '{index_title}', with versionTitle '{versionTitle}', and language '{versionLanguage}'"
+
 
         if False in self.refs:
             return False
@@ -75,15 +90,38 @@ class Link(abst.AbstractMongoRecord):
     def _pre_save(self):
         if getattr(self, "_id", None) is None:
             # Don't bother saving a connection that already exists, or that has a more precise link already
-            if self.refs != sorted(self.refs) and hasattr(self, 'charLevelData'):
-                self.charLevelData.reverse()
-            self.refs = sorted(self.refs) #make sure ref order is deterministic
+            if self.refs != sorted(self.refs):
+                if hasattr(self, 'charLevelData'):
+                    self.charLevelData.reverse()
+                if getattr(self, "versions", False) and getattr(self, "displayedText", False):
+                    # if reversed self.refs, make sure to reverse self.versions and self.displayedText
+                    self.versions = self.versions[::-1]
+                    self.displayedText = self.displayedText[::-1]
+            self.refs = sorted(self.refs)  # make sure ref order is deterministic
             samelink = Link().load({"refs": self.refs})
+
+            if not samelink:
+                #check for samelink section level vs ranged ref
+                oref0 = text.Ref(self.refs[0])
+                oref1 = text.Ref(self.refs[1])
+                section0 = oref0.section_ref()
+                section1 = oref1.section_ref()
+                if oref0.is_range() and oref0.all_segment_refs() == section0.all_segment_refs():
+                    samelink = Link().load({"$and": [{"refs": section0.normal()}, {"refs": self.refs[1]}]})
+                elif oref0.is_section_level():
+                    ranged0 = text.Ref(f"{oref0.all_segment_refs()[0]}-{oref0.all_segment_refs()[-1]}")
+                    samelink = Link().load({"$and": [{"refs": ranged0.normal()}, {"refs": self.refs[1]}]})
+                elif oref1.is_range() and oref1.all_segment_refs() == section1.all_segment_refs():
+                    samelink = Link().load({"$and": [{"refs": section1.normal()}, {"refs": self.refs[0]}]})
+                elif oref1.is_section_level():
+                    ranged1 = text.Ref(f"{oref1.all_segment_refs()[0]}-{oref1.all_segment_refs()[-1]}")
+                    samelink = Link().load({"$and": [{"refs": ranged1.normal()}, {"refs": self.refs[0]}]})
 
             if samelink:
                 if hasattr(self, 'score') and hasattr(self, 'charLevelData'):
                     samelink.score = self.score
                     samelink.charLevelData = self.charLevelData
+                    samelink.save()
                     raise DuplicateRecordError("Updated existing link with the new score and charLevelData data")
 
                 elif not self.auto and self.type and not samelink.type:
@@ -110,9 +148,13 @@ class Link(abst.AbstractMongoRecord):
 
                 if preciselink:
                     # logger.debug("save_link: More specific link exists: " + link["refs"][1] + " and " + preciselink["refs"][1])
-                    raise DuplicateRecordError("A more precise link already exists: {} - {}".format(preciselink.refs[0], preciselink.refs[1]))
+                    if getattr(self, "_override_preciselink", False):
+                        preciselink.delete()
+                        self.generated_by = self.generated_by+'_preciselink_override'
+                        #and the new link will be posted (supposedly)
+                    else:
+                        raise DuplicateRecordError("A more precise link already exists: {} - {}".format(preciselink.refs[0], preciselink.refs[1]))
                 # else: # this is a good new link
-
 
         if not getattr(self, "_skip_lang_check", False):
             self._set_available_langs()
@@ -356,7 +398,7 @@ def get_link_counts(cat1, cat2):
     """
     titles = []
     for c in [cat1, cat2]:
-        ts = text.library.get_indexes_in_category(c)
+        ts = text.library.get_indexes_in_corpus(c) or text.library.get_indexes_in_category(c)
         if len(ts) == 0:
             try:
                 text.library.get_index(c)
@@ -403,7 +445,7 @@ def get_category_category_linkset(cat1, cat2):
 
     for i, cat in enumerate([cat1, cat2]):
         queries += [{"$and": [{"categories": cat}, {'dependence': {'$in': [False, None]}}]}]
-        titles += [text.library.get_indexes_in_category(cat)]
+        titles += [text.library.get_indexes_in_corpus(cat) or text.library.get_indexes_in_category(cat)]
         if len(titles[i]) == 0:
             raise IndexError("No results for {}".format(queries[i]))
 
@@ -428,7 +470,7 @@ def get_book_category_linkset(book, cat):
     :param cat: String
     :return:
     """
-    titles = text.library.get_indexes_in_category(cat)
+    titles = text.library.get_indexes_in_corpus(cat) or text.library.get_indexes_in_category(cat)
     if len(titles) == 0:
         try:
             text.library.get_index(cat)

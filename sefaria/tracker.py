@@ -36,6 +36,7 @@ def modify_text(user, oref, vtitle, lang, text, vsource=None, **kwargs):
     if vsource:
         chunk.versionSource = vsource  # todo: log this change
     if chunk.save():
+        kwargs['skip_links'] = kwargs.get('skip_links', False) or chunk.has_manually_wrapped_refs()
         post_modify_text(user, action, oref, lang, vtitle, old_text, chunk.text, chunk.full_version._id, **kwargs)
 
     return chunk
@@ -80,8 +81,13 @@ def modify_bulk_text(user: int, version: model.Version, text_map: dict, vsource=
 
     for old_text, new_text, oref in change_map.values():
         if oref.normal() in error_map: continue
+        kwargs['skip_links'] = kwargs.get('skip_links', False) or getattr(version, 'hasManuallyWrappedRefs', False)
+        # hard-code `count_after` to False here. It will be called later on the whole index once
+        # (which is all that's necessary)
+        kwargs['count_after'] = False
         post_modify_text(user, kwargs.get("type"), oref, version.language, version.versionTitle, old_text, new_text, version._id, **kwargs)
 
+    count_segments(version.get_index())
     return error_map
 
 
@@ -104,20 +110,16 @@ def post_modify_text(user, action, oref, lang, vtitle, old_text, curr_text, vers
 
         if USE_VARNISH:
             invalidate_linked(oref)
-    
+    # rabbis_move(oref, vtitle)
     count_and_index(oref, lang, vtitle, to_count=kwargs.get("count_after", 1))
 
 
 def count_and_index(oref, lang, vtitle, to_count=1):
-    from sefaria.settings import SEARCH_INDEX_ON_SAVE, MULTISERVER_ENABLED
-    from sefaria.system.multiserver.coordinator import server_coordinator
+    from sefaria.settings import SEARCH_INDEX_ON_SAVE
 
     # count available segments of text
     if to_count:
-        model.library.recount_index_in_toc(oref.index)
-        if MULTISERVER_ENABLED:
-            server_coordinator.publish_event("library", "recount_index_in_toc", [oref.index.title])
-
+        count_segments(oref.index)
     
     if SEARCH_INDEX_ON_SAVE:
         model.IndexQueue({
@@ -126,6 +128,15 @@ def count_and_index(oref, lang, vtitle, to_count=1):
             "version": vtitle,
             "type": "ref",
         }).save()
+
+
+def count_segments(index):
+    from sefaria.settings import MULTISERVER_ENABLED
+    from sefaria.system.multiserver.coordinator import server_coordinator
+
+    model.library.recount_index_in_toc(index)
+    if MULTISERVER_ENABLED:
+        server_coordinator.publish_event("library", "recount_index_in_toc", [index.title])
 
 
 def add(user, klass, attrs, **kwargs):

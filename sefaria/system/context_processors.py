@@ -69,9 +69,10 @@ def global_settings(request):
         "SEARCH_INDEX_NAME_TEXT": SEARCH_INDEX_NAME_TEXT,
         "SEARCH_INDEX_NAME_SHEET":SEARCH_INDEX_NAME_SHEET,
         "GOOGLE_TAG_MANAGER_CODE":GOOGLE_TAG_MANAGER_CODE,
+        "GOOGLE_GTAG":            GOOGLE_GTAG,
+        "HOTJAR_ID":              HOTJAR_ID,
         "DEBUG":                  DEBUG,
         "OFFLINE":                OFFLINE,
-        "GOOGLE_MAPS_API_KEY":    GOOGLE_MAPS_API_KEY,
         "SITE_SETTINGS":          SITE_SETTINGS,
     }
 
@@ -99,6 +100,7 @@ def large_data(request):
         "topic_toc_json": library.get_topic_toc_json(),
         "titles_json": library.get_text_titles_json(),
         "terms_json": library.get_simple_term_mapping_json(),
+        'virtual_books': library.get_virtual_books()
     }
 
 

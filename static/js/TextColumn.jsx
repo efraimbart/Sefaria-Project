@@ -23,8 +23,7 @@ class TextColumn extends Component {
     this.scrollPlaceholderHeight = 90;
     this.scrollPlaceholderMargin = 30;
     this.highlightThreshhold = props.multiPanel ? 140 : 70;
-    return;
-  }  
+  }
   componentDidMount() {
     this._isMounted          = true;
     this.node                = ReactDOM.findDOMNode(this)
@@ -51,25 +50,20 @@ class TextColumn extends Component {
       // console.log("scroll to highlight for mobile connections open")
       this.scrollToHighlighted();
 
-    } else if (this.state.showScrollPlaceholders && !prevState.showScrollPlaceholders) {
-      // After scroll placeholders are first rendered, scroll down so top placeholder 
+    } else if (this.state.showScrollPlaceholders && !prevState.showScrollPlaceholders && !this.initialScrollTopSet) {
+      // After scroll placeholders are first rendered, scroll down so top placeholder
       // is out of view and scrolling up is possible.
       // console.log("scrolling for ScrollPlaceholders first render")
       this.setInitialScrollPosition();
 
-    } else if (this.props.srefs.length == 1 && 
-        Sefaria.util.inArray(this.props.srefs[0], prevProps.srefs) == -1 && 
+    } else if (this.props.srefs.length === 1 &&
+        Sefaria.util.inArray(this.props.srefs[0], prevProps.srefs) === -1 &&
         !prevProps.srefs.some(r => Sefaria.refContains(this.props.srefs[0], r))) {
-      // If we are switching to a single ref not in the current TextColumn, 
+      // If we are switching to a single ref not in the current TextColumn,
       // treat it as a fresh open.
       // console.log("setting initialScroll for brand new ref")
       this.setInitialScrollPosition();
 
-    } else if (layoutWidthChanged) {
-      // When the width of the text column changes, keep highlighted text in place
-      // console.log("restore scroll by percentage for layout Width Change")
-      this.restoreScrollPositionByPercentage();
-    
     } else if (prevProps.srefs.length === this.props.srefs.length &&
       !prevProps.srefs.compare(this.props.srefs)) {
       // When the highlighted segment has changed, scroll to it.
@@ -82,6 +76,10 @@ class TextColumn extends Component {
       // When the content the changes but we are anchored on a line, scroll to it
       // console.log("scroll to highlighted on text content change")
       this.scrollToHighlighted();
+    } else if (layoutWidthChanged) {
+      // When the width of the text column changes, keep highlighted text in place
+      // console.log("restore scroll by percentage for layout Width Change")
+      this.restoreScrollPositionByPercentage();
     }
   }
   handleScroll(event) {
@@ -95,8 +93,31 @@ class TextColumn extends Component {
     this.debouncedAdjustHighlightedAndVisible();
     this.adjustInfiniteScroll();
   }
+  calculatePositionWithinElement(event){
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left; //x position within the element.
+    const y = event.clientY - rect.top;  //y position within the element.
+    return [x,y]
+  }
+  handleClick(event) {
+    const pos = this.calculatePositionWithinElement(event)
+    this.setState({lastClickXY:pos})
+  }
+  handleDoubleClick(event) {
+    if (event.detail > 1) {
+    const pos = this.calculatePositionWithinElement(event)
+      // might be problematic if there is a slight move in the double-click shaky hands. can be fixed with an error of a few px on both axes.
+      if (this.state.lastClickXY[0] !== pos[0] || this.state.lastClickXY[1] !== pos[1]){
+        event.preventDefault();
+      }
+    }
+  }
+
   handleTextSelection() {
+    //Please note that because this function is triggered by an event listener on the document object, that will always be the event target 
+    // (should someone choose to add reference to the event itself in the future in this function) and not a more specific element.
     const selection = window.getSelection();
+    let refs = [];
     if (selection.type === "Range") {
       //console.log("handling range");
       const $start  = $(Sefaria.util.getSelectionBoundaryElement(true)).closest(".segment");
@@ -105,10 +126,9 @@ class TextColumn extends Component {
       let start     = $segments.index($start);
       let end       = $segments.index($end);
       //if one of the endpoints isn't actually in a segment node (for example its in a title), adjust selection endpoints
-      start = start == -1 ? end : start;
-      end = end == -1 ? start : end;
+      start = start === -1 ? end : start;
+      end = end === -1 ? start : end;
       $segments = $segments.slice(start, end+1);
-      let refs      = [];
 
       $segments.each(function() {
         refs.push($(this).attr("data-ref"));
@@ -116,7 +136,9 @@ class TextColumn extends Component {
 
       //console.log("Setting highlights by Text Selection");
       //console.log(refs);
-      this.props.setTextListHighlight(refs);
+      if (refs.length > 0) {
+        this.props.setTextListHighlight(refs);
+      }
     }
     //const selectedWords = selection.toString(); //this doesnt work in Chrome, as it does not skip elements marked with css `user-select: none` as it should.
     const selectedWords = Sefaria.util.getNormalizedSelectionString(); //this gets around the above issue
@@ -126,6 +148,7 @@ class TextColumn extends Component {
     }
   }
   handleTextLoad(ref) {
+
     // TextRanges in the column may be initial rendered in "loading" state without data.
     // When the data loads we may need to change scroll position or render addition ranges.
     // console.log("handle text load: ", ref);
@@ -147,12 +170,19 @@ class TextColumn extends Component {
     this.adjustInfiniteScroll(true);
 
     if (this.loadingContentAtTop) {
-      // If the text that was just loaded was at the top of the page, restore the scroll 
-      // position to keep what the user was looking at in place. 
+      // If the text that was just loaded was at the top of the page, restore the scroll
+      // position to keep what the user was looking at in place.
       this.restoreScrollPositionAfterTopLoad();
     }
+
+    const $texts  = this.$container.find(".basetext")
+
+    if ($texts.length == 1) {
+      this.scrollToHighlighted();
+    }
+
   }
-  setInitialScrollPosition() {    
+  setInitialScrollPosition() {
     // Sets scroll initial scroll position when a text is loaded which is either down to
     // the highlighted segments, or is just down far enough to hide the scroll placeholder above.
 
@@ -164,7 +194,7 @@ class TextColumn extends Component {
 
     } else {
       // When a text is first loaded, scroll it down a small amount so that it is
-      // possible to scroll up and trigginer infinites scroll up. This also hides 
+      // possible to scroll up and trigginer infinites scroll up. This also hides
       // "Loading..." div which sit above the text.
       const top = this.scrollPlaceholderHeight;
       // console.log("set Initial Scroll Postion: ", top);
@@ -200,7 +230,7 @@ class TextColumn extends Component {
     const adjust = this.scrollPlaceholderHeight + this.scrollPlaceholderMargin;
     const top = targetTop + (2*this.node.scrollTop) - adjust;
     this.setScrollTop(top);
-    // console.log("scroll to restore after infinite up: " + top)  
+    // console.log("scroll to restore after infinite up: " + top)
   }
   restoreScrollPositionByPercentage() {
     // After the layout width of the column changes, restore the scroll to the same percentage
@@ -211,7 +241,7 @@ class TextColumn extends Component {
     this.setScrollTop(target);
   }
   setScrollTop(top) {
-    // Set the scroll top of the column, including the flag to prevent extra handling 
+    // Set the scroll top of the column, including the flag to prevent extra handling
     // of scroll event.
     this.justScrolled = true;
     this.node.scrollTop = top;
@@ -321,20 +351,19 @@ class TextColumn extends Component {
     // don't move around highlighted segment when scrolling a single panel,
     const shouldShowHighlight = this.props.hasSidebar || this.props.mode === "TextAndConnections";
     const ref = $segment.attr("data-ref");
-    if (shouldShowHighlight) {
-      this.props.setTextListHighlight(ref, true)
-    } else {
-      this.props.setTextListHighlight(ref, false)
-    }
+    this.props.setTextListHighlight(ref, shouldShowHighlight);
   }
   render() {
     let classes = classNames({textColumn: 1, connectionsOpen: this.props.mode === "TextAndConnections"});
     const index = Sefaria.index(Sefaria.parseRef(this.props.srefs[0]).index);
-    const isDictionary = (index && index.categories[0] == "Reference");
-    let content =  this.props.srefs.map(function(ref, k) {
+    const isDictionary = (index && index.categories[0] === "Reference");
+    let content =  this.props.srefs.map((sref) => {
+      const oref = Sefaria.getRefFromCache(sref);
+      const isCurrentlyVisible = oref && this.props.currentlyVisibleRef === oref.sectionRef;
       return (<TextRange
         panelPosition ={this.props.panelPosition}
-        sref={ref}
+        sref={sref}
+        isCurrentlyVisible={isCurrentlyVisible}
         currVersions={this.props.currVersions}
         highlightedRefs={this.props.highlightedRefs}
         showHighlight={this.props.showHighlight}
@@ -358,8 +387,9 @@ class TextColumn extends Component {
         layoutWidth={this.props.layoutWidth}
         unsetTextHighlight={this.props.unsetTextHighlight}
         translationLanguagePreference={this.props.translationLanguagePreference}
-        key={ref} />);
-    }.bind(this));
+        updateCurrVersionsToMatchAPIResult={this.props.updateCurrVersionsToMatchAPIResult}
+        key={sref} />);
+    });
 
     let pre, post, bookTitle;
     if (content.length) {
@@ -369,24 +399,24 @@ class TextColumn extends Component {
       const hasPrev = first && first.prev;
       const noPrev  = first && !first.prev; // first is loaded, so we actually know there's nothing prev
       const hasNext = last && last.next;
-  
-      bookTitle = noPrev ? 
+
+      bookTitle = noPrev ?
         <div className="bookMetaDataBox" key="bookTitle">
           <div className="title" role="heading" aria-level="1">
             <ContentText text={{en: this.props.bookTitle, he: this.props.heBookTitle}} defaultToInterfaceOnBilingual={true} />
           </div>
         </div> : null;
 
-      pre = this.state.showScrollPlaceholders ? 
+      pre = this.state.showScrollPlaceholders ?
         (noPrev ? bookTitle :
         <LoadingMessage className="base prev" key={"prev"}/>) : null;
-      
-      post = hasNext && this.state.showScrollPlaceholders ? 
+
+      post = hasNext && this.state.showScrollPlaceholders ?
         <LoadingMessage className="base next" key={"next"}/> :
-        <LoadingMessage message={" "} className="base next final" key={"next"}/>;
+        <LoadingMessage message={" "} heMessage={" "} className="base next final" key={"next"}/>;
     }
 
-    return (<div className={classes} onMouseUp={this.handleTextSelection}>
+    return (<div className={classes} onMouseUp={this.handleTextSelection} onClick={this.handleClick} onMouseDown={this.handleDoubleClick}>
       {pre}
       {content}
       {post}

@@ -31,7 +31,6 @@ static_pages = [
     "the-sefaria-story",
     "aramaic-translation-contest",
     "newsletter",
-    "shavuot-map-2018",
     "testimonials",
     "torah-tab",
     "dicta-thanks",
@@ -39,15 +38,18 @@ static_pages = [
     "remote-learning",
     "sheets",
     "powered-by-sefaria-contest-2020",
+    "powered-by-sefaria-contest-2021",
     "ramban-sponsorships",
+    "rabbis",
     "contest",
-    "design-system"
+    "design-system",
+    "powered-by"
 ]
 
 static_pages_by_lang = [
     "about",
     "ways-to-give",
-    "team",
+    "team"
 ]
 
 
@@ -59,6 +61,7 @@ site_urlpatterns = [
     url(r'^digitized-by-sefaria/?$', reader_views.digitized_by_sefaria),
     url(r'^apple-app-site-association/?$', reader_views.apple_app_site_association),
     url(r'^\.well-known/apple-app-site-association/?$', reader_views.apple_app_site_association),
+    url(r'^\.well-known/assetlinks.json/?$', reader_views.android_asset_links_json),
     url(r'^(%s)/?$' % "|".join(static_pages), reader_views.serve_static),
     url(r'^(%s)/?$' % "|".join(static_pages_by_lang), reader_views.serve_static_by_lang),
     url(r'^healthz/?$', reader_views.application_health_api),  # this oddly is returning 'alive' when it's not.  is k8s jumping in the way?
@@ -89,5 +92,6 @@ site_urlpatterns +=[
     url(r'^workshop/?$', lambda x: HttpResponseRedirect(STATIC_URL + 'files/Sefaria_SummerMeeting_2016.pdf')),
     url(r'^ideasforteaching/?$',lambda x: HttpResponseRedirect(STATIC_URL + 'files/Sefaria_Teacher_Generated_Ideas_for_Your_Classroom.pdf')),
     url(r'^strategicplan/?$',lambda x: HttpResponseRedirect(STATIC_URL + 'files/Sefaria_Strategic_Plan.pdf')),
-    url(r'^annualreport/?$', lambda x: HttpResponseRedirect(STATIC_URL + 'files/Sefaria 2020 Annual Report.pdf')),
+    url(r'^annualreport2021?$', lambda x: HttpResponseRedirect('/annualreport/2021')), # Added for backwards compatability for old links that might still point to this
+    url(r'^annualreport/(?P<report_year>\d+)$', reader_views.annual_report),
 ]

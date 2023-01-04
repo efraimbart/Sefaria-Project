@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from collections import defaultdict
 from random import choice
-from webpack_loader import utils as webpack_utils
 
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -40,9 +39,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import sefaria.model as model
 import sefaria.system.cache as scache
 from sefaria.system.cache import in_memory_cache
-from sefaria.client.util import jsonResponse, subscribe_to_list, send_email
+from sefaria.client.util import jsonResponse, subscribe_to_list, send_email, read_webpack_bundle
 from sefaria.forms import SefariaNewUserForm, SefariaNewUserFormAPI
-from sefaria.settings import MAINTENANCE_MESSAGE, USE_VARNISH, MULTISERVER_ENABLED, relative_to_abs_path, RTC_SERVER,\
+from sefaria.settings import MAINTENANCE_MESSAGE, USE_VARNISH, MULTISERVER_ENABLED, RTC_SERVER,\
     DISCOURSE_CONNECT_SECRET, DISCOURSE_HOST
 from sefaria.model.user_profile import UserProfile, user_link
 from sefaria.model.collection import CollectionSet
@@ -63,7 +62,7 @@ from sefaria.system.multiserver.coordinator import server_coordinator
 from sefaria.google_storage_manager import GoogleStorageManager
 from sefaria.sheets import get_sheet_categorization_info
 from reader.views import base_props, render_template 
-
+from sefaria.helper.nationbuilder import delete_from_nationbuilder_if_spam
 
 
 if USE_VARNISH:
@@ -87,7 +86,7 @@ def process_register_form(request, auth_method='session'):
             new_user = form.save()
             user = authenticate(email=form.cleaned_data['email'],
                                 password=form.cleaned_data['password1'])
-            p = UserProfile(id=user.id)
+            p = UserProfile(id=user.id, user_registration=True)
             p.assign_slug()
             p.join_invited_collections()
             if hasattr(request, "interfaceLang"):
@@ -246,14 +245,14 @@ def accounts(request):
 
 def subscribe(request, email):
     """
-    API for subscribg is mailing lists, in `lists` url param.
+    API for subscribing to mailing lists, in `lists` url param.
     Currently active lists are:
     "Announcements_General", "Announcements_General_Hebrew", "Announcements_Edu", "Announcements_Edu_Hebrew"
     """
     lists = request.GET.get("lists", "")
     lists = lists.split("|")
     if len(lists) == 0:
-        return jsonResponse({"error": "Please specifiy a list."})
+        return jsonResponse({"error": "Please specify a list."})
     if subscribe_to_list(lists + ["Newsletter_Sign_Up"], email, direct_sign_up=True):
         return jsonResponse({"status": "ok"})
     else:
@@ -263,9 +262,16 @@ def subscribe(request, email):
 @login_required
 def unlink_gauth(request):
     profile = UserProfile(id=request.user.id)
-    profile.update({"gauth_token": None})
-    profile.save()
-    return redirect(f"/profile/{profile.slug}")
+    try:
+        profile.update({"gauth_token": None, "gauth_email": None})
+        profile.save()
+        redir = bool(int(request.GET.get("redirect", True)))
+        if redir:
+            return redirect(f"/profile/{profile.slug}")
+        else:
+            return jsonResponse({"status": "ok"})
+    except:
+        return jsonResponse({"error": "Failed to delete Google account"})
 
 
 def generate_feedback(request):
@@ -320,10 +326,7 @@ def sefaria_js(request):
     Packaged Sefaria.js.
     """
     data_js = render_to_string("js/data.js", context={}, request=request)
-    webpack_files = webpack_utils.get_files('main', config="SEFARIA_JS")
-    bundle_path = relative_to_abs_path('..' + webpack_files[0]["url"])
-    with open(bundle_path, 'r') as file:
-        sefaria_js=file.read()
+    sefaria_js = read_webpack_bundle("SEFARIA_JS")
     attrs = {
         "data_js": data_js,
         "sefaria_js": sefaria_js,
@@ -332,30 +335,17 @@ def sefaria_js(request):
     return render(request, "js/sefaria.js", attrs, content_type= "text/javascript; charset=utf-8")
 
 
-def chavruta_js(request):
-    """
-    Javascript for chavruta [required to pass server attribute].
-    """
-    client_user = UserProfile(id=request.user.id)
-    roulette = request.GET.get("roulette", "0")
-
-    attrs = {
-        "rtc_server": RTC_SERVER,
-        "client_name": client_user.first_name + " " + client_user.last_name,
-        "client_uid": client_user.id,
-        "roulette": roulette
-    }
-
-
-    return render(request, "js/chavruta.js", attrs, content_type="text/javascript; charset=utf-8")
-
-
 def linker_js(request, linker_version=None):
     """
     Javascript of Linker plugin.
     """
     CURRENT_LINKER_VERSION = "2"
     linker_version = linker_version or CURRENT_LINKER_VERSION
+
+    if linker_version == "3":
+        # linker.v3 is bundled using webpack as opposed to previous versions which are django templates
+        return HttpResponse(read_webpack_bundle("LINKER"), content_type="text/javascript; charset=utf-8")
+
     linker_link = "js/linker.v" + linker_version + ".js"
 
     attrs = {
@@ -364,6 +354,38 @@ def linker_js(request, linker_version=None):
     }
 
     return render(request, linker_link, attrs, content_type = "text/javascript; charset=utf-8")
+
+
+@api_view(["POST"])
+def find_refs_report_api(request):
+    from sefaria.system.database import db
+    post = json.loads(request.body)
+    db.linker_feedback.insert_one(post)
+    return jsonResponse({'ok': True})
+
+
+@api_view(["POST"])
+def find_refs_api(request):
+    from sefaria.helper.linker import make_find_refs_response, add_webpage_hit_for_url
+
+    with_text = bool(int(request.GET.get("with_text", False)))
+    debug = bool(int(request.GET.get("debug", False)))
+    max_segments = int(request.GET.get("max_segments", 0))
+    post_body = json.loads(request.body)
+
+    response = make_find_refs_response(post_body, with_text, debug, max_segments)
+    add_webpage_hit_for_url(post_body.get("metaDataForTracking", {}).get("url", None))
+
+    return jsonResponse(response)
+
+
+@api_view(["GET"])
+def websites_api(request, domain):
+    cb = request.GET.get("callback", None)
+    website = WebSite().load({"domains": domain})
+    if website is None:
+        return jsonResponse({"error": f"no website found with domain: '{domain}'"})
+    return jsonResponse(website.contents(), cb)
 
 
 def linker_data_api(request, titles):
@@ -375,7 +397,7 @@ def linker_data_api(request, titles):
             res["error"] = title_regex.pop("error")
         res["regexes"] = title_regex
         url = request.GET.get("url", "")
-        domain = WebPage.domain_for_url(url)
+        domain = WebPage.domain_for_url(WebPage.normalize_url(url))
 
         website_match = WebSiteSet({"domains": domain})  # we know there can only be 0 or 1 matches found because of a constraint
                                                          # enforced in Sefaria-Data/sources/WebSites/populate_web_sites.py
@@ -411,14 +433,14 @@ def title_regex_api(request, titles, json_response=True):
         return jsonResponse({"error": "Unsupported HTTP method."}) if json_response else {"error": "Unsupported HTTP method."}
 
 
-def bundle_many_texts(refs, useTextFamily=False, as_sized_string=False, min_char=None, max_char=None):
+def bundle_many_texts(refs, useTextFamily=False, as_sized_string=False, min_char=None, max_char=None, translation_language_preference=None):
     res = {}
     for tref in refs:
         try:
             oref = model.Ref(tref)
             lang = "he" if is_hebrew(tref) else "en"
             if useTextFamily:
-                text_fam = model.TextFamily(oref, commentary=0, context=0, pad=False)
+                text_fam = model.TextFamily(oref, commentary=0, context=0, pad=False, translationLanguagePreference=translation_language_preference, stripItags=True)
                 he = text_fam.he
                 en = text_fam.text
                 res[tref] = {
@@ -431,8 +453,8 @@ def bundle_many_texts(refs, useTextFamily=False, as_sized_string=False, min_char
                     'url': oref.url()
                 }
             else:
-                he_tc = model.TextChunk(oref, "he")
-                en_tc = model.TextChunk(oref, "en")
+                he_tc = model.TextChunk(oref, "he", actual_lang=translation_language_preference)
+                en_tc = model.TextChunk(oref, "en", actual_lang=translation_language_preference)
                 if as_sized_string:
                     kwargs = {}
                     if min_char:
@@ -477,7 +499,7 @@ def bulktext_api(request, refs):
         g = lambda x: request.GET.get(x, None)
         min_char = int(g("minChar")) if g("minChar") else None
         max_char = int(g("maxChar")) if g("maxChar") else None
-        res = bundle_many_texts(refs, g("useTextFamily"), g("asSizedString"), min_char, max_char)
+        res = bundle_many_texts(refs, g("useTextFamily"), g("asSizedString"), min_char, max_char, g("transLangPref"))
         resp = jsonResponse(res, cb)
         return resp
 
@@ -495,7 +517,7 @@ def linker_tracking_api(request):
         return jsonResponse({"error": "Missing 'json' parameter in post data."})
     data = json.loads(j)
 
-    status = WebPage.add_or_update_from_linker(data)
+    status, webpage = WebPage.add_or_update_from_linker(data)
 
     return jsonResponse({"status": status})
 
@@ -530,10 +552,12 @@ def passages_api(request, refs):
 
 
 @login_required
-def file_upload(request, resize_image=True):
+def collections_image_upload(request, resize_image=True):
     from PIL import Image
     from tempfile import NamedTemporaryFile
-    from sefaria.s3 import HostedFile
+    from sefaria.google_storage_manager import GoogleStorageManager
+    from io import BytesIO
+    import uuid
     if request.method == "POST":
         MAX_FILE_MB = 2
         MAX_FILE_SIZE = MAX_FILE_MB * 1024 * 1024
@@ -544,23 +568,21 @@ def file_upload(request, resize_image=True):
         name, extension = os.path.splitext(uploaded_file.name)
         with NamedTemporaryFile(suffix=extension) as temp_uploaded_file:
             temp_uploaded_file.write(uploaded_file.read())
-
-            with NamedTemporaryFile(suffix=extension) as temp_resized_file:
-                image = Image.open(temp_uploaded_file)
-                if resize_image:
-                    image.thumbnail(MAX_FILE_DIMENSIONS, Image.ANTIALIAS)
-                image.save(temp_resized_file, optimize=True, quality=70)
-
-                name, extension = os.path.splitext(temp_resized_file.name)
-                hosted_file = HostedFile(filepath=temp_resized_file.name, content_type=uploaded_file.content_type)
-                try:
-                    url = hosted_file.upload()
-                    return jsonResponse({"status": "success", "url": url})
-                except:
-                    return jsonResponse({"error": "There was an error uploading your file."})
+            image = Image.open(temp_uploaded_file)
+            resized_image_file = BytesIO()
+            if resize_image:
+                image.thumbnail(MAX_FILE_DIMENSIONS, Image.ANTIALIAS)
+            image.save(resized_image_file, optimize=True, quality=70, format="PNG")
+            resized_image_file.seek(0)
+            bucket_name = GoogleStorageManager.COLLECTIONS_BUCKET
+            unique_file_name = f"{request.user.id}-{uuid.uuid1()}.{uploaded_file.name[-3:].lower()}"
+            try:
+                url = GoogleStorageManager.upload_file(resized_image_file, unique_file_name, bucket_name)
+                return jsonResponse({"status": "success", "url": url})
+            except:
+                return jsonResponse({"error": "There was an error uploading your file."})
     else:
         return jsonResponse({"error": "Unsupported HTTP method."})
-
 
 @staff_member_required
 def reset_cache(request):
@@ -827,8 +849,9 @@ def sheet_stats(request):
 
 
     html += "\n\nYearly Totals Sheets / Public Sheets / Sheet Creators:\n\n"
-    start = datetime.today().replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
-    years = 4
+    today = datetime.today()
+    start = today.replace(year=today.year+1, month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    years = 5
     for i in range(years):
         end      = start
         start    = end - relativedelta(years=1)
@@ -905,35 +928,12 @@ def categorize_sheets(request):
     return render(request, "static/categorize-sheets.html", context)
 
 @staff_member_required
-def spam_dashboard(request):
+def sheet_spam_dashboard(request):
 
     from django.contrib.auth.models import User
 
     if request.method == 'POST':
-
-        spam_sheet_ids = list(map(int, request.POST.getlist("spam_sheets[]", [])))
-        reviewed_sheet_ids = list(map(int, request.POST.getlist("reviewed_sheets[]", [])))
-
-        db.sheets.update_many({"id": {"$in": reviewed_sheet_ids}}, {"$set": {"reviewed": True}})
-
-        spammers = db.sheets.find({"id": {"$in": spam_sheet_ids}}, {"owner": 1}).distinct("owner")
-
-        for spammer in spammers:
-            try:
-                spammer_account = User.objects.get(id=spammer)
-                spammer_account.is_active = False
-                spammer_account.save()
-            except:
-                continue
-
-        db.sheets.delete_many({"id": {"$in": spam_sheet_ids}})
-
-        return render_template(request, 'spam_dashboard.html', None, {
-            "deleted_sheets": len(spam_sheet_ids),
-            "sheet_ids": spam_sheet_ids,
-            "reviewed_sheets": len(reviewed_sheet_ids),
-            "spammers_deactivated": len(spammers)
-        })
+        return jsonResponse({"error": "Unsupported Method: {}".format(request.method)})
 
     else:
         date = request.GET.get("date", None)
@@ -944,7 +944,7 @@ def spam_dashboard(request):
         else:
             date = request.GET.get("date", datetime.now() - timedelta(days=30))
 
-        earliest_new_user_id = User.objects.filter(date_joined__gte=date)[0].id
+        earliest_new_user_id = User.objects.filter(date_joined__gte=date).order_by('date_joined')[0].id
 
         regex = r'.*(?!href=[\'"](\/|http(s)?:\/\/(www\.)?sefaria).+[\'"])(href).*'
         sheets = db.sheets.find({"sources.ref": {"$exists": False}, "dateCreated": {"$gt": date.strftime("%Y-%m-%dT%H:%M:%S.%f")}, "owner": {"$gt": earliest_new_user_id}, "includedRefs": {"$size": 0}, "reviewed": {"$ne": True}, "$or": [{"sources.outsideText": {"$regex": regex}}, {"sources.comment": {"$regex": regex}}, {"sources.outsideBiText.en": {"$regex": regex}}, {"sources.outsideBiText.he": {"$regex": regex}}]})
@@ -957,7 +957,139 @@ def spam_dashboard(request):
         return render_template(request, 'spam_dashboard.html', None, {
             "title": "Potential Spam Sheets since %s" % date.strftime("%Y-%m-%d"),
             "sheets": sheets_list,
+            "type": "sheet",
         })
+
+@staff_member_required
+def profile_spam_dashboard(request):
+
+    from django.contrib.auth.models import User
+
+    if request.method == 'POST':
+        return jsonResponse({"error": "Unsupported Method: {}".format(request.method)})
+
+    else:
+        date = request.GET.get("date", None)
+
+        if date:
+            date = datetime.strptime(date, '%Y-%m-%d')
+
+        else:
+            date = request.GET.get("date", datetime.now() - timedelta(days=30))
+
+        earliest_new_user_id = User.objects.filter(date_joined__gte=date).order_by('date_joined')[0].id
+
+        regex = r'.*(?!href=[\'"](\/|http(s)?:\/\/(www\.)?sefaria).+[\'"])(href).*'
+
+        spam_keywords_regex = r'(?i).*support.*|.*coin.*|.*helpline.*|.*base.*'
+
+        users_to_check = db.profiles.find(
+            {'$and': [
+                {"id": {"$gt": earliest_new_user_id}, "reviewed": {"$ne": True}, "settings.reading_history": {"$ne": False}},
+                {'$or': [
+                    {'website': {"$ne": ""}},
+                    {'facebook': {"$ne": ""}},
+                    {'twitter': {"$ne": ""}},
+                    {'youtube': {"$ne": ""}},
+                    {'linkedin': {"$ne": ""}},
+                    {'bio': {"$regex": regex}},
+                    {'slug': {"$regex": spam_keywords_regex}}
+            ]
+        }]})
+
+
+
+        profiles_list = []
+
+        for user in users_to_check:
+            history_count = db.user_history.find({'uid': user['id'], 'book': {'$ne': 'Sheet'}}).count()
+            if history_count < 10:
+                profile = model.user_profile.UserProfile(id=user["id"])
+
+                profiles_list.append({"name": f"{profile.first_name} {profile.last_name}", "email": profile.email, "id": user["id"], "slug": user["slug"], "bio": strip_tags(user["bio"][0:250]), "website": user["website"][0:50]})
+
+        return render_template(request, 'spam_dashboard.html', None, {
+            "title": "Potential Spam Profiles since %s" % date.strftime("%Y-%m-%d"),
+            "profiles": profiles_list,
+            "type": "profile",
+        })
+
+
+
+
+@staff_member_required
+def spam_dashboard(request):
+    from django.contrib.auth.models import User
+
+
+    def purge_spammer_account_data(spammer_id):
+        # Delete from Nationbuilder
+        profile = db.profiles.find_one({"id": spammer_id})
+        if "nationbuilder_id" in profile:
+            delete_from_nationbuilder_if_spam(spammer_id, profile["nationbuilder_id"])
+        # Delete Sheets
+        db.sheets.delete_many({"owner": spammer_id})
+        # Delete Notes
+        db.notes.delete_many({"owner": spammer_id})
+        # Delete Notifcations
+        db.notifications.delete_many({"uid": spammer_id})
+        # Delete Following Relationships
+        db.following.delete_many({"follower": spammer_id})
+        db.following.delete_many({"followee": spammer_id})
+        # Delete Profile
+        db.profiles.delete_one({"id": spammer_id})
+        # Set account inactive
+        spammer_account = User.objects.get(id=spammer_id)
+        spammer_account.is_active = False
+        spammer_account.save()
+
+
+    if request.method == 'POST':
+        req_type = request.POST.get("type")
+
+        if req_type == "sheet":
+            spam_sheet_ids = list(map(int, request.POST.getlist("spam_sheets[]", [])))
+            reviewed_sheet_ids = list(map(int, request.POST.getlist("reviewed_sheets[]", [])))
+            db.sheets.update_many({"id": {"$in": reviewed_sheet_ids}}, {"$set": {"reviewed": True}})
+            spammers = db.sheets.find({"id": {"$in": spam_sheet_ids}}, {"owner": 1}).distinct("owner")
+            db.sheets.delete_many({"id": {"$in": spam_sheet_ids}})
+
+            for spammer in spammers:
+                try:
+                    purge_spammer_account_data(spammer)
+                except:
+                    continue
+
+            return render_template(request, 'spam_dashboard.html', None, {
+                "deleted": len(spam_sheet_ids),
+                "ids": spam_sheet_ids,
+                "reviewed": len(reviewed_sheet_ids),
+                "spammers_deactivated": len(spammers)
+            })
+
+        elif req_type == "profile":
+            spam_profile_ids = list(map(int, request.POST.getlist("spam_profiles[]", [])))
+            reviewed_profile_ids = list(map(int, request.POST.getlist("reviewed_profiles[]", [])))
+            db.profiles.update_many({"id": {"$in": reviewed_profile_ids}}, {"$set": {"reviewed": True}})
+
+            for spammer in spam_profile_ids:
+                try:
+                    purge_spammer_account_data(spammer)
+                except:
+                    continue
+
+            return render_template(request, 'spam_dashboard.html', None, {
+                "deleted": len(spam_profile_ids),
+                "ids": spam_profile_ids,
+                "reviewed": len(reviewed_profile_ids),
+                "spammers_deactivated": len(spam_profile_ids)
+            })
+
+        else:
+            return jsonResponse({"error": "Unknown post type."})
+
+    else:
+        return jsonResponse({"error": "Unsupported Method: {}".format(request.method)})
 
 @staff_member_required
 def versions_csv(request):
@@ -1058,8 +1190,9 @@ def bulk_download_versions_api(request):
 
     content = file_like_object.getvalue()
     response = HttpResponse(content, content_type="application/zip")
-    filename = "{}-{}-{}-{}.zip".format(list(filter(str.isalnum, str(title_pattern))), list(filter(str.isalnum, str(version_title_pattern))), language, format).encode('utf-8')
+    filename = "{}-{}-{}-{}.zip".format(''.join(list(filter(str.isalnum, str(title_pattern)))), ''.join(list(filter(str.isalnum, str(version_title_pattern)))), language, format)
     response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+    response["charset"] = 'utf-8'
     return response
 
 
@@ -1128,6 +1261,25 @@ def text_upload_api(request):
     message = "Successfully imported {} versions".format(len(files))
     return jsonResponse({"status": "ok", "message": message})
 
+
+@staff_member_required
+def update_authors_from_sheet(request):
+    from sefaria.helper.descriptions import update_authors_data
+    res_text = update_authors_data()
+    return HttpResponse("\n".join(res_text), content_type="text/plain")
+
+@staff_member_required
+def update_categories_from_sheet(request):
+    from sefaria.helper.descriptions import update_categories_data
+    res_text = update_categories_data()
+    return HttpResponse("\n".join(res_text), content_type="text/plain")
+
+@staff_member_required
+def update_texts_from_sheet(request):
+    from sefaria.helper.descriptions import update_texts_data
+    res_text = update_texts_data()
+    return HttpResponse("\n".join(res_text), content_type="text/plain")
+
 @staff_member_required
 def modtools_upload_workflowy(request):
     from sefaria.helper.text import WorkflowyParser
@@ -1158,6 +1310,8 @@ def compare(request, comp_ref=None, lang=None, v1=None, v2=None):
         sec_ref = o_comp_ref.first_available_section_ref()
         if not sec_ref.is_section_level():
             sec_ref = sec_ref.section_ref()
+        if o_comp_ref.is_book_level():
+            o_comp_ref = sec_ref
         sec_ref = sec_ref.normal()
         if not o_comp_ref.is_section_level():
             ref_array = [r.normal() for r in o_comp_ref.all_subrefs()]

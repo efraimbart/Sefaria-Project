@@ -21,6 +21,8 @@ class VersionBlock extends Component {
       "digitizedBySefaria",
       "status",
       "versionTitleInHebrew",
+      "shortVersionTitle",
+      "shortVersionTitleInHebrew",
       "versionNotesInHebrew",
       "purchaseInformationImage",
       "purchaseInformationURL",
@@ -50,6 +52,7 @@ class VersionBlock extends Component {
     e.preventDefault();
     if (this.props.openVersionInReader) {
       this.props.openVersionInReader(this.props.version.versionTitle, this.props.version.language);
+      Sefaria.setVersionPreference(this.props.currentRef, this.props.version.versionTitle, this.props.version.language);
     }
   }
   handleInputChange(event) {
@@ -216,6 +219,12 @@ class VersionBlock extends Component {
             <label htmlFor="versionTitleInHebrew" className="">Hebrew Version Title</label>
             <input id="versionTitleInHebrew" name="versionTitleInHebrew" className="" type="text" value={this.state.versionTitleInHebrew} onChange={this.handleInputChange} />
 
+            <label htmlFor="shortVersionTitle" className="">Short Version Title</label>
+            <input id="shortVersionTitle" name="shortVersionTitle" className="" type="text" value={this.state.shortVersionTitle} onChange={this.handleInputChange} />
+
+            <label htmlFor="shortVersionTitleInHebrew" className="">Short Hebrew Version Title</label>
+            <input id="shortVersionTitleInHebrew" name="shortVersionTitleInHebrew" className="" type="text" value={this.state.shortVersionTitleInHebrew} onChange={this.handleInputChange} />
+
             <label htmlFor="versionSource">Version Source</label>
             <input id="versionSource" name="versionSource" className="" type="text" value={this.state.versionSource} onChange={this.handleInputChange} />
 
@@ -357,12 +366,10 @@ class VersionsBlocksList extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      //We only want this calculated when component is created, so it doesnt cause a massive re-render/reshuffle in order every time a version is selected
-      sortedLanguages: this.sortVersionsByActiveLang(this.props.sortPrioritizeLanugage),
       currentKeys: this.getCurrentVersionsKeys(this.props.currObjectVersions),
     }
   }
-  sortVersionsByActiveLang(prioritize=null){
+  sortVersions(prioritize=null){
     //sorts the languages of the available versions
     const standard_langs = ["en", "he"];
     //const activeLanguages = Object.values(this.props.currObjectVersions).map(({actualLanguage}) => actualLanguage);
@@ -385,15 +392,15 @@ class VersionsBlocksList extends Component{
   }
   isVersionCurrent(version){
     //make versions string key and check if that key is in the current keys array (hashing for morons)
-    let {actualLanguage, versionTitle} = version;
+    const {actualLanguage, versionTitle} = version;
     return this.state.currentKeys.includes(`${actualLanguage}|${versionTitle}`);
   }
   getCurrentVersionsKeys(currentVersions){
     //make an array of strings that are keys of the current versions
-    let currs = Object.values(currentVersions).map((v) => !!v ? `${v.actualLanguage}|${v.versionTitle}` : "");
-    return currs
+    return Object.values(currentVersions).map((v) => !!v ? `${v.actualLanguage}|${v.versionTitle}` : "");
   }
   render(){
+      const sortedLanguages = this.sortVersions(this.props.sortPrioritizeLanugage);
       if (!this.props.versionsByLanguages) {
         return (
           <div className="versionsBox">
@@ -404,7 +411,7 @@ class VersionsBlocksList extends Component{
       return (
         <div className="versionsBox">
           {
-            this.state.sortedLanguages.map((lang) => (
+            sortedLanguages.map((lang) => (
               <div key={lang}>
                 { this.props.showLanguageHeaders ?
                   <div className="versionLanguage sans-serif">

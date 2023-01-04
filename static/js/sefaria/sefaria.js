@@ -1,3 +1,5 @@
+import VersionPreferences from "./VersionPreferences";
+
 var extend     = require('extend'),
     param      = require('querystring').stringify;
 import Search from './search';
@@ -51,7 +53,7 @@ Sefaria = extend(Sefaria, {
       let book, index, nums;
       for (let i = first.length; i >= 0; i--) {
           book   = first.slice(0, i);
-          if (book in Sefaria.virtualBooksDict) {
+          if (Sefaria.virtualBooks.includes(book)) {
               // todo: This assumes that this is a depth one integer indexed node
               const numberMatch = first.match(/([\d ]+)$/);
               if (numberMatch) {
@@ -234,19 +236,35 @@ Sefaria = extend(Sefaria, {
     // Returns true is `ref1` contains `ref2`
     const oRef1 = Sefaria.parseRef(ref1);
     const oRef2 = Sefaria.parseRef(ref2);
+    //need to convert to ints, add ancestors for complex and copy logic from server
 
     if ("error" in oRef1 || "error" in oRef2) { return null; }
 
+    //We need numerical representations of the sections, and not to trip up on talmud sections
     if (oRef2.index !== oRef2.index || oRef1.book !== oRef2.book) { return false; }
+    const [oRef1sections, oRef1toSections, oRef2sections, oRef2toSections] = [oRef1.sections, oRef1.toSections, oRef2.sections, oRef2.toSections].map(arr =>
+        arr.map(x => x.match(/\d+[ab]/) ? Sefaria.hebrew.dafToInt(x) : parseInt(x))
+    )
 
-    for (let i = 0; i < oRef1.sections.length; i++) {
-      if (oRef1.sections[i] <= oRef2.sections[i] && oRef1.toSections[i] >= oRef2.toSections[i]) {
-        return true;
-      } else if (oRef1.sections[i] > oRef2.sections[i] || oRef1.toSections[i] < oRef2.toSections[i]) {
+    const sectionsLen = Math.min(oRef1sections.length, oRef2sections.length);
+    //duplicated from server side logic to finally fix
+    for (let i = 0; i < sectionsLen; i++) {
+      if (oRef2toSections[i] > oRef1toSections[i]) {
         return false;
       }
+      if (oRef2toSections[i] < oRef1toSections[i]) {
+        break;
+      }
     }
-    return null;
+    for (let i = 0; i < sectionsLen; i++) {
+      if (oRef2sections[i] < oRef1sections[i]) {
+        return false;
+      }
+      if (oRef2sections[i] > oRef1sections[i]) {
+        break;
+      }
+    }
+    return true;
   },
   refCategories: function(ref) {
     // Returns the text categories for `ref`
@@ -259,6 +277,10 @@ Sefaria = extend(Sefaria, {
     // Returns the section level ref for `ref` or null if no data is available
     const oref = this.getRefFromCache(ref);
     return oref ? oref.sectionRef : null;
+  },
+  splitSpanningRefNaive: function(ref){
+      if (ref.indexOf("-") == -1) { return ref; }
+      return ref.split("-");
   },
   splitRangingRef: function(ref) {
     // Returns an array of segment level refs which correspond to the ranging `ref`
@@ -358,10 +380,23 @@ Sefaria = extend(Sefaria, {
       enVersion:  settings.enVersion  || null,
       heVersion:  settings.heVersion  || null,
       multiple:   settings.multiple   || 0,
+      stripItags: settings.stripItags || 0,
       wrapLinks:  ("wrapLinks" in settings) ? settings.wrapLinks : 1,
-      wrapNamedEntities: ("wrapNamedEntities" in settings) ? settings.wrapNamedEntities : 1, 
+      wrapNamedEntities: ("wrapNamedEntities" in settings) ? settings.wrapNamedEntities : 1,
       translationLanguagePreference: settings.translationLanguagePreference || null,
+      versionPref: settings.versionPref || null,
+      firstAvailableRef: settings.firstAvailableRef || 1,
+      fallbackOnDefaultVersion: settings.fallbackOnDefaultVersion || 1,
     };
+    if (settings.versionPref) {
+      // for every lang/vtitle pair in versionPref, update corresponding version url param if it doesn't already exist
+      for (let [vlang, vtitle] of Object.entries(settings.versionPref)) {
+        const versionPrefKey = `${vlang}Version`;
+        if (!settings[versionPrefKey]) {
+          settings[versionPrefKey] = vtitle;
+        }
+      }
+    }
     return settings;
   },
   getTextFromCache: function(ref, settings) {
@@ -384,7 +419,7 @@ Sefaria = extend(Sefaria, {
         .then(d => {
             //swap out original versions from the server with the ones that Sefaria client side has sorted and updated with some fields.
             // This happens before saving the text to cache so that both caches are consistent
-            if(d.versions){
+            if(d?.versions?.length){
                 let versions = Sefaria._saveVersions(d.sectionRef, d.versions);
                 d.versions = Sefaria._makeVersions(versions, false, null, false);
             }
@@ -393,14 +428,14 @@ Sefaria = extend(Sefaria, {
         });
   },
   _bulkTexts: {},
-  getBulkText: function(refs, asSizedString=false, minChar=null, maxChar=null) {
+  getBulkText: function(refs, asSizedString=false, minChar=null, maxChar=null, transLangPref=null) {
     if (refs.length === 0) { return Promise.resolve({}); }
 
     const MAX_URL_LENGTH = 3800;
     const hostStr = `${Sefaria.apiHost}/api/bulktext/`;
 
     let paramStr = '';
-    for (let [paramKey, paramVal] of Object.entries({asSizedString, minChar, maxChar})) {
+    for (let [paramKey, paramVal] of Object.entries({asSizedString, minChar, maxChar, transLangPref})) {
       paramStr = !!paramVal ? paramStr + `&${paramKey}=${paramVal}` : paramStr;
     }
     paramStr = paramStr.replace(/&/,'?');
@@ -449,7 +484,7 @@ Sefaria = extend(Sefaria, {
     }
     this._api(Sefaria.apiHost + this._textUrl(ref, settings), function(data) {
         //save versions and then text so both caches have updated versions
-        if(data.versions){
+        if(data?.versions?.length){
             let versions = this._saveVersions(data.sectionRef, data.versions);
             data.versions = this._makeVersions(versions, false, null, false);
         }
@@ -458,40 +493,31 @@ Sefaria = extend(Sefaria, {
     }.bind(this));
     return null;
   },
-  translateISOLanguageCode(code, inMotherTongue) {
+  ISOMap: {
+    "ar": {"name": "Arabic", "nativeName": "عربى", "showTranslations": 1},
+    "de": {"name": "German", "nativeName": "Deutsch", "showTranslations": 1, "title": "Jüdische Texte in Deutscher Sprache"},
+    "en": {"name": "English", "nativeName": "English", "showTranslations": 1, "title": "Jewish Texts in English"},
+    "eo": {"name": "Esperanto", "nativeName": "Esperanto", "showTranslations": 1, "title": "Judaj Tekstoj en Esperanto"},
+    "es": {"name": "Spanish", "nativeName": "Español", "showTranslations": 1, "title": "Textos Judíos en Español"},
+    "fa": {"name": "Persian", "nativeName": "فارسی", "showTranslations": 1, "title": "متون یهودی به زبان فارسی"},
+    "fi": {"name": "Finnish", "nativeName": "suomen kieli", "showTranslations": 1, "title": "Juutalaiset tekstit suomeksi"},
+    "fr": {"name": "French", "nativeName": "Français", "showTranslations": 1, "title": "Textes juifs en français"},
+    "he": {"name": "Hebrew", "nativeName": "עברית", "showTranslations": 0, "title": "ספריה בעברית"},
+    "it": {"name": "Italian", "nativeName": "Italiano", "showTranslations": 1, "title": "Testi ebraici in italiano"},
+    "lad": {"name": "Ladino", "nativeName": "Judeo-español", "showTranslations": 0},
+    "pl": {"name": "Polish", "nativeName": "Polskie", "showTranslations": 1, "title": "Teksty żydowskie w języku polskim"},
+    "pt": {"name": "Portuguese", "nativeName": "Português", "showTranslations": 1, "title": "Textos judaicos em portugues"},
+    "ru": {"name": "Russian", "nativeName": "Pусский", "showTranslations": 1, "title": "Еврейские тексты на русском языке"},
+    "yi": {"name": "Yiddish", "nativeName": "יידיש", "showTranslations": 1, "title": "יידישע טעקסטן אויף יידיש"},
+    "jrb": {"name": "Judeo-Arabic", "nativeName": "Arabia Yehudia", "showTranslations": 0},  // nativeName in English because hard to determine correct native name
+  },
+  translateISOLanguageCode(code, native = false) {
     //takes two-letter ISO 639.2 code and returns full language name
-    const codeMap = {
-      "en": "English",
-      "he": "Hebrew",
-      "yi": "Yiddish",
-      "fi": "Finnish",
-      "pt": "Portuguese",
-      "es": "Spanish",
-      "fr": "French",
-      "de": "German",
-      "ar": "Arabic",
-      "it": "Italian",
-      "pl": "Polish",
-      "ru": "Russian",
-      "eo": "Esparanto",
-      "fa": "Farsi",
-    };
-    const motherTongueCodeMap = {
-      "en": "English",
-      "he": "עברית",
-      "yi": "יידיש",
-      "pt": "Português",
-      "es": "Español",
-      "fr": "Français",
-      "de": "Deutsch",
-      "ar": "عربى",
-      "it": "Italiano",
-      "pl": "Polskie",
-      "ru": "Pусский",
-      "eo": "Esperanto",
-    }
-    if (inMotherTongue) { return motherTongueCodeMap[code.toLowerCase()] || code; }
-    return codeMap[code.toLowerCase()] || code;
+    const lookupVar = native ? "nativeName" : "name";
+    return Sefaria.ISOMap?.[code.toLowerCase()]?.[lookupVar] || code;
+  },
+  getHebrewTitle: function(slug) {
+    return Sefaria.ISOMap[slug] ? Sefaria.ISOMap[slug]["title"] ?  Sefaria.ISOMap[slug]["title"] : "Jewish Texts in " + Sefaria.ISOMap[slug]["name"] : "Jewish texts in " + slug ;
   },
   _versions: {},
   _translateVersions: {},
@@ -546,7 +572,7 @@ Sefaria = extend(Sefaria, {
       //let generalCount = 0;
       for (let v of versions) {
         //generalCount++;
-        const matches = v.versionTitle.match(new RegExp("\\[([a-z]{2})\\]$")); // two-letter ISO language code
+        const matches = v.versionTitle.match(new RegExp("\\[([a-z]{2,3})\\]$")); // two-letter ISO language code
         const lang = matches ? matches[1] : v.language;
         v.actualLanguage = lang; //add actual language onto the object. Hopefully its then available always.
         //Sort each language into its own bucket
@@ -561,7 +587,7 @@ Sefaria = extend(Sefaria, {
           .reduce((obj, [lang, version]) => {
               if(version?.merged){ //this would be the best guess of the merged language's version currently
                   obj[lang] = version;
-              }else{
+              }else if (version?.actualLanguage){
                  obj[version.actualLanguage] = version;
               }
             return obj;
@@ -569,6 +595,15 @@ Sefaria = extend(Sefaria, {
   },
   getTranslateVersionsKey: (vTitle, lang) => `${vTitle}|${lang}`,
   deconstructVersionsKey: (versionsKey) => versionsKey.split('|'),
+  setVersionPreference(sref, vtitle, lang) {
+    if (lang !== 'en') { return; }  // Currently only tracking preferences for translations
+    const title = Sefaria.parseRef(sref).index
+    const corpus = Sefaria.index(title).corpus;
+    Sefaria.versionPreferences = Sefaria.versionPreferences.update(corpus, vtitle, lang);
+
+    Sefaria.track.event("Reader", "Set Version Preference", `${corpus}|${vtitle}|${lang}`);
+    Sefaria.editProfileAPI({version_preferences_by_corpus: {[corpus]: {[lang]: vtitle}}})
+  },
   getLicenseMap: function() {
     const licenseMap = {
       "Public Domain": "https://en.wikipedia.org/wiki/Public_domain",
@@ -588,11 +623,15 @@ Sefaria = extend(Sefaria, {
       wrapLinks:  settings.wrapLinks,
       wrapNamedEntities: settings.wrapNamedEntities,
       multiple:   settings.multiple,
+      stripItags: settings.stripItags,
       transLangPref: settings.translationLanguagePreference,
+      firstAvailableRef: settings.firstAvailableRef,
+      fallbackOnDefaultVersion: settings.fallbackOnDefaultVersion,
     });
     let url = "/api/texts/" + Sefaria.normRef(ref);
     if (settings.enVersion) { url += "&ven=" + encodeURIComponent(settings.enVersion.replace(/ /g,"_")); }
     if (settings.heVersion) { url += "&vhe=" + encodeURIComponent(settings.heVersion.replace(/ /g,"_")); }
+
     url += "&" + params;
     return url.replace("&","?"); // make sure first param has a '?'
   },
@@ -604,6 +643,7 @@ Sefaria = extend(Sefaria, {
       if (settings.enVersion) { key += "&ven=" + settings.enVersion; }
       if (settings.heVersion) { key += "&vhe=" + settings.heVersion; }
       if (settings.translationLanguagePreference) { key += "&transLangPref=" + settings.translationLanguagePreference}
+      if (settings.fallbackOnDefaultVersion) { key += "|FALLBACK_ON_DEFAULT_VERSION"; }
       key = settings.context ? key + "|CONTEXT" : key;
     }
     return key;
@@ -895,6 +935,7 @@ Sefaria = extend(Sefaria, {
     });
   },
   getRefFromCache: function(ref) {
+    if (!ref) return null;
     const versionedKey = this._refmap[this._refKey(ref)] || this._refmap[this._refKey(ref, {context:1})];
     if (versionedKey) { return this._getOrBuildTextData(versionedKey); }
     return null;
@@ -966,7 +1007,7 @@ Sefaria = extend(Sefaria, {
     if (words.length <= 0) { return Promise.resolve([]); }
     words = words.normalize("NFC"); //make sure we normalize any errant unicode (vowels and diacritics that may appear to be equal but the underlying characters are out of order or different.
     const key = ref ? words + "|" + ref : words;
-    let url = Sefaria.apiHost + "/api/words/" + encodeURIComponent(words)+"?always_consonants=1&never_split=1" + (ref?("&lookup_ref="+ref):"");
+    let url = Sefaria.apiHost + "/api/words/" + encodeURIComponent(words)+"?always_consonants=1&never_split=1" + (ref?("&lookup_ref="+encodeURIComponent(ref)):"");
     return this._cachedApiPromise({url, key, store: this._lexiconLookups});
   },
   _links: {},
@@ -997,7 +1038,14 @@ Sefaria = extend(Sefaria, {
     const l = this._saveLinksByRef(data);
     this._links[ref] = data;
     this._cacheIndexFromLinks(data);
+    this._cacheTranslationsOfEssays(data);
     return l;
+  },
+  _cacheTranslationsOfEssays: function(links) {
+    for (let link of links) {
+      if (link.type !== "essay") { continue; }
+      Sefaria._translateTerms[link.displayedText.en] = link.displayedText;
+    }
   },
   _cacheIndexFromLinks: function(links) {
     // Cache partial index information (title, Hebrew title, categories) found in link data.
@@ -1068,7 +1116,7 @@ Sefaria = extend(Sefaria, {
     return links.length;
   },
   _filterLinks: function(links, filter) {
-    // Filters array `links` for only those thart match array `filter`.
+    // Filters array `links` for only those that match array `filter`.
     // If `filter` ends with "|Quoting" return Quoting Commentary only,
     // otherwise commentary `filters` will return only links with type `commentary`
     if (filter.length == 0) { return links; }
@@ -1076,6 +1124,7 @@ Sefaria = extend(Sefaria, {
     var filterAndSuffix = filter[0].split("|");
     filter              = [filterAndSuffix[0]];
     var isQuoting       = filterAndSuffix.length == 2 && filterAndSuffix[1] == "Quoting";
+    var isEssay         = filterAndSuffix.length == 2 && filterAndSuffix[1] == "Essay";
     var index           = Sefaria.index(filter);
     var isCommentary    = index && !isQuoting &&
                             (index.categories[0] == "Commentary" || index.primary_category == "Commentary");
@@ -1083,6 +1132,7 @@ Sefaria = extend(Sefaria, {
     return links.filter(function(link){
       if (isCommentary && link.category !== "Commentary") { return false; }
       if (isQuoting && link.category !== "Quoting Commentary") { return false; }
+      if (isEssay) { return link.type === "essay" && Sefaria.util.inArray(link.displayedText["en"], filter) !== -1; }
 
       return (Sefaria.util.inArray(link.category, filter) !== -1 ||
               Sefaria.util.inArray(link["collectiveTitle"]["en"], filter) !== -1 );
@@ -1098,6 +1148,36 @@ Sefaria = extend(Sefaria, {
     links.map((link) => {dedupedLinks[key(link)] = link});
     return Object.values(dedupedLinks);
   },
+  hasEssayLinks: function(ref) {
+      let links = [];
+      ref.map(function(r) {
+          const newlinks = Sefaria.getLinksFromCache(r);
+          links = links.concat(newlinks);
+      });
+      links = links.filter(l => l["type"] === "essay");
+      return links.length > 0;
+  },
+  essayLinks: function(ref, versions) {
+    let links = [];
+    ref.map(function(r) {
+      const newlinks = Sefaria.getLinksFromCache(r);
+      links = links.concat(newlinks);
+    });
+    links = this._dedupeLinks(links); // by aggregating links to each ref above, we can get duplicates of links to spanning refs
+    let essayLinks = [];
+    for (let i=0; i<links.length; i++) {
+      if (links[i]["type"] === "essay" && "displayedText" in links[i]) {
+        const linkLang = links[i]["anchorVersion"]["language"];
+        const currVersionTitle = versions[linkLang] ? versions[linkLang]["versionTitle"] : "NONE";
+        const linkVersionTitle = links[i]["anchorVersion"]["title"];
+        if (linkVersionTitle === "ALL" || (linkVersionTitle !== "NONE" && currVersionTitle === linkVersionTitle)) {
+          essayLinks.push(links[i]);
+        }
+      }
+    }
+    return essayLinks.sort((a, b) => Sefaria.refContains(a["sourceRef"], b["sourceRef"]));
+  }
+  ,
   _linkSummaries: {},
   linkSummary: function(ref, excludedSheet) {
     // Returns an ordered array summarizing the link counts by category and text
@@ -1194,6 +1274,9 @@ Sefaria = extend(Sefaria, {
     const summary = {};
     for (let i = 0; i < links.length; i++) {
       const link = links[i];
+      if (link["type"] === "essay") {
+        continue;
+      }
       // Count Category
       if (link.category in summary) {
         summary[link.category].count += 1;
@@ -1207,9 +1290,10 @@ Sefaria = extend(Sefaria, {
       if (link["collectiveTitle"]["en"] in category.books) {
         category.books[link["collectiveTitle"]["en"]].count += 1;
         category.books[link["collectiveTitle"]["en"]].hasEnglish = category.books[link["collectiveTitle"]["en"]].hasEnglish || link.sourceHasEn;
-
+        category.books[link["collectiveTitle"]["en"]].categoryList = Sefaria.index(link["index_title"]).categories
       } else {
         category.books[link["collectiveTitle"]["en"]] = {count: 1, hasEnglish: link.sourceHasEn};
+        category.books[link["collectiveTitle"]["en"]].categoryList = Sefaria.index(link["index_title"]).categories
       }
     }
     // Add Zero counts for every commentator in this section not already in list
@@ -1226,6 +1310,7 @@ Sefaria = extend(Sefaria, {
           }
           if (!(l["collectiveTitle"]["en"] in summary["Commentary"].books)) {
             summary["Commentary"].books[l["collectiveTitle"]["en"]] = {count: 0};
+            summary["Commentary"].books[l["collectiveTitle"]["en"]].categoryList = Sefaria.index(l["index_title"]).categories
           }
         }
       }
@@ -1240,6 +1325,32 @@ Sefaria = extend(Sefaria, {
         bookData.book     = index.title;
         bookData.heBook   = index.heTitle;
         bookData.category = category;
+        bookData.enShortDesc = index.enShortDesc || index.enDesc;
+        bookData.heShortDesc = index.heShortDesc;
+        bookData.categoryList = index.categories[0] == ['Commentary'] ? bookData.categoryList : index.categories;
+        if (bookData.categoryList == "Quoting Commentary") {
+            debugger;
+                }
+        else {
+            bookData.categoryListNew = []
+            for (let i = 0; i < bookData.categoryList.length; i++) {
+                if (bookData.categoryList[i] === bookData.book || bookData.book.split(" ")[0] === bookData.categoryList[i] || bookData.book.split(" ")[0] === bookData.categoryList[i].split(" ")[0]) {
+                    break;
+                } else {
+                  bookData.categoryListNew.push(bookData.categoryList[i]);
+                }
+            }
+            bookData.categoryList = bookData.categoryListNew
+            // bookData.enShortDesc = Sefaria.tocItemsByCategories(bookData.categoryList).map((e)=>(e.category || e.title === bookData.book ? e.enShortDesc: null))
+        }
+        if (bookData.categoryList && !bookData.enShortDesc) {
+            const desc = Sefaria.getDescriptionDict(bookData.book, bookData.categoryList)
+            if (desc) {
+                bookData.enShortDesc = desc[0] || null;
+                bookData.heShortDesc = desc[1] || null;
+            }
+        }
+
         return bookData;
       });
       // Sort the books in the category
@@ -1335,7 +1446,52 @@ Sefaria = extend(Sefaria, {
 
     return ref;
   },
-  _notes: {},
+    _descDict: {}, // cache for the description dictionary
+      getDescriptions: function(keyName, categoryList) {
+      const catlist = Sefaria.tocItemsByCategories(categoryList)
+        let catmap = catlist.map((e) => [e.category || e.title, e.enShortDesc, e.heShortDesc])
+        let d = {}
+        catmap.map((e) => {
+            // return array of key: name of "book" value: list of both descriptions
+            if (e) {
+                d[e[0]]=[e[1], e[2]]
+            }
+            // special case for commentators that the book name is "on" eg. "Ramban on Genesis"
+            if (e[0].includes("on")) {
+                d[e[0].split(" on")[0]] = [e[1], e[2]]
+            }
+        })
+        let descs = d[keyName] || d[Sefaria.index(keyName).collectiveTitle] || d[keyName.split(" on")[0]];
+        let enShortDesc = descs && descs[0]? descs[0]: null;
+        let heShortDesc = descs && descs[1]? descs[1]: null;
+        return [enShortDesc, heShortDesc];
+  },
+    getDescriptionDict: function(keyName, categoryList){
+        let desc = this._cachedApi([keyName, categoryList], this._descDict, null);
+        if (Object.keys(this._descDict).length === 0){
+            //Init of the Dict with the Category level descriptions
+            Sefaria.toc.map(e=> {this._descDict[[e.category, []]] = [e.enShortDesc, e.heShortDesc]})
+            // todo: get this data out of code (into db?)
+            this._descDict[["Commentary", []]] = ["Interpretations and discussions surrounding Jewish texts, ranging from early medieval to contemporary.", "פירושים ודיונים סביב טקסטים תורניים, מימי הביניים ועד ימינו."]
+            this._descDict[["Quoting Commentary", []]] = ["References to this source within commentaries on other texts in the wider library.", "התייחסויות אל המקור הנוכחי במפרשים משניים."]
+
+            // special case of a category in sidebar that is a sub cat on the navigation toc pages
+            this._descDict[["Targum", []]] = this.getDescriptions("Targum", ["Tanakh"])
+        }
+        if (!desc && categoryList.length !== 0) {
+            desc = this.getDescriptions(keyName, categoryList)
+            this._descDict[[keyName, categoryList]] = desc
+        }
+        if (desc) {
+            return [desc[0], desc[1]]
+        }
+        else
+        {
+            return [null, null];
+        }
+    },
+
+    _notes: {},
   notes: function(ref, callback) {
     var notes = null;
     if (typeof ref == "string") {
@@ -1505,12 +1661,17 @@ _media: {},
       // Sort first by page language matching interface language
       if (a.isHebrew !== b.isHebrew) { return (b.isHebrew ? -1 : 1) * (Sefaria.interfaceLang === "hebrew" ? -1 : 1); }
 
-      // 3: exact match, 2: range match: 1: section match
-      var aSpecificity, bSpecificity;
-      [aSpecificity, bSpecificity] = [a, b].map(page => page.anchorRef === ref ? 3 : (page.anchorRef.indexOf("-") !== -1 ? 2 : 1));
-      if (aSpecificity !== bSpecificity) {return aSpecificity > bSpecificity ? -1 : 1};
+      // Second, sort by how many anchorRefExpanded refs there are.  Intuition: Genesis 1:2 should come before Genesis 1:2-5, which in turn should come before Genesis 1
+      var aNumAnchorRefs, bNumAnchorRefs;
+      [aNumAnchorRefs, bNumAnchorRefs] = [a, b].map(page => page.anchorRefExpanded.length);
+      if (aNumAnchorRefs !== bNumAnchorRefs) {  return (aNumAnchorRefs - bNumAnchorRefs); }
 
-      return (a.linkerHits > b.linkerHits) ? -1 : 1
+      // Genesis 2 should come before Genesis 1-3
+      var aIsRange, bIsRange;
+      [aIsRange, bIsRange] = [a, b].map(page => page.anchorRef.indexOf("-") !== -1);
+      if (aIsRange !== bIsRange) { return bIsRange ? -1 : 1; }
+
+      return (a.linkerHits > b.linkerHits) ? -1 : 1;
     });
     this._processedWebpages[ref] = webpages;
     return webpages;
@@ -1602,6 +1763,7 @@ _media: {},
           }
         }
       }, this);
+
 
       // Save the original data after the split data - lest a split version overwrite it.
       this._related[ref] = originalData;
@@ -1928,6 +2090,15 @@ _media: {},
       $.post(`${Sefaria.apiHost}/api/messages`, data, resolve);
     });
   },
+  chatMessageAPI: (roomId, senderId, timestamp, messageContent) => {
+    const data = {json: JSON.stringify({roomId: roomId, senderId: senderId, timestamp, messageContent})};
+    return new Promise((resolve, reject) => {
+      $.post(`${Sefaria.apiHost}/api/chat-messages`, data, resolve);
+    })
+  },
+  getChatMessagesAPI: (roomId) => {
+    return Sefaria._ApiPromise(Sefaria.apiHost + `/api/chat-messages/?room_id=${roomId}`);
+  },
   getRefSavedHistory: tref => {
     return Sefaria._ApiPromise(Sefaria.apiHost + `/api/user_history/saved?tref=${tref}`);
   },
@@ -1942,7 +2113,7 @@ _media: {},
   userHistory: {loaded: false, items: []},
   saveUserHistory: function(history_item) {
     // history_item contains:
-    // `ref`, `book`, `versions`, `sheet_title`, `sheet_owner`` 
+    // `ref`, `book`, `versions`, `sheet_title`, `sheet_owner``
     // optionally: `secondary`, `he_ref`, `language`
     if(!Sefaria.is_history_enabled || !history_item) {
         return;
@@ -1988,26 +2159,6 @@ _media: {},
     }
     Sefaria.last_place = history_item_array.filter(x=>!x.secondary).concat(Sefaria.last_place);  // while technically we should remove dup. books, this list is only used on client
   },
-  getRefSavedHistory: tref => {
-    return Sefaria._ApiPromise(Sefaria.apiHost + `/api/user_history/saved?tref=${tref}`);
-  },
-  followAPI: (slug, ftype) => {
-    return Sefaria._ApiPromise(Sefaria.apiHost + `/api/profile/${slug}/${ftype}`);
-  },
-  messageAPI: (uid, message) => {
-    const data = {json: JSON.stringify({recipient: uid, message: message.escapeHtml()})};
-    return new Promise((resolve, reject) => {
-      $.post(`${Sefaria.apiHost}/api/messages`, data, resolve);
-    });
-  },
-  _profiles: {},
-  profileAPI: slug => {
-    return Sefaria._cachedApiPromise({
-      url:   Sefaria.apiHost + "/api/profile/" + slug,
-      key:   slug,
-      store: Sefaria._profiles
-    });
-  },
   uploadProfilePhoto: (formData) => {
     return new Promise((resolve, reject) => {
       if (Sefaria._uid) {
@@ -2037,15 +2188,16 @@ _media: {},
     // Returns promise for all topics list.
     if (this._topicList) { return Promise.resolve(this._topicList); }
     return this._ApiPromise(Sefaria.apiHost + "/api/topics?limit=0")
-        .then(d => { 
+        .then(d => {
           for (let topic of d) {
             topic.normTitles = topic.titles.map(title => title.text.toLowerCase());
           }
-          this._topicList = d; 
+          this._topicList = d;
           return d;
         });
   },
   _tableOfContentsDedications: {},
+  _inAppAds: null,
   _stories: {
     stories: [],
     page: 0
@@ -2056,6 +2208,14 @@ _media: {},
       url:   `${this.apiHost}/api/calendars/next-read/${parasha}`,
       key:   parasha,
       store: this._parashaNextRead,
+    });
+  },
+  _bookSearchPathFilter: {},
+  bookSearchPathFilterAPI: title => {
+    return Sefaria._cachedApiPromise({
+      url:   Sefaria.apiHost + "/api/search-path-filter/" + title,
+      key:   title,
+      store: Sefaria._bookSearchPathFilter
     });
   },
   _topics: {},
@@ -2071,7 +2231,7 @@ _media: {},
     const url = `${this.apiHost}/api/v2/topics/${slug}?with_links=${0+with_links}&annotate_links=${0+annotate_links}&with_refs=${0+with_refs}&group_related=${0+group_related}&annotate_time_period=${0+annotate_time_period}&ref_link_type_filters=${ref_link_type_filters.join('|')}&with_indexes=${0+with_indexes}`;
     return this._cachedApiPromise({
       url,
-      key: url,
+      key: slug,
       store: this._topics,
       processor: this.processTopicsData,
     });
@@ -2090,7 +2250,7 @@ _media: {},
           let { title } = linkTypeObj;
           if (tabKey == 'sheets') {
             title = {en: 'Sheets', he: Sefaria._('Sheets')};
-          } 
+          }
           if (tabKey == 'sources') {
             title = {en: 'Sources', he: Sefaria._('Sources')};
           }
@@ -2114,6 +2274,17 @@ _media: {},
   getTopicFromCache: function(topic) {
     return this._topics[topic];
   },
+  _topicSlugsToTitles: null,
+  _initTopicSlugsToTitles: function() {
+    this._topicSlugsToTitles = Sefaria.topic_toc.reduce(Sefaria._initTopicTocSlugToTitleReducer, {});
+  },
+  slugsToTitles: function() {
+    //initializes _topicSlugsToTitles for Topic Editor tool and adds necessary "Choose a Category" and "Main Menu" for
+    //proper use of the Topic Editor tool
+    if (!Sefaria._topicSlugsToTitles) { Sefaria._initTopicSlugsToTitles();}
+    let specialCases = {"": "Choose a Category", "Main Menu": "Main Menu"};
+    return Object.assign(specialCases, Sefaria._topicSlugsToTitles);
+  },
   _topicTocPages: null,
   _initTopicTocPages: function() {
     this._topicTocPages = this.topic_toc.reduce(this._initTopicTocReducer, {});
@@ -2124,6 +2295,14 @@ _media: {},
     a[Sefaria._topicTocPageKey(c.slug)] = c.children;
     for (let sub_c of c.children) {
       Sefaria._initTopicTocReducer(a, sub_c);
+    }
+    return a;
+  },
+  _initTopicTocSlugToTitleReducer: function(a,c) {
+    if (!c.children) { return a; }
+    a[c.slug] = c.en;
+    for (let sub_c of c.children) {
+      Sefaria._initTopicTocSlugToTitleReducer(a, sub_c);
     }
     return a;
   },
@@ -2232,7 +2411,7 @@ _media: {},
               this._userSheets[key].unshift(sheet);
             } else if (updateInPlace) {
               this._userSheets[key][sheetIndex] = sheet;
-            } else {  
+            } else {
               this._userSheets[key].unshift(sheet);
             }
           } else {
@@ -2355,6 +2534,12 @@ _media: {},
       return typeof ref === "string" ? parseInt(ref.split(" ")[1]) : parseInt(ref[0].split(" ")[1]);
     }
   },
+  _translations: {},
+  getTranslation: function(key) {
+    const url = Sefaria.apiHost + "/api/texts/translations/" + key;
+    const store = this._translations;
+    return this._cachedApiPromise({url, key, store})
+  },
   _collections: {},
   getCollection: function(key) {
       const url = Sefaria.apiHost + "/api/collections/" + encodeURIComponent(key);
@@ -2398,7 +2583,7 @@ _media: {},
     return Sefaria._userCollectionsForSheet[sheetID];
   },
   getBackgroundData() {
-    return Sefaria._ApiPromise("/api/background-data?interfaceLang=" + Sefaria.interfaceLang)
+    return Sefaria._ApiPromise("/api/background-data?locale=" + Sefaria.interfaceLang)
       .then(data => { Sefaria = extend(Sefaria, data); });
   },
   calendarRef: function(calendarTitle) {
@@ -2464,7 +2649,6 @@ _media: {},
       }
   },
   _: function(inputStr, context=null){
-    if (!inputStr.toLowerCase) debugger;
     if(Sefaria.interfaceLang != "english"){
       return Sefaria.translation(Sefaria.interfaceLang, inputStr, context);
     } else {
@@ -2582,20 +2766,25 @@ _media: {},
 });
 
 Sefaria.unpackDataFromProps = function(props) {
-  // Populate local cache with various data passed as a rider on props.
+  // Populate local cache with various data passed as props.
   const initialPanels = props.initialPanels || [];
   for (let i = 0; i < initialPanels.length; i++) {
       let panel = initialPanels[i];
       if (panel.text) {
         let settings = {context: 1, enVersion: panel.enVersion, heVersion: panel.heVersion};
         //save versions first, so their new format is also saved on text cache
-        let versions = Sefaria._saveVersions(panel.text.sectionRef, panel.text.versions);
-        panel.text.versions = Sefaria._makeVersions(versions, false, null, false);
+        if(panel.text?.versions?.length){
+            let versions = Sefaria._saveVersions(panel.text.sectionRef, panel.text.versions);
+            panel.text.versions = Sefaria._makeVersions(versions, false, null, false);
+        }
+
         Sefaria._saveText(panel.text, settings);
       }
       if(panel.bookRef){
-        let versions = Sefaria._saveVersions(panel.bookRef, panel.versions);
-        panel.versions = Sefaria._makeVersions(versions, false, null, false);
+         if(panel.versions?.length){
+            let versions = Sefaria._saveVersions(panel.bookRef, panel.versions);
+            panel.versions = Sefaria._makeVersions(versions, false, null, false);
+         }
       }
       if (panel.indexDetails) {
         Sefaria._indexDetails[panel.bookRef] = panel.indexDetails;
@@ -2607,6 +2796,9 @@ Sefaria.unpackDataFromProps = function(props) {
   if (props.collectionData) {
     Sefaria._collections[props.initialCollectionSlug] = props.collectionData;
   }
+  if (props.translationsData) {
+    Sefaria._translations[props.initialTranslationsSlug] = props.translationsData;
+  }
   if (props.topicData) {
     Sefaria._topics[props.initialTopic] = Sefaria.processTopicsData(props.topicData);
   }
@@ -2616,8 +2808,19 @@ Sefaria.unpackDataFromProps = function(props) {
   if (props.collectionListing) {
       Sefaria._collectionsList.list = props.collectionListing;
   }
+  Sefaria.versionPreferences = new VersionPreferences(props.versionPrefsByCorpus);
   Sefaria.util._initialPath = props.initialPath ? props.initialPath : "/";
-  const dataPassedAsProps = [
+  Sefaria.unpackBaseProps(props);
+
+  Sefaria.getBackgroundData();
+};
+
+Sefaria.unpackBaseProps = function(props){
+    //TODO: verify these are all base props!!!
+      if (typeof props === 'undefined') {
+          return;
+      }
+      const dataPassedAsProps = [
       "_uid",
       "_email",
       "_uses_new_editor",
@@ -2629,7 +2832,7 @@ Sefaria.unpackDataFromProps = function(props) {
       "is_history_enabled",
       "translation_language_preference_suggestion",
       "following",
-
+      "blocking",
       "calendars",
       "notificationCount",
       "notifications",
@@ -2645,15 +2848,14 @@ Sefaria.unpackDataFromProps = function(props) {
       "trendingTopics",
       "_siteSettings",
       "_debug",
+      "rtc_server"
   ];
   for (const element of dataPassedAsProps) {
       if (element in props) {
         Sefaria[element] = props[element];
       }
   }
-
-  Sefaria.getBackgroundData();
-};
+}
 
 Sefaria.loadServerData = function(data){
     // data parameter is optional. in the event it isn't passed, we assume that DJANGO_DATA_VARS exists as a global var
@@ -2677,25 +2879,29 @@ Sefaria.palette = palette;
 
 Sefaria.palette.indexColor = function(title) {
       return title && Sefaria.index(title) ?
-      Sefaria.palette.categoryColor(Sefaria.index(title).categories[0]):
-      Sefaria.palette.categoryColor("Other");
+          Sefaria.index(title)['primary_category'] ?
+              Sefaria.palette.categoryColor(Sefaria.index(title)['primary_category']):
+                Sefaria.palette.categoryColor(Sefaria.index(title).categories[0]):
+          Sefaria.palette.categoryColor("Other");
 };
 Sefaria.palette.refColor = ref => Sefaria.palette.indexColor(Sefaria.parseRef(ref).index);
 
 Sefaria = extend(Sefaria, Strings);
 
-Sefaria.setup = function(data) {
+Sefaria.setup = function(data, props = null) {
     Sefaria.loadServerData(data);
+    let baseProps = props !=null ? props : (typeof DJANGO_VARS === "undefined" ? undefined : DJANGO_VARS.props);
+    Sefaria.unpackBaseProps(baseProps);
     Sefaria.util.setupPrototypes();
     Sefaria.util.setupMisc();
     var cookie = Sefaria.util.handleUserCookie(Sefaria._uid);
     // And store current uid in analytics id
     Sefaria._analytics_uid = Sefaria._uid;
     Sefaria._makeBooksDict();
-    Sefaria.virtualBooksDict = {"Jastrow": 1, "Klein Dictionary": 1, "Jastrow Unabbreviated": 1};  //Todo: Wire this up to the server
     Sefaria._cacheFromToc(Sefaria.toc);
     Sefaria._cacheHebrewTerms(Sefaria.terms);
     Sefaria._cacheSiteInterfaceStrings();
+    //console.log(`sending user logged in status to GA, uid as bool: ${!!Sefaria._uid} | analytics id: ${Sefaria._analytics_uid}`);
     Sefaria.track.setUserData(!!Sefaria._uid, Sefaria._analytics_uid);
     Sefaria.search = new Search(Sefaria.searchIndexText, Sefaria.searchIndexSheet);
 };

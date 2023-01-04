@@ -25,7 +25,7 @@ from elasticsearch.client import IndicesClient
 from elasticsearch.helpers import bulk
 from elasticsearch.exceptions import NotFoundError
 from sefaria.model import *
-from sefaria.model.text import AbstractIndex
+from sefaria.model.text import AbstractIndex, AbstractTextRecord
 from sefaria.model.user_profile import user_link, public_user_data
 from sefaria.model.collection import CollectionSet
 from sefaria.system.database import db
@@ -200,22 +200,37 @@ def source_text(source):
     """
     Recursive function to translate a source dictionary into text.
     """
-    content = [
-        source.get("customTitle", ""),
-        source.get("ref", ""),
-        source.get("text", {"he": ""}).get("he", ""),
-        source.get("text", {"en": ""}).get("en", ""),
-        source.get("comment", ""),
-        source.get("outside", ""),
-        ]
-    content = [strip_tags(c) for c in content]
-    text = " ".join(content)
+    str_fields = ["customTitle", "ref", "comment", "outsideText"]
+    dict_fields = ["text", "outsideBiText"]
+    content = [source.get(field, "") for field in str_fields]
+    content += [val for field in dict_fields for val in source.get(field, {}).values()]
+    text = " ".join([strip_tags(c) for c in content])
 
     if "subsources" in source:
         for s in source["subsources"]:
             text += source_text(s)
 
     return text
+
+
+def get_exact_english_analyzer():
+    return {
+        "tokenizer": "standard",
+        "char_filter": [
+            "icu_normalizer",
+        ],
+        "filter": [
+            "standard",
+            "lowercase",
+            "icu_folding",
+        ],
+    }
+
+
+def get_stemmed_english_analyzer():
+    stemmed_english_analyzer = get_exact_english_analyzer()
+    stemmed_english_analyzer['filter'] += ["my_snow"]
+    return stemmed_english_analyzer
 
 
 def create_index(index_name, type):
@@ -229,25 +244,15 @@ def create_index(index_name, type):
             "blocks": {
                 "read_only_allow_delete": False
             },
-            "analysis" : {
-                "analyzer" : {
-                    "my_standard" : {
-                        "tokenizer": "standard",
-                        "char_filter": [
-                            "icu_normalizer"
-                        ],
-                        "filter": [
-                                "standard",
-                                "lowercase",
-                                "icu_folding",
-                                "my_snow"
-                                ]
-                    }
+            "analysis": {
+                "analyzer": {
+                    "stemmed_english": get_stemmed_english_analyzer(),
+                    "exact_english": get_exact_english_analyzer(),
                 },
-                "filter" : {
-                    "my_snow" : {
-                        "type" : "snowball",
-                        "language" : "English"
+                "filter": {
+                    "my_snow": {
+                        "type": "snowball",
+                        "language": "English"
                     }
                 }
             }
@@ -304,14 +309,9 @@ def put_text_mapping(index_name):
                 'type': 'integer',
                 'index': False
             },
-            #"hebmorph_semi_exact": {
-            #    'type': 'string',
-            #    'analyzer': 'hebrew',
-            #    'search_analyzer': 'sefaria-semi-exact'
-            #},
             "exact": {
                 'type': 'text',
-                'analyzer': 'my_standard'
+                'analyzer': 'exact_english'
             },
             "naive_lemmatizer": {
                 'type': 'text',
@@ -320,7 +320,7 @@ def put_text_mapping(index_name):
                 'fields': {
                     'exact': {
                         'type': 'text',
-                        'analyzer': 'my_standard'                        
+                        'analyzer': 'exact_english'
                     }
                 }
             }
@@ -379,7 +379,7 @@ def put_sheet_mapping(index_name):
             },
             'content': {
                 'type': 'text',
-                'analyzer': 'my_standard'
+                'analyzer': 'stemmed_english'
             },
             'version': {
                 'type': 'keyword'
@@ -393,6 +393,24 @@ def put_sheet_mapping(index_name):
         }
     }
     index_client.put_mapping(doc_type='sheet', body=sheet_mapping, index=index_name)
+
+def get_search_categories(oref, categories):
+    toc_tree = library.get_toc_tree()
+    cats = oref.index.categories
+
+    indexed_categories = categories  # the default
+
+    # get the full path of every cat along the way.
+    # starting w/ the longest,
+    # check if they're root swapped.
+    paths = [cats[:i] for i in range(len(cats), 0, -1)]
+    for path in paths:
+        cnode = toc_tree.lookup(path)
+        if getattr(cnode, "searchRoot", None) is not None:
+            # Use the specified searchRoot, with the rest of the category path appended.
+            indexed_categories = [cnode.searchRoot] + cats[len(path) - 1:]
+            break
+    return indexed_categories
 
 
 class TextIndexer(object):
@@ -457,8 +475,7 @@ class TextIndexer(object):
 
     @classmethod
     def get_all_versions(cls, tries=0, versions=None, page=0):
-        if versions is None:
-            versions = []
+        versions = versions or []
         try:
             version_limit = 10
             temp_versions = []
@@ -544,13 +561,15 @@ class TextIndexer(object):
         except ValueError:
             cls.best_time_period = None
         version_priority = 0
+        hebrew_version_title = None
         for priority, v in enumerate(cls.get_ref_version_list(oref)):
             if v.versionTitle == version_title:
                 version_priority = priority
+                hebrew_version_title = getattr(v, 'versionTitleInHebrew', None)
         content = TextChunk(oref, lang, vtitle=version_title).ja().flatten_to_string()
         categories = cls.curr_index.categories
         tref = oref.normal()
-        doc = cls.make_text_index_document(tref, oref.he_normal(), version_title, lang, version_priority, content, categories)
+        doc = cls.make_text_index_document(tref, oref.he_normal(), version_title, lang, version_priority, content, categories, hebrew_version_title)
         id = make_text_doc_id(tref, version_title, lang)
         es_client.index(index_name, doc, id=id)
 
@@ -559,10 +578,11 @@ class TextIndexer(object):
         # Index this document as a whole
         vtitle = version.versionTitle
         vlang = version.language
+        hebrew_version_title = getattr(version, 'versionTitleInHebrew', None)
         try:
             version_priority, categories = cls.version_priority_map[(version.title, vtitle, vlang)]
             #TODO include sgement_str in this func
-            doc = cls.make_text_index_document(tref, heTref, vtitle, vlang, version_priority, segment_str, categories)
+            doc = cls.make_text_index_document(tref, heTref, vtitle, vlang, version_priority, segment_str, categories, hebrew_version_title)
             # print doc
         except Exception as e:
             logger.error("Error making index document {} / {} / {} : {}".format(tref, vtitle, vlang, str(e)))
@@ -582,7 +602,19 @@ class TextIndexer(object):
                 logger.error("ERROR indexing {} / {} / {} : {}".format(tref, vtitle, vlang, e))
 
     @classmethod
-    def make_text_index_document(cls, tref, heTref, version, lang, version_priority, content, categories):
+    def remove_footnotes(cls, content):
+        ftnotes = AbstractTextRecord.find_all_itags(content, only_footnotes=True)[1]
+        if len(ftnotes) == 0:
+            return content
+        else:
+            for sup_tag in ftnotes:
+                i_tag = sup_tag.next_sibling
+                content += f" {sup_tag.text} {i_tag.text}"
+            content = AbstractTextRecord.strip_itags(content)
+            return content
+
+    @classmethod
+    def make_text_index_document(cls, tref, heTref, version, lang, version_priority, content, categories, hebrew_version_title):
         """
         Create a document for indexing from the text specified by ref/version/lang
         """
@@ -590,28 +622,19 @@ class TextIndexer(object):
         if not content:
             return False
 
+        content = cls.remove_footnotes(content)
         content_wo_cant = strip_cantillation(content, strip_vowels=False).strip()
-        content_wo_cant = re.sub(r'<[^>]+>', '', content_wo_cant)
-        content_wo_cant = re.sub(r'\([^)]+\)', '', content_wo_cant)  # remove all parens
+        content_wo_cant = re.sub(r'<[^>]+>', ' ', content_wo_cant)     # replace HTML tags with space so that words dont get smushed together
+        content_wo_cant = re.sub(r'\([^)]+\)', ' ', content_wo_cant)   # remove all parens
+        while "  " in content_wo_cant:                                 # make sure there are not many spaces in a row
+            content_wo_cant = content_wo_cant.replace("  ", " ")
+
         if len(content_wo_cant) == 0:
             return False
 
         oref = Ref(tref)
-        toc_tree = library.get_toc_tree()
-        cats = oref.index.categories
 
-        indexed_categories = categories  # the default
-
-        # get the full path of every cat along the way.
-        # starting w/ the longest,
-        # check if they're root swapped.
-        paths = [cats[:i] for i in range(len(cats), 0, -1)]
-        for path in paths:
-            cnode = toc_tree.lookup(path)
-            if getattr(cnode, "searchRoot", None) is not None:
-                # Use the specified searchRoot, with the rest of the category path appended.
-                indexed_categories = [cnode.searchRoot] + cats[len(path) - 1:]
-                break
+        indexed_categories = get_search_categories(oref, categories)
 
         tp = cls.best_time_period
         if tp is not None:
@@ -637,6 +660,7 @@ class TextIndexer(object):
             #"hebmorph_semi_exact": content_wo_cant,
             "exact": content_wo_cant,
             "naive_lemmatizer": content_wo_cant,
+            'hebrew_version_title': hebrew_version_title,
         }
 
 

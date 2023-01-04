@@ -36,12 +36,12 @@ urlpatterns = [
     url(r'^collections/new$', reader_views.edit_collection_page),
     url(r'^collections/(?P<slug>[^.]+)/settings$', reader_views.edit_collection_page),
     url(r'^collections/(?P<slug>[^.]+)$', reader_views.collection_page),
+    url(r'^translations/(?P<slug>[^.]+)$', reader_views.translations_page),
     url(r'^community/?$', reader_views.community_page),
     url(r'^notifications/?$', reader_views.notifications),
     url(r'^updates/?$', reader_views.updates),
     url(r'^modtools/?$', reader_views.modtools),
     url(r'^modtools/upload_text$', sefaria_views.modtools_upload_workflowy),
-    url(r'^story_editor/?$', reader_views.story_editor),
     url(r'^torahtracker/?$', reader_views.user_stats),
 ]
 
@@ -107,7 +107,6 @@ urlpatterns += [
 
 # Texts Add / Edit / Translate
 urlpatterns += [
-    url(r'^edit/textinfo/(?P<title>.+)$', reader_views.edit_text_info),
     url(r'^add/textinfo/(?P<new_title>.+)$', reader_views.edit_text_info),
     url(r'^add/new/?$', reader_views.edit_text),
     url(r'^add/(?P<ref>.+)$', reader_views.edit_text),
@@ -136,6 +135,8 @@ urlpatterns += [
     url(r'^api/texts/version-status/tree/?(?P<lang>.*)?/?$', reader_views.version_status_tree_api),
     url(r'^api/texts/version-status/?$', reader_views.version_status_api),
     url(r'^api/texts/parashat_hashavua$', reader_views.parashat_hashavua_api),
+    url(r'^api/texts/translations/?$', reader_views.translations_api),
+    url(r'^api/texts/translations/(?P<lang>.+)', reader_views.translations_api),
     url(r'^api/texts/random?$', reader_views.random_text_api),
     url(r'^api/texts/random-by-topic/?$', reader_views.random_by_topic_api),
     url(r'^api/texts/modify-bulk/(?P<title>.+)$', reader_views.modify_bulk_text_api),
@@ -144,8 +145,8 @@ urlpatterns += [
     url(r'^api/index/?$', reader_views.table_of_contents_api),
     url(r'^api/opensearch-suggestions/?$', reader_views.opensearch_suggestions_api),
     url(r'^api/index/titles/?$', reader_views.text_titles_api),
-    url(r'^api/v2/raw/index/(?P<title>.+)$', reader_views.index_api, {'v2': True, 'raw': True}),
-    url(r'^api/v2/index/(?P<title>.+)$', reader_views.index_api, {'v2': True}),
+    url(r'^api/v2/raw/index/(?P<title>.+)$', reader_views.index_api, {'raw': True}),
+    url(r'^api/v2/index/(?P<title>.+)$', reader_views.index_api),
     url(r'^api/index/(?P<title>.+)$', reader_views.index_api),
     url(r'^api/links/bare/(?P<book>.+)/(?P<cat>.+)$', reader_views.bare_link_api),
     url(r'^api/links/(?P<link_id_or_ref>.*)$', reader_views.links_api),
@@ -170,8 +171,6 @@ urlpatterns += [
     url(r'^api/notifications/?$', reader_views.notifications_api),
     url(r'^api/notifications/read', reader_views.notifications_read_api),
     url(r'^api/updates/?(?P<gid>.+)?$', reader_views.updates_api),
-    url(r'^api/stories/?(?P<gid>.+)?$', reader_views.stories_api),
-    url(r'^api/story_reflector/?$', reader_views.story_reflector),
     url(r'^api/user_stats/(?P<uid>.+)/?$', reader_views.user_stats_api),
     url(r'^api/site_stats/?$', reader_views.site_stats_api),
     url(r'^api/messages/?$', reader_views.messages_api),
@@ -221,6 +220,7 @@ urlpatterns += [
 # Collections API
 urlpatterns += [
     url(r'^api/collections/user-collections/(?P<user_id>\d+)$', sheets_views.user_collections_api),
+    url(r'^api/collections/upload$', sefaria_views.collections_image_upload),
     url(r'^api/collections/for-sheet/(?P<sheet_id>\d+)$', sheets_views.collections_for_sheet_api),
     url(r'^api/collections(/(?P<slug>[^/]+))?$', sheets_views.collections_api),
     url(r'^api/collections/(?P<slug>[^/]+)/set-role/(?P<uid>\d+)/(?P<role>[^/]+)$', sheets_views.collections_role_api),
@@ -233,13 +233,19 @@ urlpatterns += [
 # Search API
 urlpatterns += [
     url(r'^api/dummy-search$', reader_views.dummy_search_api),
-    url(r'^api/search-wrapper$', reader_views.search_wrapper_api)
+    url(r'^api/search-wrapper$', reader_views.search_wrapper_api),
+    url(r'^api/search-path-filter/(?P<book_title>.+)$', reader_views.search_path_filter),
 ]
 
 # Following API
 urlpatterns += [
     url(r'^api/(?P<action>(follow|unfollow))/(?P<uid>\d+)$', reader_views.follow_api),
     url(r'^api/(?P<kind>(followers|followees))/(?P<uid>\d+)$', reader_views.follow_list_api),
+]
+
+# Blocking API
+urlpatterns += [
+    url(r'^api/(?P<action>(block|unblock))/(?P<uid>\d+)$', reader_views.block_api),
 ]
 
 # Topics API
@@ -249,6 +255,8 @@ urlpatterns += [
     url(r'^api/ref-topic-links/(?P<tref>.+)$', reader_views.topic_ref_api),
     url(r'^api/v2/topics/(?P<topic>.+)$', reader_views.topics_api, {'v2': True}),
     url(r'^api/topics/(?P<topic>.+)$', reader_views.topics_api),
+    url(r'^api/topic/new$', reader_views.add_new_topic_api),
+    url(r'^api/topic/delete/(?P<topic>.+)$', reader_views.delete_topic),
     url(r'^api/bulktopics$', reader_views.bulk_topic_api),
     url(r'^api/recommend/topics(/(?P<ref_list>.+))?', reader_views.recommend_topics_api),
 ]
@@ -299,8 +307,17 @@ urlpatterns += [
 urlpatterns += [
     url(r'^random/link$',        reader_views.random_redirect),
     url(r'^random/?$',           reader_views.random_text_page),
-    url(r'^daf-roulette/?$',     reader_views.daf_roulette_redirect),
-    url(r'^chavruta/?$',         reader_views.chevruta_redirect),
+]
+
+# Preview Images
+urlpatterns += [
+    url(r'^api/img-gen/(?P<tref>.+)$', reader_views.social_image_api),
+]
+
+# Chavruta URLs
+urlpatterns += [
+    url(r'^beit-midrash/(?P<slug>[^.]+)$', reader_views.beit_midrash),
+    url(r'^api/chat-messages/?$', reader_views.chat_message_api)
 ]
 
 # Registration
@@ -316,6 +333,7 @@ urlpatterns += [
     url(r'^api/register/$', sefaria_views.register_api),
     url(r'^api/login/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/login/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'^api/account/delete$', reader_views.delete_user_account_api),
 ]
 
 # Compare Page
@@ -341,7 +359,10 @@ urlpatterns += [
 # Linker js, text upload & download
 urlpatterns += [
     url(r'^linker\.?v?([0-9]+)?\.js$', sefaria_views.linker_js),
+    url(r'^api/find-refs/report/?$', sefaria_views.find_refs_report_api),
+    url(r'^api/find-refs/?$', sefaria_views.find_refs_api),
     url(r'^api/regexs/(?P<titles>.+)$', sefaria_views.title_regex_api),
+    url(r'^api/websites/(?P<domain>.+)$', sefaria_views.websites_api),
     url(r'^api/linker-data/(?P<titles>.+)$', sefaria_views.linker_data_api),
     url(r'^api/bulktext/(?P<refs>.+)$', sefaria_views.bulktext_api),
     url(r'^download/version/(?P<title>.+) - (?P<lang>[he][en]) - (?P<versionTitle>.+)\.(?P<format>plain\.txt)', sefaria_views.text_download_api),
@@ -352,19 +373,8 @@ urlpatterns += [
 
 ]
 
-# chavruta.js -
-urlpatterns += [
-    url(r'^chavruta\.js$', sefaria_views.chavruta_js)
-]
-
-
 urlpatterns += [
     url(r'^api/passages/(?P<refs>.+)$', sefaria_views.passages_api),
-]
-
-# File Uploads
-urlpatterns += [
-    url(r'^api/file/upload$', sefaria_views.file_upload), #SEC-AUDIT: do we limit how many files users can upload?
 ]
 
 # Send Feedback
@@ -403,10 +413,15 @@ urlpatterns += [
     url(r'^admin/categorize-sheets', sefaria_views.categorize_sheets),
     url(r'^admin/sheet-stats', sefaria_views.sheet_stats),
     url(r'^admin/untagged-sheets', sefaria_views.untagged_sheets),
-    url(r'^admin/spam', sefaria_views.spam_dashboard),
+    url(r'^admin/spam$', sefaria_views.spam_dashboard),
+    url(r'^admin/spam/sheets', sefaria_views.sheet_spam_dashboard),
+    url(r'^admin/spam/profiles', sefaria_views.profile_spam_dashboard),
     url(r'^admin/versions-csv', sefaria_views.versions_csv),
     url(r'^admin/index-sheets-by-timestamp', sefaria_views.index_sheets_by_timestamp),
     url(r'^admin/community-preview', reader_views.community_preview),
+    url(r'^admin/descriptions/authors/update', sefaria_views.update_authors_from_sheet),
+    url(r'^admin/descriptions/categories/update', sefaria_views.update_categories_from_sheet),
+    url(r'^admin/descriptions/texts/update', sefaria_views.update_texts_from_sheet),
     url(r'^admin/?', include(admin.site.urls)),
 ]
 
@@ -445,6 +460,9 @@ if DOWN_FOR_MAINTENANCE:
     urlpatterns = [
         url(r'^admin/reset/cache', sefaria_views.reset_cache),
         url(r'^admin/?', include(admin.site.urls)),
+        url(r'^healthz/?$', reader_views.application_health_api),  # this oddly is returning 'alive' when it's not.  is k8s jumping in the way?
+        url(r'^health-check/?$', reader_views.application_health_api),
+        url(r'^healthz-rollout/?$', reader_views.rollout_health_api),
     ]
     # Everything else gets maintenance message
     urlpatterns += [

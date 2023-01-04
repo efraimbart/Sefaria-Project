@@ -60,17 +60,19 @@ const Strings = {
     "Explore Jewish Texts by Topic": "עיון בארון הספרים היהודי לפי נושא",
     "Explore by Topic": "לימוד לפי נושאים",
     "About Topics": "אודות \"נושאים\"",
-    "Topic pages bring you straight to selections of texts and user created source sheets about thousands of subjects. Sources that appear are drawn from existing indices of Jewish texts (like Aspaklaria) and from the sources our users include on their public source sheets.": "בדפי הנושא מלוקטים מקורות נבחרים ודפי מקורות של משתמשים על נושא מסוים. המקורות המופיעים בדפי הנושא נאספים ממאגרים קיימים של ספרות יהודית (דוגמת 'אספקלריא') ומתוך דפי מקורות פומביים של משתמשי ספריא.",
     "Trending Topics": "נושאים נפוצים",
     "More": "עוד",
     "Less": "פחות",
     "All Topics A-Z": "כל הנושאים א-ת",
     "Browse or search our complete list of topics.": "חיפוש ברשימת הנושאים.",
+    "Create a Topic": "ליצירת נושא חדש",
+    "Edit Topic": "עריכת נושא",
 
     // All Topics
     "All Topics": "כל הנושאים",
     "Reset": "לאתחל",
     "Search Topics": "חפש נושאים",
+
 
     // Community Page
     "From the Community: Today on Sefaria": "מן הקהילה: היום בספריא",
@@ -88,9 +90,21 @@ const Strings = {
     "Results": "תוצאות",
     "Options": "אפשרויות",
     "Exact Matches Only": "התאמה מדויקת למילות החיפוש",
+    "Search Texts": "חפש מקורות",
+    "Search in this text": "חפש בטקסט",
 
     // Sheets
+    "Sheet": "דף מקורות",
+    "About this Sheet": "אודות דף המקורות",
+    "Tags": "תוויות",
+    "Search for a text...": "חפש מקור בספריא",
+    "Paste a link to an image, video, or audio": "הוסף קישור לתמונה, סרטון, או אודיו",
+    "Add media": "הוסף מדיה",
+    "Add an image": "הוסף תמונה",
+    "Add a source": "הוסף מקור",
+    "Create a New Sheet": "יצירת דף מקורות",
     "Source Sheets": "דפי מקורות",
+    "Sheets": "דפי מקורות",
     "Start a New Source Sheet": "התחלת דף מקורות חדש",
     "Untitled Source Sheet" : "דף מקורות ללא שם",
     "Untitled": "ללא שם",
@@ -99,6 +113,7 @@ const Strings = {
     "Copy" : "העתקה",
     "Edit": "עריכה",
     "View in Editor": "לתצוגת עריכה",
+     "Enter link URL": "הכנס קישור",
     "Copied" : "הועתק",
     "Copying..." : "מעתיק...",
     "Delete": "מחיקה",
@@ -148,6 +163,7 @@ const Strings = {
     "No connections known for this source.": "למקור הזה אין קשרים ידועים",
     "Edit Source title" : "עריכת כותרת",
     "Add Source Below" : "הוספת מקור מתחת",
+    "Add Source": "הוספת מקור",
     "Add Comment": "הוספת תגובה",
     "Add All Connections": "הוספת כל המקורות הקשורים",
     "Reset Source Text": "איפוס טקסט מקור",
@@ -160,6 +176,8 @@ const Strings = {
     "Create New" : "יצירת חדש",
     "Close" : "סגירה",
     "Reset": "איפוס",
+    "Views": "צפיות",
+    "Saves": "שמירות",
 
     //publish flow:
     "Not Published" : "לא פורסם",
@@ -170,14 +188,16 @@ const Strings = {
     "on Sefaria and visible to others through search and topics.": ".בספריא ומשתמשים אחרים יכולים למצוא אותו בחיפוש ובדפי הנושא",
     "List your sheet on Sefaria for others to discover.": ".רישום דף המקורות שלך בספריא באופן שמשתמשים אחרים יוכלו למצוא אותו",
     "Summary": "תקציר דף המקורות",
-    "Write a short description of your sheet..." : "תיאור קצר של דף המקורות שלך...",
-    "Add a topic...": "הוספת נושא",
+    "Write a short description of your sheet..." : "תיאור קצר של דף המקורות...",
+    "Add a topic...": "הוספת נושא...",
     "Publish": "פרסום דף המקורות",
-    "Unpublish": "ביטול פרסום",
+    "Unpublish": "ביטול",
     "Please add a description and topics to publish your sheet.": "יש להוסיף תיאור ונושאים כדי לפרסם את הדף",
     "Please add topics to publish your sheet.": "יש להוסיף נושאים כדי לפרסם את הדף",
     "Please add a description to publish your sheet.": "יש להוסיף תיאור כדי לפרסם את הדף",
     "The summary description is limited to 280 characters.": "תקציר דף המקורות מוגבל ל280 תווים.",
+    "People with this link can": "משתמשים עם קישור זה יכולים",
+    "Publish your sheet on Sefaria for others to discover.": "פרסמו את דף המקורות בספריא כדי שאחרים יוכלו ללמוד ממנו.",
 
     // Reader Panel
     "Search" : "חיפוש",
@@ -195,6 +215,7 @@ const Strings = {
     "Select Translation": "בחירת תרגום",
     "Merged from": "נוצר ממיזוג",
     "Source" : "מקור",
+    "Sources": "מקורות",
     "Digitization" : "דיגיטציה",
     "License" : "רשיון",
     "Revision History" : "היסטורית עריכה",
@@ -217,9 +238,13 @@ const Strings = {
     "Public Domain": "בנחלת הכלל",
     "Copyright: JPS, 1985": "זכויות שמורות ל-JPS, 1985",
     "Location: ": "מיקום: ",
+    "Translations": "תרגומים",
+    "Uncategorized": "לא מסווג",
 
     // Collections
     "Collections": "אסופות",
+    "My Collections": "אסופות שלי",
+    "Public Collections": "אסופות ציבוריות",
     "About Collections": "אודות \"אסופות\"",
     "Collection": "אסופה",
     "Collections of sheets are created by Sefaria users and can be privately, shared with friends, or made public on Sefaria.": "אסופות הן מקבצים של דפי מקורות שנוצרו על ידי משתמשי האתר. הן ניתנות לשימוש פרטי, לצורך שיתוף עם אחרים או לשימוש ציבורי באתר ספריא.",
@@ -317,8 +342,9 @@ const Strings = {
     "Italian": "איטלקית",
     "Polish": "פולנית",
     "Russian": "רוסית",
-    "Esparanto": "אספרנטו",
-    "Persian": "פרסי",
+    "Esperanto": "אספרנטו",
+    "Persian": "פרסית",
+    "Ladino" : "לאדינו",
 
     "On": "הצג",
     "Off": "הסתר",
@@ -387,10 +413,17 @@ const Strings = {
     "My Notes": "הרשומות שלי",
     "Updates": "עדכונים",
     "Preferred Translation": "תרגום מועדף",
+    "Text Title": "כותר לועזי",
+    "Hebrew Title": "כותר עברי",
+    "Text Structure": "מבנה טקסט",
+    "Category": "קטגוריה",
+    "Alternate Hebrew Titles": "חלופות כותר עבריות",
+    "Alternate English Titles": "חלופות כותר לועזיות",
+    "Optional": "אופציונלי",
 
     //user stats
     "Torah Tracker" : "לימוד במספרים",
-    "Year to Date": "בשנה הנוכחית",
+    "Previous Year": "לשנה האחרונה",
     "All Time": "כל הזמן",
     "Texts Read" : "ספרים שנקראו",
     "Sheets Read" : "דפי מקורות שנקראו",
@@ -398,10 +431,29 @@ const Strings = {
     "Average Sefaria User" : "משתמש ממוצע בספריא",
     "Etc": "שאר",
 
-    // Chavruta
+    // Chavruta and Beit Midrash
+    "Beit Midrash": "בית המדרש",
+    "Hide": "הסתרה",
+    "Send a Message": "שליחת הודעה",
+    "is calling you...": "מתקשר אלייך",
+    "Calling": "מתקשר",
+    "Accept": "קבלת שיחה",
+    "Decline": "דחיית שיחה",
+    "is learning":"לומד",
+    "is learning the Sheet": "מעיין בדף המקורות",
+    "is viewing the topic": "מעיין בדף הנושא",
+    "is currently viewing": "מעיין בדף",
+    "End Call": "ניתוק",
     "Learn with a Chavruta": "לימוד בחברותא",
-    "Share this link with your chavruta to start a video call with this text": "כדי להתחיל שיחת וידאו, שתפו עם החברותא שלכם את הקישור הבא:",
+    "Share this link to invite people into your private beit midrash - where you can chat, video call, and follow each other's study paths.": "שתפו את הקישור הזה כדי להזמין את חבריכם לבית המדרש:",
+    "Open Your Beit Midrash":"החלו לימוד בחבורה",
+    "Chat":"לשוחח",
+    "Call": "להתקשר",
     "Start Call": "התחלת שיחה",
+    "No users online.": "אין כרגע לומדים מחוברים",
+    "View Profile": "צפה בפרופיל",
+    "Mute & Report": "השתק ודווח",
+    "Mute": "השתק",
 
     // Subscribe & Register
     "Please enter a valid email address.": 'כתובת הדוא"ל שהוזנה אינה תקינה.',
@@ -427,7 +479,7 @@ const Strings = {
     "Did you encounter any issues while using the new editor? For example:": "האם נתקלת בבעיות בעת השימוש בעורך החדש? למשל...",
     "Technical problems": "בעיות טכניות",
     "Difficulties using the editor": "קושי להשתמש בעורך",
-    "Missing features ": "תכונות חסרות",
+    "Missing features": "תכונות חסרות",
     "Tell us about it...": "ספר/י לנו על כך...",
     "Submit Feedback": "לשליחת המשוב",
     "Thank you!": "תודה רבה!",
@@ -445,19 +497,19 @@ const Strings = {
     "Continue Reading": "המשך קריאה",
     "Start Reading": "התחלת קריאה",
     "Composed": "זמן חיבור",
-
-    //Sheet Meta
-    "About this Sheet": "אודות דף המקורות",
-    "Tags": "תוויות",
+    "Author": "מחבר",
+    "Authors": "מחברים",
 
     //Topics
     "Wikipedia": "ויקיפדיה",
     "Jewish Encyclopedia": "האנציקלופדיה היהודית",
+    "National Library of Israel": "הספרייה הלאומית",
     "Works on Sefaria": "חיבורים וכתבים בספריא",
 
     //Module Names
     "Download Text": "הורדת טקסט",
     "About this Text" : "אודות ספר זה",
+    "About This Text" : "אודות ספר זה",
     "Related Topics": "נושאים קשורים",
 
     // FilterableList
@@ -468,6 +520,8 @@ const Strings = {
     "About Sefaria": "אודות ספריא",
     "Saved & History": "היסטורית קריאה ושמורים",
 
+    //Misc
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam arcu felis, molestie sed mauris a, hendrerit vestibulum augue." : "בראיט ולחת צורק מונחף, בגורמי מג׳מש. תרבנך וסתעד לכנו סתשם השמה – לתכי מורגם בורק? לתיג ישבעס",
   },
 
   _i18nInterfaceStringsWithContext: {
@@ -492,6 +546,8 @@ const Strings = {
       "Related Texts": "מקורות לעיון",
       "Resources": "עזרים",
       "Tools": "כלים",
+      "Share Link": "שיתוף קישור",
+      "More Options": "אפשרויות נוספות",
     },
     "FollowButton": {
       "Follow": "עקבו",
@@ -503,7 +559,8 @@ const Strings = {
       "Select Format": "בחירת פורמט הורדה",
       "Text (with Tags)": "טקסט (עם תיוגים)",
       "Text (without Tags)": "טקסט (ללא תיוגים)",
-      "Select Version": "בחירת מהדורה/תרגום"
+      "Select Version": "בחירת מהדורה/תרגום",
+      "Merged Version": "גרסה משולבת"
     },
     "FilterableList": {
       "Alphabetical": "אלפביתי",
@@ -525,11 +582,17 @@ const Strings = {
     "SearchFilters": {
       "Texts": "מקורות",
       "Topics": "נושאים",
-      "Collections": "Collections",
+      "Collections": "באסופות",
+      "See More": "עוד",
     },
     "CalendarListing": {
       "Tanakh": "",
       "Talmud": ""
+    },
+    "Sheet Share": {
+      "View": "לצפות",
+      "Add": "להוסיף",
+      "Edit": "לערוך",
     }
   },
 };

@@ -11,18 +11,19 @@ class CategoryFilter extends Component {
   // If `showBooks` list connections broken down by book as well.
   handleClick(e) {
     e.preventDefault();
-    if (this.props.showBooks) {
+    if (this.props.showBooks) { // 2nd level
       this.props.setFilter(this.props.category, this.props.updateRecent);
       if (Sefaria.site) { Sefaria.track.event("Reader", "Category Filter Click", this.props.category); }
-    } else {
+    } else { // top level
       this.props.setConnectionsCategory(this.props.category);
       if (Sefaria.site) { Sefaria.track.event("Reader", "Connections Category Click", this.props.category); }
     }
   }
   render() {
-    const filterSuffix = this.props.category  == "Quoting Commentary" ? "Quoting" : null;
+    const filterSuffix = this.props.category  === "Quoting Commentary" ? "Quoting" : null;
+    const textMissingDescription = null; //"missing description"
     const textFilters = this.props.showBooks ? this.props.books.map(function(book, i) {
-     return (<TextFilter
+      return (<TextFilter
                 srefs={this.props.srefs}
                 key={i}
                 book={book.book}
@@ -34,6 +35,8 @@ class CategoryFilter extends Component {
                 updateRecent={true}
                 filterSuffix={filterSuffix}
                 setFilter={this.props.setFilter}
+                description={book.enShortDesc ? book.enShortDesc: textMissingDescription}
+                heDescription={book.heShortDesc ? book.heShortDesc: textMissingDescription}
                 on={Sefaria.util.inArray(book.book, this.props.filter) !== -1} />);
     }.bind(this)) : null;
 
@@ -41,22 +44,29 @@ class CategoryFilter extends Component {
     const style       = {"--category-color":color}
     let innerClasses = classNames({categoryFilter: 1, withBooks: this.props.showBooks, on: this.props.on});
     let handleClick  = this.handleClick;
-    const url = (this.props.srefs && this.props.srefs.length > 0)?"/" + Sefaria.normRef(this.props.srefs[0]) + "?with=" + this.props.category:"";
+    const categoryForUrl = !this.props.showBooks ? this.props.category + " ConnectionsList" : this.props.category;
+    const url = (this.props.srefs && this.props.srefs.length > 0)?"/" + Sefaria.normRef(this.props.srefs[0]) + "?with=" + categoryForUrl :"";
+    const classesDesc = classNames({ sidebarDescription: 1, lowlight: this.props.count === 0, title:1});
     let outerClasses = classNames({categoryFilterGroup: 1, withBooks: this.props.showBooks});
+    const catDesc = Sefaria.getDescriptionDict(this.props.category, []);
+    const catEnDesc = catDesc[0];
+    const catHeDesc = catDesc[1];
     return (
       <div className={outerClasses} style={style}>
         <a href={url} onClick={handleClick}>
           <div className={innerClasses} data-name={this.props.category}>
             <span className="filterInner">
               <span className="filterText">
-                <ContentText text={{en: this.props.category, he: this.props.heCategory }} />
+                <ContentText text={{en:this.props.showBooks ? `All ${this.props.category}` : this.props.category, he:this.props.showBooks ? `כל הקישורים ל${this.props.heCategory}` : this.props.heCategory}} />
                 <span className="connectionsCount"> ({this.props.count})</span>
               </span>
               <span className="en">
                 {this.props.hasEnglish && Sefaria._siteSettings.TORAH_SPECIFIC ? <EnglishAvailableTag /> : null}
               </span>
             </span>
-          </div>
+          <div className={classesDesc}>{catEnDesc || catHeDesc ?
+                              <ContentText text={{en: catEnDesc, he: catHeDesc}} />
+                      : null }</div>          </div>
         </a>
         {textFilters}
       </div>
@@ -83,7 +93,8 @@ class TextFilter extends Component {
   // A clickable representation of connections by Text or Commentator
   handleClick(e) {
     e.preventDefault();
-    let filter = this.props.filterSuffix ? this.props.book + "|" + this.props.filterSuffix : this.props.book;
+    const name = "enDisplayText" in this.props ? this.props["enDisplayText"] : this.props.book;
+    let filter = this.props.filterSuffix ? name + "|" + this.props.filterSuffix : name;
     this.props.setFilter(filter, this.props.updateRecent);
     if (Sefaria.site) {
       if (this.props.inRecentFilters) { Sefaria.track.event("Reader", "Text Filter in Recent Click", filter); }
@@ -92,25 +103,34 @@ class TextFilter extends Component {
   }
   render() {
     const classes = classNames({textFilter: 1, on: this.props.on, lowlight: this.props.count == 0});
-    const color = Sefaria.palette.categoryColor(this.props.category);
+    const classesDesc = classNames({ sidebarDescription: 1, lowlight: this.props.count == 0});
+    const color = this.props.filterSuffix === "Essay" ? "var(--essay-links-green)" : Sefaria.palette.categoryColor(this.props.category);
     const style = {"--category-color": color};
-    const name = this.props.book == this.props.category ? this.props.book.toUpperCase() : this.props.book;
+    const enBook = this.props.book == this.props.category ? this.props.book.toUpperCase() : this.props.book;
     const showCount = !this.props.hideCounts && !!this.props.count;
-    const url = (this.props.srefs && this.props.srefs.length > 0)?"/" + Sefaria.normRef(this.props.srefs[0]) + "?with=" + name:"";
+    const url = (this.props.srefs && this.props.srefs.length > 0)?"/" + Sefaria.normRef(this.props.srefs[0]) + "?with=" + enBook:"";
     const upperClass = classNames({uppercase: this.props.book === this.props.category});
+    const name = "enDisplayText" in this.props ? this.props["enDisplayText"] : enBook;
+    const heName = "heDisplayText" in this.props ? this.props["heDisplayText"] : this.props.heBook;
+    const enDesc = this.props.description
+    const heDesc = this.props.heDescription
+    const showDescription = true; //showCount;//
     return (
       <a href={url} onClick={this.handleClick}>
-        <div data-name={name} className={classes} style={style} >
+        <div data-name={enBook} className={classes} style={style} >
             <div className={upperClass}>
                 <span className="filterInner">
                   <span className="filterText">
-                    <ContentText text={{en: name, he: this.props.heBook }} />
+                    <ContentText text={{en: name, he: heName }} />
                     {showCount ? <span className="connectionsCount">&nbsp;({this.props.count})</span> : null}
                   </span>
                   <span className="en">
                     {this.props.hasEnglish && Sefaria._siteSettings.TORAH_SPECIFIC ? <EnglishAvailableTag /> : null}
                   </span>
                 </span>
+              {showDescription ?<div className={classesDesc}>{enDesc || heDesc ?
+                              <ContentText text={{en: enDesc, he: heDesc}} />
+                      : null }</div> : null}
             </div>
         </div>
       </a>
@@ -126,6 +146,8 @@ TextFilter.propTypes = {
   updateRecent:    PropTypes.bool,
   inRecentFilters: PropTypes.bool,
   filterSuffix:    PropTypes.string,  // Optionally add a string to the filter parameter set (but not displayed)
+  enDisplayedText: PropTypes.string,  // displayedText fields used when link is 'essay' and we don't want to show the book title
+  heDisplayedText: PropTypes.string,
 };
 
 
@@ -206,14 +228,15 @@ class RecentFilterSet extends Component {
   }
 }
 RecentFilterSet.propTypes = {
-  srefs:         PropTypes.array.isRequired,
-  filter:        PropTypes.array.isRequired,
-  recentFilters: PropTypes.array.isRequired,
-  inHeader:      PropTypes.bool,
-  setFilter:     PropTypes.func.isRequired,
+  srefs:              PropTypes.array.isRequired,
+  filter:             PropTypes.array.isRequired,
+  recentFilters:      PropTypes.array.isRequired,
+  inHeader:           PropTypes.bool,
+  setFilter:          PropTypes.func.isRequired,
 };
 
 export {
   CategoryFilter,
   RecentFilterSet,
+  TextFilter
 };
