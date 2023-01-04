@@ -4,6 +4,7 @@ import PropTypes  from 'prop-types';
 import Sefaria  from './sefaria/sefaria';
 import {DonateLink, EnglishText, HebrewText, NewsletterSignUpForm} from './Misc'
 import {InterfaceText, ProfileListing, Dropdown} from './Misc';
+import { Promotions } from './Promotions'
 
 const NavSidebar = ({modules}) => {
   return <div className="navSidebar sans-serif">
@@ -21,6 +22,7 @@ const Modules = ({type, props}) => {
   // Choose the appropriate module component to render by `type`
   const moduleTypes = {
     "AboutSefaria":           AboutSefaria,
+    "Promo":                  Promo,
     "Resources":              Resources,
     "TheJewishLibrary":       TheJewishLibrary,
     "AboutTextCategory":      AboutTextCategory,
@@ -28,6 +30,7 @@ const Modules = ({type, props}) => {
     "SupportSefaria":         SupportSefaria,
     "SponsorADay":            SponsorADay,
     "LearningSchedules":      LearningSchedules,
+    "Translations":           Translations,
     "WeeklyTorahPortion":     WeeklyTorahPortion,
     "DafYomi":                DafYomi,
     "AboutTopics":            AboutTopics,
@@ -40,6 +43,7 @@ const Modules = ({type, props}) => {
     "GetTheApp":              GetTheApp,
     "StayConnected":          StayConnected,
     "AboutLearningSchedules": AboutLearningSchedules,
+    "AboutTranslatedText":    AboutTranslatedText,
     "AboutCollections":       AboutCollections,
     "ExploreCollections":     ExploreCollections,
     "DownloadVersions":       DownloadVersions,
@@ -50,7 +54,7 @@ const Modules = ({type, props}) => {
   if (!type) { return null; }
   const ModuleType = moduleTypes[type];
   return <ModuleType {...props} />
-}
+};
 
 
 const Module = ({children, blue, wide}) => {
@@ -77,20 +81,25 @@ const TitledText = ({enTitle, heTitle, enText, heText}) => {
   </Module>
 };
 
+const Promo = () =>
+    <Module>
+        <Promotions adType="sidebar"/>
+    </Module>
+;
 
 const AboutSefaria = ({hideTitle}) => (
   <Module>
     {!hideTitle ?
     <ModuleTitle h1={true}>A Living Library of Torah</ModuleTitle> : null }
     <InterfaceText>
-        <EnglishText>
-            Sefaria is home to 3,000 years of Jewish texts. We are a non-profit organization offering free access to texts, translations,
-            and commentaries so that everyone can participate in the ongoing process of studying, interpreting, and creating Torah.
+      <EnglishText>
+          Sefaria is home to 3,000 years of Jewish texts. We are a non-profit organization offering free access to texts, translations,
+          and commentaries so that everyone can participate in the ongoing process of studying, interpreting, and creating Torah.
         </EnglishText>
         <HebrewText>
-            ספריא היא ביתם של 3,000 שנות ספרות יהודית.
-            אנו ארגון ללא מטרות רווח המציע גישה חופשית למקורות יהודיים, לתרגומים ולפרשנויות,
-            ומטרתנו לאפשר לכל אחד ואחת להשתתף בתהליך המתמשך של לימוד וחידוש בתורה.
+          ספריא היא ביתם של 3,000 שנות ספרות יהודית.
+          אנו ארגון ללא מטרות רווח המציע גישה חופשית למקורות יהודיים, לתרגומים ולפרשנויות,
+          ומטרתנו לאפשר לכל אחד ואחת להשתתף בתהליך המתמשך של לימוד וחידוש בתורה.
         </HebrewText>
     </InterfaceText>
     <a href="/about" className="inTextLink">
@@ -101,6 +110,44 @@ const AboutSefaria = ({hideTitle}) => (
     </a>
   </Module>
 );
+
+
+const AboutTranslatedText = ({translationsSlug}) => {
+
+  const translationLookup = {
+    "de": {title: "Eine lebendige Bibliothek der Tora", body: "Sefaria ist eine Bibliothek für jüdische Texte aus 3.000 Jahren. Wir sind eine gemeinnützige Organisation, die freien Zugang zu Texten, Übersetzungen und Kommentaren bietet, damit jede und jeder am fortlaufenden Prozess des Studierens, Interpretierens und der Entwicklung der Tora teilnehmen kann."},
+    "eo": {title: "Vivanta Biblioteko de Torao", body: "Sefaria estas hejmo de 3,000 jaroj da judaj tekstoj. Ni estas neprofitcela organizo ofertanta senpagan aliron al tekstoj, tradukoj kaj komentaĵoj por ke ĉiuj povu partopreni en la daŭra procezo de studado, interpretado kaj kreado de Torao."},
+    "es": {title: "Una biblioteca viva de la Torá", body: "Sefaria alberga 3.000 años de textos judíos. Somos una organización sin fines de lucro que ofrece acceso gratuito a textos, traducciones y comentarios para que todos puedan participar en el proceso continuo de estudio, interpretación y creación de la Torá."},
+    "fa": {title:"کتابخانه زنده تورات", body: "سفاریا خانه 3000 سال متون یهودی است. ما یک سازمان غیرانتفاعی هستیم که دسترسی رایگان به متون، ترجمه ها و تفسیرها را ارائه می دهیم تا همه بتوانند در روند مداوم مطالعه، تفسیر و ایجاد تورات شرکت کنند."},
+    "fi": {title: "Tooran elävä kirjasto", body: "Sefaria on koti 3000 vuoden juutalaisille teksteille. Olemme voittoa tavoittelematon organisaatio, joka tarjoaa ilmaisen pääsyn teksteihin, käännöksiin ja kommentteihin, jotta kaikki voivat osallistua jatkuvaan Tooran opiskelu-, tulkkaus- ja luomisprosessiin."},
+    "fr": {title: "Une bibliothèque vivante de la Torah", body: "Une bibliothèque de Torah vivante. Sefaria abrite 3 000 ans de textes juifs. Nous sommes une organisation à but non lucratif offrant un accès gratuit aux textes de la Torah, aux commentaires et aux traductions, afin que chacun puisse participer au processus infini de l'étude, de l'interprétation et de la création de la Torah."},
+    "it": {title: "Una biblioteca vivente della Torah", body: "Sefaria ospita 3.000 anni di testi ebraici. Siamo un'organizzazione senza scopo di lucro che offre libero accesso a testi, traduzioni e commenti in modo che tutti possano partecipare al processo in corso di studio, interpretazione e creazione della Torah."},
+    "pl": {title: "Żywa Biblioteka Tory", body: "Sefaria jest domem dla 3000 lat żydowskich tekstów. Jesteśmy organizacją non-profit oferującą bezpłatny dostęp do tekstów, tłumaczeń i komentarzy, dzięki czemu każdy może uczestniczyć w bieżącym procesie studiowania, tłumaczenia i tworzenia Tory."},
+    "pt": {title: "Uma Biblioteca Viva da Torá", body: "Sefaria é o lar de 3.000 anos de textos judaicos. Somos uma organização sem fins lucrativos que oferece acesso gratuito a textos, traduções e comentários para que todos possam participar do processo contínuo de estudo, interpretação e criação da Torá."},
+    "ru": {title: "Живая библиотека Торы", body: "Сефария является домом для еврейских текстов 3000-летней давности. Мы — некоммерческая организация, предлагающая бесплатный доступ к текстам, переводам и комментариям, чтобы каждый мог участвовать в продолжающемся процессе изучения, толкования и создания Торы."},
+    "yi": {title: "א לעבעדיקע ביבליאטעק פון תורה", body: "אין ספֿריאַ איז אַ היים פֿון 3,000 יאָר ייִדישע טעקסטן. מיר זענען אַ נאַן-נוץ אָרגאַניזאַציע וואָס אָפפערס פריי אַקסעס צו טעקסטן, איבערזעצונגען און קאָמענטאַרן אַזוי אַז אַלעמען קענען אָנטייל נעמען אין די אָנגאָינג פּראָצעס פון לערנען, ינטערפּריטיישאַן און שאפן תורה."}
+  }
+  return (
+  <Module>
+    <ModuleTitle h1={true}>{translationLookup[translationsSlug] ? 
+          translationLookup[translationsSlug]["title"] : "A Living Library of Torah"}</ModuleTitle>
+        { translationLookup[translationsSlug] ? 
+          translationLookup[translationsSlug]["body"] :
+          <InterfaceText>
+          <EnglishText>
+          Sefaria is home to 3,000 years of Jewish texts. We are a non-profit organization offering free access to texts, translations,
+          and commentaries so that everyone can participate in the ongoing process of studying, interpreting, and creating Torah.
+        </EnglishText>
+        <HebrewText>
+          ספריא היא ביתם של 3,000 שנות ספרות יהודית.
+          אנו ארגון ללא מטרות רווח המציע גישה חופשית למקורות יהודיים, לתרגומים ולפרשנויות,
+          ומטרתנו לאפשר לכל אחד ואחת להשתתף בתהליך המתמשך של לימוד וחידוש בתורה.
+        </HebrewText>
+        </InterfaceText>
+        }
+  </Module>
+);
+}
 
 
 const Resources = () => (
@@ -195,15 +242,15 @@ const AboutText = ({index, hideTitle}) => {
   return (
     <Module>
       {hideTitle ? null :
-          <ModuleTitle>About this Text</ModuleTitle>}
+          <ModuleTitle>About This Text</ModuleTitle>}
       { composed || authors.length ?
       <div className="aboutTextMetadata">
 
         {authors.length ?
         <div className="aboutTextAuthor">
           {authors.length == 1 ?
-          <InterfaceText>Author:</InterfaceText>
-          : <InterfaceText>Authors:</InterfaceText>}
+              <span><InterfaceText>Author</InterfaceText>:</span>
+          : <span><InterfaceText>Authors</InterfaceText>:</span>}
           <span className="aboutTextAuthorText">
             &nbsp;{authors}
           </span>
@@ -221,6 +268,17 @@ const AboutText = ({index, hideTitle}) => {
       {description ?
       <InterfaceText>{description}</InterfaceText> : null}
     </Module>
+  );
+};
+
+
+const TranslationLinks = () => {
+  return (
+    <div className="navSidebarLink serif language">
+      {<ul>{Object.keys(Sefaria.ISOMap).map(key => Sefaria.ISOMap[key]["showTranslations"] ? <li key={key}><a href={`/translations/${key}`}>
+          {Sefaria.ISOMap[key]["nativeName"]}
+          </a></li> : null)} </ul>}
+      </div>
   );
 };
 
@@ -266,6 +324,21 @@ const DafLink = () => {
       </a>
     </div>
   );
+}
+
+const Translations = () => {
+  return (<Module>
+    <ModuleTitle>Translations</ModuleTitle>
+    <InterfaceText>
+      <EnglishText>
+        Access key works from the library in several languages.
+      </EnglishText>
+      <HebrewText>
+        תרגומים
+      </HebrewText>
+    </InterfaceText>
+    <TranslationLinks />
+  </Module>)
 }
 
 
@@ -391,7 +464,15 @@ const AboutTopics = ({hideTitle}) => (
   <Module>
     {hideTitle ? null :
     <ModuleTitle>About Topics</ModuleTitle> }
-    <InterfaceText>Topics bring you straight to selections of texts and user created source sheets about thousands of subjects. Sources that appear are drawn from existing indices of Jewish texts (like Aspaklaria) and from the sources our users include on their public source sheets.</InterfaceText>
+    <InterfaceText>
+        <HebrewText>
+בדפי הנושא מלוקטים מקורות נבחרים ודפי מקורות של משתמשים על נושא מסוים. המקורות המופיעים בדפי הנושא נאספים ממאגרים קיימים של ספרות יהודית (דוגמת 'אספקלריא') ומתוך דפי מקורות פומביים של משתמשי ספריא.
+        </HebrewText>
+        <EnglishText>
+            Topics bring you straight to selections of texts and user created source sheets about thousands of subjects. Sources that appear are drawn from existing indices of Jewish texts (like Aspaklaria) and from the sources our users include on their public source sheets.
+        </EnglishText>
+
+    </InterfaceText>
   </Module>
 );
 
@@ -662,7 +743,12 @@ const DownloadVersions = ({sref}) => {
                 versions.map(v => ({
                     value: `${v.versionTitle}/${v.language}`,
                     label: `${Sefaria._v({he: v.versionTitleInHebrew ? v.versionTitleInHebrew : v.versionTitle, en: v.versionTitle})} (${Sefaria._(Sefaria.translateISOLanguageCode(v.actualLanguage))})`
-                }))
+                })).concat( // add merged versions for both primary langs "en" and "he" where applicable. (not yet possible for individual actual languages)
+                    versions.map(v => v.language).unique().map(lang => ({
+                        value: `merged/${lang}`,
+                        label: `${Sefaria._("Merged Version", "DownloadVersions")} (${Sefaria._(Sefaria.translateISOLanguageCode(lang))})`,
+                    }))
+                )
               }
               placeholder={Sefaria._( "Select Version", "DownloadVersions")}
               onChange={handleInputChange}

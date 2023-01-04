@@ -12,6 +12,8 @@ from random import randint
 from sefaria.system.exceptions import InputError, SheetNotFoundError
 from functools import reduce
 
+from sefaria.utils.user import delete_user_account
+
 if not hasattr(sys, '_doc_build'):
     from django.contrib.auth.models import User, Group, AnonymousUser
     from emailusernames.utils import get_user, user_exists
@@ -23,6 +25,7 @@ if not hasattr(sys, '_doc_build'):
 
 from . import abstract as abst
 from sefaria.model.following import FollowersSet, FolloweesSet, general_follow_recommendations
+from sefaria.model.blocking import BlockersSet, BlockeesSet
 from sefaria.model.text import Ref, TextChunk
 from sefaria.system.database import db
 from sefaria.utils.util import epoch_time
@@ -160,7 +163,8 @@ class UserHistory(abst.AbstractMongoRecord):
                         "en": TextChunk(ref, "en").as_sized_string(),
                         "he": TextChunk(ref, "he").as_sized_string()
                     }
-            except:
+            except Exception as e:
+                logger.warning("Failed to retrieve text for history Ref: {}".format(d['ref']))
                 return d
         return d
 
@@ -303,7 +307,10 @@ class UserWrapper(object):
 
 
 class UserProfile(object):
-    def __init__(self, user_obj=None, id=None, slug=None, email=None):
+    def __init__(self, user_obj=None, id=None, slug=None, email=None, user_registration=False):
+        """
+        :param user_registration: pass during user registration so as to not create an extra profile record as init side effect
+        """
         #TODO: Can we optimize the init to be able to load a profile without a call to user db?
         # say in a case where we already have an id and just want some fields from the profile object
         if slug:  # Load profile by slug, if passed
@@ -362,6 +369,8 @@ class UserProfile(object):
             "reading_history" : True,
             "translation_language_preference": None,
         }
+        self.version_preferences_by_corpus = {}
+
         # dict that stores the last time an attr has been modified
         self.attr_time_stamps = {
             "settings": 0
@@ -375,8 +384,14 @@ class UserProfile(object):
         self.followers = FollowersSet(self.id)
         self.followees = FolloweesSet(self.id)
 
+        # Blocks
+        self.blockees = BlockeesSet(self.id)
+        self.blockers = BlockersSet(self.id)
+
         # Google API token
         self.gauth_token = None
+        self.nationbuilder_id = None
+        self.gauth_email = None
 
         # new editor
         self.show_editor_toggle = False
@@ -387,9 +402,12 @@ class UserProfile(object):
 
         # Update with saved profile doc in MongoDB
         profile = db.profiles.find_one({"id": id})
-        if profile:
+        if profile: # overwrite if fake profile in db
+            # TODO: think about how we want to handle the postgres database not being synced
+            # with the mongo database. This is an existing issue; a 'new user' will be populated with 'old user'
+            # data from a nonexistent user (in postgres)
             self.update(profile, ignore_flags_on_init=True)
-        elif self.exists():
+        elif self.exists() and not user_registration:
             # If we encounter a user that has a Django user record but not a profile document
             # create a profile for them. This allows two enviornments to share a user database,
             # while maintaining separate profiles (e.g. Sefaria and S4D).
@@ -446,14 +464,16 @@ class UserProfile(object):
 
     def update(self, obj, ignore_flags_on_init=False):
         """
-        Update this object with the fields in dictionry 'obj'
+        Update this object with the fields in dictionary 'obj'
         """
         if not ignore_flags_on_init:
             self._set_flags_on_update(obj)
-        if "settings" in obj and "settings" in self.__dict__:
-            # merge settings separately since it itself is a dict. want to allow partial settings to be passed to update.
-            self.__dict__["settings"].update(obj["settings"])
-            obj["settings"] = self.__dict__["settings"]
+        for dict_key in ("settings", "version_preferences_by_corpus"):
+            # merge these keys separately since they are themselves dicts.
+            # want to allow partial updates to be passed to update.
+            from sefaria.utils.util import deep_update
+            if dict_key in obj and dict_key in self.__dict__:
+                obj[dict_key] = deep_update(self.__dict__[dict_key], obj[dict_key])
         self.__dict__.update(obj)
 
         return self
@@ -464,6 +484,13 @@ class UserProfile(object):
             if v:
                 if k not in self.__dict__ or self.__dict__[k] == '' or self.__dict__[k] == []:
                     self.__dict__[k] = v
+
+    def update_version_preference(self, corpus, vtitle, lang):
+        """
+        Convenience method to keep update logic in one place
+        """
+
+        self.update({"version_preferences_by_corpus": {corpus: {lang: vtitle}}})
 
     def save(self):
         """
@@ -624,6 +651,8 @@ class UserProfile(object):
         """
         from random import choices
         options = general_follow_recommendations(lang=lang, n=100)
+        if not len(options):
+            return []
         filtered_options = [u for u in options if not self.follows(u["uid"])]
 
         return choices(filtered_options, k=n)
@@ -648,6 +677,7 @@ class UserProfile(object):
             "youtube":               self.youtube,
             "pinned_sheets":         self.pinned_sheets,
             "settings":              self.settings,
+            "version_preferences_by_corpus": self.version_preferences_by_corpus,
             "attr_time_stamps":      self.attr_time_stamps,
             "interrupting_messages": getattr(self, "interrupting_messages", []),
             "is_sustainer":          self.is_sustainer,
@@ -656,6 +686,8 @@ class UserProfile(object):
             "profile_pic_url":       self.profile_pic_url,
             "profile_pic_url_small": self.profile_pic_url_small,
             "gauth_token":           self.gauth_token,
+            "nationbuilder_id":      self.nationbuilder_id,
+            "gauth_email":           self.gauth_email,
             "show_editor_toggle":    self.show_editor_toggle,
             "uses_new_editor":       self.uses_new_editor,
         }
@@ -690,7 +722,9 @@ class UserProfile(object):
             "linkedin":              self.linkedin,
             "youtube":               self.youtube,
             "pinned_sheets":         self.pinned_sheets,
-            
+            "show_editor_toggle":    self.show_editor_toggle,
+            "uses_new_editor":       self.uses_new_editor,
+            "is_sustainer":          self.is_sustainer,
         }
         dictionary.update(other_info)
         return dictionary

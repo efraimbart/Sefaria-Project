@@ -142,7 +142,7 @@ const TextCategoryContents = ({category, contents, categories, setCategories, op
           const onClick = e => {
             if (openTextTOC) {
               e.preventDefault();
-              openTextTOC(item.title);
+              openTextTOC(chItem.title);
             }
           };
           content.push(
@@ -364,8 +364,9 @@ const getRenderedTextTitleString = (title, heTitle, categories) => {
     //this will replace a category name at the beginning of the title string and any connector strings (0 or 1) that follow.
     const titleRe = new RegExp(`^(${replaceTitles['en'].join("|")})(${replaceOther['en'].join("|")})?`);
     const heTitleRe = new RegExp(`^(${replaceTitles['he'].join("|")})(${replaceOther['he'].join("|")})?`);
-    title   = title === categories.slice(-1)[0] ? title : title.replace(titleRe, "");
-    heTitle = heTitle === Sefaria.hebrewTerm(categories.slice(-1)[0]) ? heTitle : heTitle.replace(heTitleRe, "");
+    title   = categories.indexOf(title) > -1 ? title : title.replace(titleRe, "");
+    const heCategories = categories.map(c => Sefaria.hebrewTerm(c));
+    heTitle = heCategories.indexOf(heTitle) > -1 ? heTitle : heTitle.replace(heTitleRe, "");
 
     //couldnt get this to work in one regex (eliminating both prefix stuff above and the suffix stuff below),
     // any engineer seeing this feel free to try and streamline
@@ -392,8 +393,9 @@ const hebrewContentSort = (enCats) => {
     }
     heCats.sort(function(a, b) {
       if ("order" in a || "order" in b) {
-        const aOrder = "order" in a ? a.order : 9999;
-        const bOrder = "order" in b ? b.order : 9999;
+          //positive order first, then no order, negative order last
+        const aOrder = "order" in a ? -1/a.order : 0;
+        const bOrder = "order" in b ? -1/b.order : 0;
         return aOrder > bOrder ? 1 : -1;
 
       } else if (("category" in a) !== ("category" in b)) {
@@ -428,6 +430,7 @@ const getSidebarModules = (categories) => {
   const customModules = path in modules ? modules[path] : [];
 
   const defaultModules = [
+    {type: "Promo"},
     {type: "Visualizations", props: {categories}},
     {type: "SupportSefaria"},
   ]; 

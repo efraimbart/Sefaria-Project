@@ -28,6 +28,8 @@ class Test_Ref(object):
         assert ref.toSections == [7, 18]
         ref = Ref("Jeremiah 7:17\u201118")  # test with unicode dash
         assert ref.toSections == [7, 18]
+        ref = Ref("I Chronicles 1:2 - I Chronicles 1:3")  # test with unicode dash
+        assert ref.toSections == [1, 3]
 
     def test_short_bible_refs(self):
         assert Ref("Exodus") != Ref("Exodus 1")
@@ -148,7 +150,7 @@ class Test_Ref(object):
         assert Ref("Pesach Haggadah, Magid").all_context_refs() == [Ref("Pesach Haggadah, Magid")]
 
         # Don't choke on Virtual nodes
-        assert Ref("Jastrow, ג").all_context_refs() == [Ref("Jastrow, ג")]
+        assert Ref("Jastrow, ג").all_context_refs() == [Ref("Jastrow, ג"), Ref('Jastrow<d>')]
 
     # These won't work unless the sheet is present in the db
     @pytest.mark.deep
@@ -336,7 +338,6 @@ class Test_Ref(object):
         assert Ref("Shabbat 15a").split_spanning_ref() == [Ref('Shabbat 15a')]
         assert Ref("Shabbat 15a:8-15b:8").split_spanning_ref() == [Ref('Shabbat 15a:8-10'), Ref('Shabbat 15b:1-8')]
         assert Ref("Rashi on Exodus 5:3-6:7").split_spanning_ref() == [Ref('Rashi on Exodus 5:3'), Ref('Rashi on Exodus 5:4'), Ref('Rashi on Exodus 5:5'), Ref('Rashi on Exodus 5:6'), Ref('Rashi on Exodus 5:7'), Ref('Rashi on Exodus 5:8'), Ref('Rashi on Exodus 5:9'), Ref('Rashi on Exodus 5:10'), Ref('Rashi on Exodus 5:11'), Ref('Rashi on Exodus 5:12'), Ref('Rashi on Exodus 5:13'), Ref('Rashi on Exodus 5:14'), Ref('Rashi on Exodus 5:15'), Ref('Rashi on Exodus 5:16'), Ref('Rashi on Exodus 5:17'), Ref('Rashi on Exodus 5:18'), Ref('Rashi on Exodus 5:19'), Ref('Rashi on Exodus 5:20'), Ref('Rashi on Exodus 5:21'), Ref('Rashi on Exodus 5:22'), Ref('Rashi on Exodus 5:23'), Ref('Rashi on Exodus 6:1'), Ref('Rashi on Exodus 6:2'), Ref('Rashi on Exodus 6:3'), Ref('Rashi on Exodus 6:4'), Ref('Rashi on Exodus 6:5'), Ref('Rashi on Exodus 6:6'), Ref('Rashi on Exodus 6:7')]
-        assert Ref('Targum Neofiti 5-7').split_spanning_ref() == [Ref('Targum Neofiti 5'), Ref('Targum Neofiti 6'), Ref('Targum Neofiti 7')]
 
     def test_spanning_with_empty_first_ref(self):
         r = Ref("Rashi on Genesis 21:2:3-7:3")
@@ -393,6 +394,8 @@ class Test_Ref(object):
         assert Ref("Zohar 1:3b:12-1:4b:12").starting_refs_of_span(True) == [Ref("Zohar 1:3b:12"), Ref("Zohar 1:4a"), Ref("Zohar 1:4b")]
 
     def test_as_ranged_segment_ref(self):
+        assert Ref("Zohar").as_ranged_segment_ref() == Ref("Zohar 1:1a:1-4:211b:1")
+        assert Ref("Berakhot").as_ranged_segment_ref() == Ref("Berakhot 2a:1-64a:15")
         assert Ref('Genesis').as_ranged_segment_ref() == Ref('Genesis.1.1-50.26')
         assert Ref('Shabbat.3a.1').as_ranged_segment_ref() == Ref('Shabbat.3a.1')
         assert Ref('Rashi on Shabbat.3b').as_ranged_segment_ref() == Ref('Rashi on Shabbat.3b.1.1-3b.13.1')
@@ -421,6 +424,16 @@ class Test_Ref(object):
         assert Ref("Exodus").subref([5, 8]) == Ref("Exodus 5:8")
         assert Ref("Rashi on Exodus 5").subref([5,5]) == Ref("Rashi on Exodus 5:5:5")
         assert Ref("Rashi on Exodus").subref([5,5,5]) == Ref("Rashi on Exodus 5:5:5")
+
+    def test_negative_subref(self):
+        assert Ref("Exodus").subref(-1) == Ref("Exodus 40")
+        assert Ref("Exodus").subref(-3).subref(-4) == Ref("Exodus 38:28")
+        assert Ref("Rashi on Exodus").subref(-5) == Ref("Rashi on Exodus 36")
+        assert Ref("Rashi on Exodus 5").subref(-1) == Ref("Rashi on Exodus 5:23")
+        assert Ref("Rashi on Exodus 5:7").subref(-2) == Ref("Rashi on Exodus 5:7:3")
+
+        assert Ref("Exodus").subref([5, -1]) == Ref("Exodus 5:23")
+        assert Ref("Rashi on Exodus 5").subref([5, -1]) == Ref("Rashi on Exodus 5:5:1")
 
     def test_all_subrefs(self):
         assert Ref("Genesis").all_subrefs()[49] == Ref("Genesis 50")
@@ -463,14 +476,15 @@ class Test_Ref(object):
         """
         Ref("Genesis 50")
         Ref("Zevachim 120b")
-        Ref("Jerusalem Talmud Nazir 47b")
+        Ref("Jerusalem Talmud Nazir 9:6")
 
         with pytest.raises(InputError):
             Ref("Genesis 51")
         with pytest.raises(InputError):
             Ref("Zevachim 121a")
-        with pytest.raises(InputError):
-            Ref("Jerusalem Talmud Nazir 48a")
+        # TODO currently doesn't raise error because new Yerushalmi doesn't have lengths on Index record
+        # with pytest.raises(InputError):
+        #     Ref("Jerusalem Talmud Nazir 10:1")
 
     def test_tamid(self):
         Ref("Tamid 25b")  # First amud
@@ -627,6 +641,14 @@ class Test_normal_forms(object):
         oref = Ref("Zohar 1:25a-2:27b")
         assert oref.normal() == "Zohar 1:25-2:27"
         assert oref.he_normal() == "ספר הזהר א׳:כ״ה-ב׳:כ״ז"
+
+    def test_first_available_section_ref(self):
+        assert Ref('Genesis').first_available_section_ref() == Ref('Genesis 1')
+        assert Ref('Siddur Ashkenaz').first_available_section_ref() == Ref('Siddur Ashkenaz, Weekday, Shacharit, Preparatory Prayers, Modeh Ani')
+        assert Ref('Penei Moshe on Jerusalem Talmud Shabbat 2').first_available_section_ref() == Ref('Penei Moshe on Jerusalem Talmud Shabbat 2:1:1')
+        assert Ref('Animadversions by Elias Levita on Sefer HaShorashim').first_available_section_ref() == Ref('Animadversions by Elias Levita on Sefer HaShorashim, אבב')
+        assert Ref('Jastrow, שְׁמַע I 1').first_available_section_ref() == Ref('Jastrow, שְׁמַע I 1')
+
 
 
 

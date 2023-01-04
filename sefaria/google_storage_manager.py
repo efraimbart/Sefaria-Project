@@ -1,6 +1,8 @@
 from .settings import GOOGLE_APPLICATION_CREDENTIALS_FILEPATH
 from google.cloud import storage
 import re
+from io import BytesIO
+from sefaria.site.site_settings import SITE_SETTINGS
 
 class GoogleStorageManager(object):
 
@@ -13,14 +15,16 @@ class GoogleStorageManager(object):
     https://googleapis.dev/python/storage/latest/buckets.html
     """
 
-    PROFILES_BUCKET = 'sefaria-profile-pictures'
-    UGC_SHEET_BUCKET = 'sheet-user-uploaded-media'
+    COLLECTIONS_BUCKET = SITE_SETTINGS["COLLECTIONS_BUCKET"]
+    PROFILES_BUCKET = SITE_SETTINGS["PROFILES_BUCKET"]
+    UGC_SHEET_BUCKET = SITE_SETTINGS["UGC_BUCKET"]
 
     BASE_URL = "https://storage.googleapis.com"
 
     @classmethod
     def get_bucket(cls, bucket_name):
         if getattr(cls, 'client', None) is None:
+            # for local development, change below line to cls.client = storage.Client(project="production-deployment")
             cls.client = storage.Client.from_service_account_json(GOOGLE_APPLICATION_CREDENTIALS_FILEPATH)
         bucket = cls.client.get_bucket(bucket_name)
         return bucket
@@ -45,6 +49,14 @@ class GoogleStorageManager(object):
         return cls.get_url(to_filename, bucket_name)
 
     @classmethod
+    def duplicate_file(cls, from_file, to_filename, bucket_name):
+        bucket = cls.get_bucket(bucket_name)
+        source_blob = bucket.blob(from_file)
+        blob_copy = bucket.copy_blob(source_blob, bucket, to_filename)
+        return cls.get_url(to_filename, bucket_name)
+
+
+    @classmethod
     def delete_filename(cls, filename, bucket_name):
         bucket = cls.get_bucket(bucket_name)
         blob = bucket.blob(filename)
@@ -58,9 +70,24 @@ class GoogleStorageManager(object):
         return blob.exists()
 
     @classmethod
+    def get_filename(cls, filename, bucket_name):
+        """
+        Downloads `filename` and returns a file-like object with the data
+        @param filename: name of file in `bucket_name`
+        @param bucket_name: name of bucket
+        @return: file-like object with the data
+        """
+        bucket = cls.get_bucket(bucket_name)
+        blob = bucket.blob(filename)
+        in_memory_file = BytesIO()
+        blob.download_to_file(in_memory_file)
+        in_memory_file.seek(0)
+        return in_memory_file
+
+    @classmethod
     def get_url(cls, filename, bucket_name):
         return "{}/{}/{}".format(cls.BASE_URL, bucket_name, filename)
 
     @classmethod
-    def get_filename(cls, old_file_url):
+    def get_filename_from_url(cls, old_file_url):
         return re.findall(r"/([^/]+)$", old_file_url)[0] if old_file_url.startswith(cls.BASE_URL) else None

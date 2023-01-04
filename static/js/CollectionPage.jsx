@@ -31,27 +31,28 @@ class CollectionPage extends Component {
     const collectionData = Sefaria.getCollectionFromCache(props.slug);
 
     this.state = {
+      tab: props.tab,
       showFilterHeader: !!props.tag,
       sheetFilterTopic: props.tag || '',
-      tabIndex: !!props.tag ? 1 : 0,
       collectionData: collectionData,
     };
  
     this.scrollableRef = React.createRef();
-
-    /*
-    this.props.setCollectionTag(topic);
-    */
   }
   componentDidMount() {
     this.loadData();
+    if (!!this.props.tag & !this.props.tab) {
+      this.props.setTab("sheets");
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.slug !== prevProps.slug) {
       this.setState({collectionData: null});
       this.loadData();
     }
-
+    if (this.props.tab != prevProps.tab) {
+      this.setState({tab: this.props.tab});
+    }
     if (prevState.sheetFilterTopic !== this.state.sheetFilterTopic && $(".content").scrollTop() > 260) {
       $(".content").scrollTop(0);
     }
@@ -67,7 +68,8 @@ class CollectionPage extends Component {
     this.setState({collectionData: Sefaria._collections[this.props.slug]});
   }
   setFilter(filter) {
-    this.setState({tabIndex: 1, sheetFilterTopic: filter, showFilterHeader: true});
+    this.setState({sheetFilterTopic: filter, showFilterHeader: true});
+    this.props.setTab("sheets");
   }
   memberList() {
     var collection = this.state.collectionData;
@@ -89,7 +91,6 @@ class CollectionPage extends Component {
         alert(data.error);
       } else {
         Sefaria._collections[this.props.slug] = data.collection;
-        this.sortSheetData(data.collection);
         this.setState({collectionData: data.collection});
       }
       this.pinning = false;
@@ -100,9 +101,10 @@ class CollectionPage extends Component {
     this.pinning = true;
   }
   sortSheets(option, a, b) {
-    const [ai, bi] = [a, b].map(x => this.state.collectionData.pinnedSheets.indexOf(x.id));
+    // if x is not pinned, indexOf will return -1. Add 1 to make it zero and then convert to very high number so it will be sorted after pinned sheets
+    const [ai, bi] = [a, b].map(x => (this.state.collectionData.pinnedSheets.indexOf(x.id)+1) || 1e7);
     if (ai !== bi) {
-      return  ai < bi ? -1 : 1;
+      return  ai - bi;
     
     } else if (option == "Recent") {
       return Date.parse(b.modified) - Date.parse(a.modified);
@@ -115,12 +117,19 @@ class CollectionPage extends Component {
     }
   }
   filterSheets(filter, sheet) {
+    //generally speaking we want to filter also by partial match of a tag, but there are cases where we want to load only sheets that match a passed in tag. |
+    //one such case is someone clicked a tag in the pinned tags view for the collection. For example if someone wants פורים they shouldnt get סיפורים
+    const exact = this.state.sheetFilterTopic == filter; 
     const n = text => text.toLowerCase();
     filter = n(filter);
-    const filterText = [sheet.title.stripHtml(),
-                        sheet.topics.map(topic => topic.asTyped).join(" "),
-                        ].join(" ");
-    return n(filterText).indexOf(filter) > -1;
+    
+    //title and each topic in he and en
+    let filterableData  = sheet.topics.map(topic => [n(topic.en), n(topic.he), n(topic.asTyped)]).flat();
+    filterableData.push(n(sheet.title.stripHtml()));
+    
+    //this may be confusing- in the exact case, "includes" is an array func and returns if any of the above match filter exactly, 
+    // if not "includes" is a string func and is testing for a substring, meaning the filter is a partial match to any of the above. 
+    return exact ? filterableData.includes(filter) : filterableData.some(element => element.includes(filter));
   }
   renderSheet(sheet) {
     return (
@@ -224,16 +233,12 @@ class CollectionPage extends Component {
           id: 'filter',
           title: {en: "Filter", he: Sefaria._("Filter")},
           icon: `/static/icons/arrow-${this.state.showFilterHeader ? 'up' : 'down'}-bold.svg`,
-          justifyright: true
+          justifyright: true,
+          clickTabOverride: () => {
+            this.setState({showFilterHeader: !this.state.showFilterHeader});
+          }
         }
       );
-      const setTab = (tabIndex) => {
-        if (tabIndex === tabs.length - 1) {
-          this.setState({showFilterHeader: !this.state.showFilterHeader});
-        } else {
-          this.setState({tabIndex, showFilterHeader: false, sheetFilterTopic: ""});
-        }
-      };
       const renderTab = t => (
         <div className={classNames({tab: 1, noselect: 1, filter: t.justifyright, open: t.justifyright && this.state.showFilterHeader})}>
           <InterfaceText text={t.title} />
@@ -250,10 +255,10 @@ class CollectionPage extends Component {
 
           <TabView
             tabs={tabs}
+            currTabName={this.state.tab}
             renderTab={renderTab}
             containerClasses={"largeTabs"}
-            currTabIndex={this.state.tabIndex}
-            setTab={setTab} >
+            setTab={this.props.setTab} >
 
             {!hasContentsTab ? null :
             <CollectionContentsTab 
@@ -298,6 +303,8 @@ class CollectionPage extends Component {
   }
 }
 CollectionPage.propTypes = {
+  setTab:             PropTypes.func.isRequired,
+  tab:                PropTypes.string,
   name:               PropTypes.string,
   slug:               PropTypes.string,
   width:              PropTypes.number,
@@ -344,7 +351,7 @@ const CollectionAbout = ({collection, isAdmin, toggleLanguage}) => (
 
 
 const EditCollectionButton = ({slug}) => (
-  <a class="button small white" href={`/collections/${slug}/settings`}>
+  <a className="button small white" href={`/collections/${slug}/settings`}>
     <img className="buttonIcon" src="/static/icons/tools-write-note.svg" /><InterfaceText>Edit</InterfaceText>
   </a>
 );

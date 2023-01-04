@@ -118,7 +118,13 @@ class LexiconBox extends Component {
         // not sure why I also need to check for this.state.namedEntity but I've seen situations where loaded is true and namedEntity is null
         content = (<LoadingMessage message="Looking up words..." heMessage="מחפש מילים..."/>);
       } else {
-          const dataSourceText = `${Sefaria._('This topic is connected to ')}"${Sefaria._r(this.props.srefs[0])}" ${Sefaria._('based on')} ${Sefaria._('research of Dr. Michael Sperling')}.`;
+          // TODO. remove hard-coding
+          let dataSourceText = "";
+          if (this.props.srefs[0].indexOf("Jerusalem Talmud") !== -1) {
+            dataSourceText = `${Sefaria._('This topic is connected to ')}"${Sefaria._r(this.props.srefs[0])}" ${Sefaria._('by')} ${Sefaria._('Sefaria')}.`;
+          } else {
+            dataSourceText = `${Sefaria._('This topic is connected to ')}"${Sefaria._r(this.props.srefs[0])}" ${Sefaria._('based on')} ${Sefaria._('research of Dr. Michael Sperling')}.`;
+          }
           
           const neArray = this.state.namedEntity.possibilities || [this.state.namedEntity]; 
           const namedEntityContent = neArray.map(ne => (<div key={ne.slug} className="named-entity-wrapper">
@@ -207,6 +213,37 @@ LexiconBox.propTypes = {
 
 
 class LexiconEntry extends Component {
+  isBDB(entry) {
+    return RegExp(/^BDB.*?Dict/).test(entry['parent_lexicon']);
+  }
+  defaultHeadwordString(entry) {
+    let headwords = [entry['headword']];
+    if ('alt_headwords' in entry) {
+      headwords = headwords.concat(entry['alt_headwords']);
+    }
+    return headwords
+          .map((e,i) => <span className="headword" key={i} dir="rtl">{e}</span>)
+          .reduce((prev, curr) => [prev, ', ', curr]);
+  }
+  bdbHeadwordString(entry) {
+    const peculiar = entry.peculiar ? '‡ ' : '';
+    const allCited = entry.all_cited ? '† ' : '';
+    const ordinal = entry.ordinal ? `${entry["ordinal"]} ` : '';
+    const hw = (<span dir="rtl">{entry['headword'].replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/, '')}</span>);
+    const occurrences = entry.occurrence ? (<sub>{entry['occurrences']}</sub>) : '';
+    const alts = entry.alt_headwords ? entry['alt_headwords']
+        .map(alt => {
+            const ahw = <span dir="rtl">{alt['word']}</span>;
+            const aocc = ('occurrences' in alt) ? <sub>{alt['occurrences']}</sub> : '';
+          return <span>, {ahw}{aocc}</span>
+        })
+        .reduce((prev, curr) => [prev, curr]) : '';
+    const allHeadwords = entry.headword_suffix ? <span>[{hw}{entry['headword_suffix']}]{occurrences}</span>:
+        (entry['brackets'] == 'all') ? <span>[{hw}{occurrences}{alts}]</span> :
+        (entry['brackets'] == 'first_word') ? <span>[{hw}{occurrences}]{alts}</span> :
+            <span>{hw}{occurrences}{alts}</span>;
+    return (<span className="headword">{peculiar}{allCited}{ordinal}<span className="headword">{allHeadwords}</span></span>);
+  }
   renderLexiconEntrySenses(content) {
     var grammar     = ('grammar' in content) ? '('+ content['grammar']['verbal_stem'] + ')' : "";
     var def         = ('definition' in content) ? (<span className="def"  dangerouslySetInnerHTML={ {__html: content['definition']}}></span>) : "";
@@ -225,6 +262,26 @@ class LexiconEntry extends Component {
         {senses}
       </li>
     );
+  }
+  renderBDBEntrySenses(content) {
+    const note = content.note ? <em>Note.</em> : '';
+    const preNun = content.pre_num || '';
+    const allCited = content.all_cited ? '†' : '';
+    const num = content.num || '';
+    const form = content.form || '';
+    const occurrences = content.occurrences || '';
+    const def = content.definition || '';
+    if (content.definition) {
+      const text = `${note} ${preNun} ${allCited}<b>${num}${form}</b><sub>${occurrences}</sub> ${def}`;
+      return (
+      <span className="def"  dangerouslySetInnerHTML={ {__html: text}}></span>);
+    }
+    const pre = `${note} ${preNun} ${allCited}`
+    const sensesElems = content.senses ? content.senses.map((sense, i) => {
+      return <div>{i==0 && pre}{i==0 && <b>{num}{form}</b>}{i==0 && <sub>{occurrences}</sub>}{this.renderBDBEntrySenses(sense)}</div>;
+    }) : "";
+    const senses = sensesElems.length ? (<div>{sensesElems}</div>) : "";
+    return (<div>{senses}</div>);
   }
   getRef() {
     var ind = this.props.data.parent_lexicon_details.index_title;
@@ -282,10 +339,7 @@ class LexiconEntry extends Component {
     var headwordClassNames = classNames('headword', entry['parent_lexicon_details']["to_language"].slice(0,2));
     var definitionClassNames = classNames('definition-content', entry['parent_lexicon_details']["to_language"].slice(0,2));
 
-    var headwords = [entry['headword']];
-    if ('alt_headwords' in entry) {
-      headwords = headwords.concat(entry['alt_headwords']);
-    }
+    var headwordString = this.isBDB(entry) ? this.bdbHeadwordString(entry) : this.defaultHeadwordString(entry)
 
     var morphologyHtml = ('morphology' in entry['content']) ?  (<span className="morphology">&nbsp;({entry['content']['morphology']})</span>) :"";
 
@@ -298,9 +352,7 @@ class LexiconEntry extends Component {
     }
 
     var entryHeadHtml = (<span className="headline" dir="ltr">
-      {headwords
-          .map((e,i) => <span className="headword" key={i} dir="rtl">{e}</span>)
-          .reduce((prev, curr) => [prev, ', ', curr])}
+      {headwordString}
       {morphologyHtml}
       {langHtml}
       </span>);
@@ -308,7 +360,8 @@ class LexiconEntry extends Component {
     var endnotes = ('notes' in entry) ? <span className="notes" dangerouslySetInnerHTML={ {__html: entry['notes']}}></span> : "";
     var derivatives = ('derivatives' in entry) ? <span className="derivatives" dangerouslySetInnerHTML={ {__html: entry['derivatives']}}></span> : "";
 
-    var senses = this.renderLexiconEntrySenses(entry['content']);
+    var senses = this.isBDB(entry) ?  this.renderBDBEntrySenses(entry['content'])
+        : this.renderLexiconEntrySenses(entry['content']);
     var attribution = this.renderLexiconAttribution();
     return (
         <div className="entry" onClick={this.handleClick} onKeyPress={this.handleKeyPress} data-ref={this.getRef()}>

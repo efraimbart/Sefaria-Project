@@ -7,11 +7,16 @@ import sefaria.system.logging as sefaria_logging
 
 # These are things you need to change!
 
-################ YOU ONLY NEED TO CHANGE "NAME" TO THE PATH OF YOUR SQLITE DATA FILE (If the db.sqlite file does not exist, simply create it) ########################################
+################
+# YOU ONLY NEED TO CHANGE "NAME" TO THE PATH OF YOUR SQLITE DATA FILE
+# If the db.sqlite file does not exist, simply list a path where it can be created.
+# You can set the path to /path/to/Sefaria-Project/db.sqlite, since we git-ignore all sqlite files
+# (you do not need to create the empty db.sqlite file, as Django will handle that later)
+# ########################################
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/path/to/your/sefaria/data/db.sqlite', # Or path to database file if using sqlite3.
+        'NAME': '/path/to/Sefaria-Project/db.sqlite', # Path to where you would like the database to be created including a file name, or path to an existing database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -172,14 +177,10 @@ SEFARIA_EXPORT_PATH = '/path/to/your/Sefaria-Data/export' # used for exporting t
 # DafRoulette server
 RTC_SERVER = '' # Root URL/IP of the server
 
+GOOGLE_GTAG = ''
 GOOGLE_TAG_MANAGER_CODE = 'you tag manager code here'
-GOOGLE_ANALYTICS_CODE = 'your google analytics code'
-GOOGLE_MAPS_API_KEY = None  # currently used for shavuot map
-MIXPANEL_CODE = 'you mixpanel code here'
 
-AWS_ACCESS_KEY = None
-AWS_SECRET_KEY = None
-S3_BUCKET = "bucket-name"
+HOTJAR_ID = None
 
 # Integration with a NationBuilder list
 NATIONBUILDER = False
@@ -205,6 +206,9 @@ DISABLE_INDEX_SAVE = False
 # which can be annoying for local development. 
 DISABLE_AUTOCOMPLETER = False
 
+# Turns on loading of machine learning models to run linker
+ENABLE_LINKER = False
+
 # Caching with Cloudflare
 CLOUDFLARE_ZONE = ""
 CLOUDFLARE_EMAIL = ""
@@ -229,6 +233,15 @@ GOOGLE_APPLICATION_CREDENTIALS_FILEPATH = ""
 GEOIP_DATABASE = 'data/geoip/GeoLiteCity.dat'
 GEOIPV6_DATABASE = 'data/geoip/GeoLiteCityv6.dat'
 
+RAW_REF_MODEL_BY_LANG_FILEPATH = {
+    "en": None,
+    "he": None
+}
+
+RAW_REF_PART_MODEL_BY_LANG_FILEPATH = {
+    "en": None,
+    "he": None
+}
 
 # Simple JWT
 SIMPLE_JWT = {

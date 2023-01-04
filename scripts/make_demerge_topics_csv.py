@@ -1,12 +1,15 @@
 import django
-django.setup()
 from sefaria.model import *
 import re
 import sys, getopt, csv
 from sefaria.system.database import db
+from bson.objectid import ObjectId
+
+django.setup()
 
 def prettify_text(t):
     return ' '.join(re.sub(r'<[^>]+>', ' ', t).split())
+
 
 def make_demerge_csv_sources(slug_to_demerge, out_file):
     query = {"toTopic": slug_to_demerge, "is_sheet": False, "generatedBy": {"$exists": False}}
@@ -30,7 +33,8 @@ def make_demerge_csv_sources(slug_to_demerge, out_file):
         c.writeheader()
         c.writerows(rows)
 
-def make_demerge_csv_sheets(slug_to_demerge, out_file, autotag_dict):
+
+def make_demerge_csv_sheets(slug_to_demerge, out_file):
     query = {"topics.slug": slug_to_demerge}
     sheets = db.sheets.find(query)
     rows = []
@@ -47,11 +51,13 @@ def make_demerge_csv_sheets(slug_to_demerge, out_file, autotag_dict):
         c.writeheader()
         c.writerows(rows)
 
+
 def make_demerge_csv(slug_to_demerge, out_file, type='sources'):
     if type  == 'sources':
         make_demerge_csv_sources(slug_to_demerge, out_file)
     elif type  == 'sheets':
         make_demerge_csv_sheets(slug_to_demerge, out_file)
+
 
 def get_args(argv):
     argv = argv[1:]
@@ -75,9 +81,8 @@ def get_args(argv):
             type = arg
     return slug_to_demerge, out_file, type
 
+
 def do_demerge(fnames, cols, slug_dict_list):
-    import csv
-    from bson.objectid import ObjectId
     # cols = ['Moon or Month?', 'Prophet or Amora?']
     # slugs = [{'moon': 'the-moon-(לבנה)', 'month': 'months'}, {'amora': 'shmuel-(amora)', 'prophet': 'shmuel-(prophet)'}]
     for slug_dict, col, fname in zip(slug_dict_list, cols, fnames):
@@ -95,6 +100,7 @@ def do_demerge(fnames, cols, slug_dict_list):
                 link.toTopic = slug_dict[row[col]]
                 print(link.toTopic)
                 link.save()
+
 
 if __name__ == "__main__":
     slug_to_demerge, out_file, type = get_args(sys.argv)

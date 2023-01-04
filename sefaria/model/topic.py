@@ -3,14 +3,14 @@ from . import abstract as abst
 from .schema import AbstractTitledObject, TitleGroup
 from .text import Ref, IndexSet
 from .category import Category
-from sefaria.system.exceptions import DuplicateRecordError
+from sefaria.system.exceptions import InputError
 from sefaria.model.timeperiod import TimePeriod
 import structlog
 import regex as re
 logger = structlog.get_logger(__name__)
 
 
-class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
+class Topic(abst.SluggedAbstractMongoRecord, AbstractTitledObject):
     collection = 'topics'
     history_noun = 'topic'
     slug_fields = ['slug']
@@ -39,17 +39,8 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
         'good_to_promote',
         'description_published',  # bool to keep track of which descriptions we've vetted
         'isAmbiguous',  # True if topic primary title can refer to multiple other topics
+        "data_source"  #any topic edited manually should display automatically in the TOC and this flag ensures this
     ]
-
-    @classmethod
-    def init(cls, slug:str) -> 'Topic':
-        """
-        Convenience func to avoid using .load() when you're only passing a slug
-        Can return a subclass of Topic based on `subclass` field
-        :param slug:
-        :return:
-        """
-        return cls().load({'slug': slug})
 
     def load(self, query, proj=None):
         if self.__class__ != Topic:
@@ -74,6 +65,8 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
 
     def _normalize(self):
         super()._normalize()
+        for title in self.title_group.titles:
+            title['text'] = title['text'].strip()
         self.titles = self.title_group.titles
 
     def set_titles(self, titles):
@@ -109,6 +102,21 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
                 continue
             new_topic.get_types(types, new_path, search_slug_set)
         return types
+
+    def change_description(self, desc, cat_desc):
+        """
+        Sets description in all cases and sets categoryDescription if this is a top level topic
+
+        :param desc: Dictionary of descriptions, with keys being two letter language codes
+        :param cat_desc: Optional. Dictionary of category descriptions, with keys being two letter language codes
+        :return:
+        """
+
+        self.description = desc
+        if getattr(self, "isTopLevelDisplay", False):
+            self.categoryDescription = cat_desc
+        elif getattr(self, "categoryDescription", False):
+            delattr(self, "categoryDescription")
 
     def topics_by_link_type_recursively(self, **kwargs):
         topics, _ = self.topics_and_links_by_link_type_recursively(**kwargs)
@@ -173,7 +181,7 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
         return len(search_slug_set.intersection(types)) > 0
 
     def should_display(self) -> bool:
-        return getattr(self, 'shouldDisplay', True) and (getattr(self, 'numSources', 0) > 0 or self.has_description())
+        return getattr(self, 'shouldDisplay', True) and (getattr(self, 'numSources', 0) > 0 or self.has_description() or getattr(self, "data_source", "") == "sefaria")
 
     def has_description(self) -> bool:
         """
@@ -181,7 +189,9 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
         """
         has_desc = False
         for temp_desc in getattr(self, 'description', {}).values():
-            has_desc = has_desc or len(temp_desc or '') > 0
+            has_desc = has_desc or (isinstance(temp_desc, str) and len(temp_desc) > 0)
+        for temp_desc in getattr(self, 'categoryDescription', {}).values():
+            has_desc = has_desc or (isinstance(temp_desc, str) and len(temp_desc or '') > 0)
         return has_desc
 
     def set_slug_to_primary_title(self) -> None:
@@ -223,7 +233,7 @@ class Topic(abst.AbstractMongoRecord, AbstractTitledObject):
                 continue
             try:
                 link.save()
-            except DuplicateRecordError:
+            except InputError:
                 link.delete()
             except AssertionError as e:
                 link.delete()
@@ -749,7 +759,7 @@ class RefTopicLinkSet(abst.AbstractMongoSet):
         super().__init__(query=query, *args, **kwargs)
 
 
-class TopicLinkType(abst.AbstractMongoRecord):
+class TopicLinkType(abst.SluggedAbstractMongoRecord):
     collection = 'topic_link_types'
     slug_fields = ['slug', 'inverseSlug']
     required_attrs = [
@@ -795,7 +805,7 @@ class TopicLinkTypeSet(abst.AbstractMongoSet):
     recordClass = TopicLinkType
 
 
-class TopicDataSource(abst.AbstractMongoRecord):
+class TopicDataSource(abst.SluggedAbstractMongoRecord):
     collection = 'topic_data_sources'
     slug_fields = ['slug']
     required_attrs = [

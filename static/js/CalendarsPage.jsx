@@ -16,7 +16,8 @@ const CalendarsPage = ({multiPanel, initialWidth}) => {
   const calendars = reformatCalendars();
 
   const parashaCalendars = ["Parashat Hashavua", "Haftarah (A)", "Haftarah (S)", "Haftarah"];
-  const dailyCalendars   = ["Daf Yomi", "929", "Daily Mishnah", "Daily Rambam", "Daily Rambam (3 Chapters)", "Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul"];
+  const dailyCalendars   = ["Daf Yomi", "929", "Daily Mishnah", "Daily Rambam", "Daily Rambam (3 Chapters)",
+    "Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul", "Chok LeYisrael", "Tanya Yomi"];
   const weeklyCalendars  = ["Daf a Week"];
 
   const makeListings = list => calendars.filter(c => list.indexOf(c.title.en) != -1)
@@ -33,6 +34,7 @@ const CalendarsPage = ({multiPanel, initialWidth}) => {
     multiPanel ? {type: "AboutLearningSchedules"} : {type: null},
     {type: "StayConnected"},
     {type: "SupportSefaria"},
+    {type: "Promo"},
   ];
 
   return (
@@ -78,7 +80,7 @@ const CalendarListing = ({calendar}) => {
         {calendar.refs.map(ref => (
         <div className="calendarRef" key={ref.url}>
           <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
-          <a href={`/${ref.url}`} className="">
+          <a href={`/${ref.url || calendar.url}`} className="">
             <InterfaceText text={ref.displayValue} />
           </a>
         </div>
@@ -173,6 +175,10 @@ const calendarDescriptions = {
     en: "A four-year daily learning program covering ritual halakhot, practical kashrut and interpersonal mitzvot within Rabbi Yechiel Michel Epstein’s legal code, Arukh HaShulchan.",
     he: "תכנית לימוד ארבע-שנתית של הלכות מעשיות מתוך ספר ערוך השלחן, חיבורו ההלכתי של הרב יחיאל מיכל עפשטיין.",
   },
+  "Tanya Yomi": {
+    "en": "A daily learning cycle for completing Tanya annually, starting at the 19th of Kislev, “Rosh Hashanah of Chasidut.”",
+    "he": "סדר לימוד המשלים את ספר התניא אחת לשנה, החל מיום י\"ט בכסליו \"ראש השנה לחסידות\"."
+  },
   "Tanakh Yomi": {
     en: "A daily learning cycle for completing Tanakh annually. On Shabbat, each Torah portion is recited. On weekdays, Prophets and Writings are recited according to the ancient Masoretic division of sedarim.",
     he: "סדר לימוד המשלים את קריאת התנ\"ך כולו אחת לשנה. בשבתות קוראים את התורה לפי סדר פרשיות השבוע. בימות החול קוראים את הנ\"ך על פי חלוקת הסדרים של המסורה.",
@@ -181,6 +187,10 @@ const calendarDescriptions = {
   "Zohar for Elul": {
     en: "A 40 day learning schedule in which participants learn the Kabbalistic work \"Tikkunei Zohar\" over the course of the days between the First of the month of Elul and Yom Kippur.",
     he: "סדר יומי ללימוד הספר \"תיקוני הזהר\". הסדר נמשך 40 יום, בתקופה שבין ראש חודש אלול ויום הכיפורים.",
+  },
+  "Chok LeYisrael": {
+    en: "A book designed for daily study. Each day’s learning consists of biblical verses together with commentary, a chapter of Mishnah, and short passages of Talmud, Zohar, and of works of Halakhah and Musar.",
+    he: 'לימוד יומי הכולל פסוקי תנ״ך ופירושם, פרק משנה, קטע מהתלמוד, קטע מהזוהר, קטע מספר הלכה וקטע מספר מוסר.',
   }
 }
 

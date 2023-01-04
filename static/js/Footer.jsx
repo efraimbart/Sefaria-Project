@@ -46,12 +46,14 @@ class Footer extends Component {
                 <Link href="/team" en="Team" he="צוות" />
                 <Link href="/testimonials" en="Testimonials" he="חוות דעת" />
                 <Link href="/metrics" en="Metrics" he="מדדים" />
+                <Link href="/annualreport/2021" en="Annual Report" he='דו"ח שנתי' />
                 <Link href="/terms" en="Terms of Use" he="תנאי שימוש" />
                 <Link href="/privacy-policy" en="Privacy Policy" he="מדיניות פרטיות" />
             </Section>
 
             <Section en="Tools" he="כלים">
-                <Link href="/educators" en="Teach with Sefaria" he="לַמדו עם ספריא" />
+                <Link href="/educators" en="Teach with Sefaria" he="מלמדים עם ספריא" />
+                <Link href="/calendars" en="Learning Schedules" he="לוח לימוד יומי" />
                 <Link href="/sheets" en="Source Sheets" he="דפי מקורות" />
                 <Link href="/visualizations" en="Visualizations" he="תרשימים גרפיים" />
                 <Link href="/mobile" en="Mobile Apps" he="ספריא בנייד" />

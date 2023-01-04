@@ -42,9 +42,13 @@ class SearchSheetResult extends Component {
         return (
             <div className='result sheetResult'>
                 <a href={href} onClick={this.handleSheetClick}>
-                    <div className={classNames({'result-title': 1, 'in-en': !titleIsHe, 'in-he': titleIsHe})}>{clean_title}</div>
+                    <div className={classNames({'result-title': 1, 'in-en': !titleIsHe, 'in-he': titleIsHe})}>
+                        <span dir={titleIsHe ? "rtl" : "ltr"}>{clean_title}</span>
+                    </div>
                     <ColorBarBox tref={"Sheet 1"}>
-                      <div className={snippetClasses} dangerouslySetInnerHTML={snippetMarkup.markup}></div>
+                      <div className={snippetClasses}>
+                          <span dir={snippetMarkup.lang === 'he' ? "rtl" : "ltr"} dangerouslySetInnerHTML={snippetMarkup.markup} ></span>
+                      </div>
                     </ColorBarBox>
                 </a>
                 <div className="sheetData sans-serif">
@@ -59,7 +63,7 @@ class SearchSheetResult extends Component {
                     <span className='tagsViews'>
                     {tags.map((topic, i) => {
                         return (
-                          <a href={`/topics/${topic[1]}`} target="_blank">
+                          <a href={`/topics/${topic[1]}`} target="_blank" key={`link${topic[1]}${i}`}>
                               <InterfaceText text={{en: topic[0], he: topic[2]}} />
                           </a>
                         );

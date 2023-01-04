@@ -17,6 +17,7 @@ from functools import wraps
 from bson.son import SON
 from collections import defaultdict
 from pymongo.errors import DuplicateKeyError
+import uuid
 
 import sefaria.model as model
 import sefaria.model.abstract as abstract
@@ -25,7 +26,6 @@ from sefaria.model.notification import Notification, NotificationSet
 from sefaria.model.following import FollowersSet
 from sefaria.model.user_profile import UserProfile, annotate_user_list, public_user_data, user_link
 from sefaria.model.collection import Collection, CollectionSet
-from sefaria.model.story import UserStory, UserStorySet
 from sefaria.model.topic import TopicSet, Topic, RefTopicLink, RefTopicLinkSet
 from sefaria.utils.util import strip_tags, string_overlap, titlecase
 from sefaria.utils.hebrew import is_hebrew
@@ -58,6 +58,8 @@ def get_sheet(id=None):
 		return {"error": "Couldn't find sheet with id: %s" % (id)}
 	s["topics"] = add_langs_to_topics(s.get("topics", []))
 	s["_id"] = str(s["_id"])
+	collections = CollectionSet({"sheets": id, "listed": True})
+	s["collections"] = [{"name": collection.name, "slug": collection.slug} for collection in collections]
 	return s
 
 
@@ -110,7 +112,7 @@ def get_sheet_node(sheet_id=None, node_id=None):
 
 def get_sheet_for_panel(id=None):
 	sheet = get_sheet(id)
-	if "error" in sheet:
+	if "error" in sheet and sheet["error"] != "Sheet updated.":
 		return sheet
 	if "assigner_id" in sheet:
 		asignerData = public_user_data(sheet["assigner_id"])
@@ -124,6 +126,7 @@ def get_sheet_for_panel(id=None):
 	sheet["ownerImageUrl"] = public_user_data(sheet["owner"])["imageUrl"]
 	sheet["sources"] = annotate_user_links(sheet["sources"])
 	sheet["topics"] = add_langs_to_topics(sheet.get("topics", []))
+	sheet["sheetNotice"] = present_sheet_notice(sheet.get("is_moderated", None))
 	if "displayedCollection" in sheet:
 		collection = Collection().load({"slug": sheet["displayedCollection"]})
 		if collection:
@@ -158,8 +161,11 @@ def user_sheets(user_id, sort_by="date", limit=0, skip=0, private=True):
 	return response
 
 
-def public_sheets(sort=[["datePublished", -1]], limit=50, skip=0, lang=None):
-	query = {"status": "public"}
+def public_sheets(sort=[["datePublished", -1]], limit=50, skip=0, lang=None, filtered=False):
+	if filtered:
+		query = {"status": "public", "sources.ref": {"$exists": True}}
+	else:
+		query = {"status": "public"}
 	if lang:
 		query["sheetLanguage"] = lang
 	response = {
@@ -465,6 +471,13 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 		if "noindex" in existing:
 			sheet["noindex"] = existing["noindex"]
 
+		# make sure sheets never get saved with an "error: field to the db...
+		# Not entirely sure why the error "Sheet updated." sneaks into the db sometimes.
+		if "error" in sheet:
+			del sheet["error"]
+		if "error" in existing:
+			del existing["error"]
+
 		existing.update(sheet)
 		sheet = existing
 
@@ -479,7 +492,8 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 		old_topics = []
 		topics_diff = topic_list_diff(old_topics, sheet.get("topics", []))
 
-		#ensure that sheet sources have nodes (primarily for sheets posted via API)
+		# ensure that sheet sources have nodes (primarily for sheets posted via API)
+		# and ensure that images from copied sheets hosted on google cloud get duplicated as well
 		nextNode = sheet.get("nextNode", 1)
 		sheet["nextNode"] = nextNode
 		checked_sources = []
@@ -487,6 +501,12 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 			if "node" not in source:
 				source["node"] = nextNode
 				nextNode += 1
+			if "media" in source and source["media"].startswith(GoogleStorageManager.BASE_URL):
+				old_file = (re.findall(r"/([^/]+)$", source["media"])[0])
+				to_file = f"{user_id}-{uuid.uuid1()}.{source['media'][-3:].lower()}"
+				bucket_name = GoogleStorageManager.UGC_SHEET_BUCKET
+				duped_image_url = GoogleStorageManager.duplicate_file(old_file, to_file, bucket_name)
+				source["media"] = duped_image_url
 			checked_sources.append(source)
 		sheet["sources"] = checked_sources
 
@@ -498,12 +518,12 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 			broadcast_sheet_publication(user_id, sheet["id"])
 		if sheet["status"] != "public":
 			# UNPUBLISH
+			if SEARCH_INDEX_ON_SAVE and not search_override:
+				es_index_name = search.get_new_and_current_index_names("sheet")['current']
+				search.delete_sheet(es_index_name, sheet['id'])
+
 			delete_sheet_publication(sheet["id"], user_id)  # remove history
-			UserStorySet({"storyForm": "publishSheet",
-								"uid": user_id,
-								"data.publisher": user_id,
-								"data.sheet_id": sheet["id"]
-							}).delete()
+
 			NotificationSet({"type": "sheet publish",
 								"uid": user_id,
 								"content.publisher_id": user_id,
@@ -1033,8 +1053,8 @@ def get_sheets_by_topic(topic, public=True, proj=None, limit=0, page=0):
 	Returns all sheets tagged with 'topic'
 	"""
 	# try to normalize for backwards compatibility
-	from sefaria.model.abstract import AbstractMongoRecord
-	topic = AbstractMongoRecord.normalize_slug(topic)
+	from sefaria.model.abstract import SluggedAbstractMongoRecord
+	topic = SluggedAbstractMongoRecord.normalize_slug(topic)
 	query = {"topics.slug": topic} if topic else {"topics": {"$exists": 0}}
 
 	if public:
@@ -1090,7 +1110,6 @@ def broadcast_sheet_publication(publisher_id, sheet_id):
 		n = Notification({"uid": follower})
 		n.make_sheet_publish(publisher_id=publisher_id, sheet_id=sheet_id)
 		n.save()
-		UserStory.from_sheet_publish(follower, publisher_id, sheet_id).save()
 
 
 def make_sheet_from_text(text, sources=None, uid=1, generatedBy=None, title=None, segment_level=False):
@@ -1229,8 +1248,14 @@ def get_sheet_categorization_info(find_without, skip_ids=[]):
 	}
 	return categorize_props
 
+
 def update_sheet_tags_categories(body, uid):
 	update_sheet_topics(body['sheetId'], body["tags"], [])
 	time = datetime.now().isoformat()
 	noTags = time if body.get("noTags", False) else False
 	db.sheets.update_one({"id": body['sheetId']}, {"$set": {"categories": body['categories'], "noTags": noTags}, "$push": {"moderators": {"uid": uid, "time": time}}})
+
+
+def present_sheet_notice(is_moderated):
+	"""This method is here in case one day we will want to differentiate based on other logic on moderation"""
+	return is_moderated

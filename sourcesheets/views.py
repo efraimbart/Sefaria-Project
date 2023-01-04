@@ -413,7 +413,8 @@ def protected_collections_post_api(request, user_id, slug=None):
 def collections_get_api(request, slug=None):
     if not slug:
         return jsonResponse(CollectionSet.get_collection_listing(request.user.id))
-    collection_obj = Collection().load({"slug": unquote(slug)})
+    uslug = unquote(slug)
+    collection_obj = Collection().load({"$or": [{"slug": uslug}, {"privateSlug": uslug}]})
     if not collection_obj:
         return jsonResponse({"error": "No collection with slug '{}'".format(slug)})
     is_member = request.user.is_authenticated and collection_obj.is_member(request.user.id)
@@ -959,7 +960,8 @@ def all_sheets_api(request, limiter, offset=0):
     limiter  = int(limiter)
     offset   = int(offset)
     lang     = request.GET.get("lang")
-    response = public_sheets(limit=limiter, skip=offset, lang=lang)
+    filtered = request.GET.get("filtered", False)
+    response = public_sheets(limit=limiter, skip=offset, lang=lang, filtered=filtered)
     response = jsonResponse(response, callback=request.GET.get("callback", None))
     return response
 
@@ -1095,13 +1097,14 @@ def resolve_options_of_sources(sheet):
 
 
 
-@gauth_required(scope='https://www.googleapis.com/auth/drive.file', ajax=True)
+@gauth_required(scope=['openid', 'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/userinfo.email'], ajax=True)
 def export_to_drive(request, credential, sheet_id):
     """
     Export a sheet to Google Drive.
     """
     # Using credentials in google-api-python-client.
     service = build('drive', 'v3', credentials=credential, cache_discovery=False)
+    user_info_service = build('oauth2', 'v2', credentials=credential, cache_discovery=False)
 
     sheet = get_sheet(sheet_id)
     if 'error' in sheet:
@@ -1120,8 +1123,14 @@ def export_to_drive(request, credential, sheet_id):
         resumable=True)
 
     new_file = service.files().create(body=file_metadata,
-                                      media_body=media,
-                                      fields='webViewLink').execute()
+                                        media_body=media,
+                                        fields='webViewLink').execute()
+        
+    user_info = user_info_service.userinfo().get().execute()
+
+    profile = UserProfile(id=request.user.id)
+    profile.update({"gauth_email": user_info['email']})
+    profile.save()
 
     return jsonResponse(new_file)
 

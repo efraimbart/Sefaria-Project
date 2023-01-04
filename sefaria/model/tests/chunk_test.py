@@ -89,13 +89,6 @@ def test_out_of_range_chunks():
     with pytest.raises(InputError):
         TextChunk(Ref("Shabbat 180"), "he")
 
-    # and where text does not have length (will fail and need to be updated once the text is given a length)
-    t = TextChunk(Ref("Bemidbar Rabbah 66"))
-    assert t.text == []
-
-    t = TextChunk(Ref("Bemidbar Rabbah 66.4"))
-    assert t.text == ""
-
 
 def test_range_chunk():
     chunks = [
@@ -471,12 +464,12 @@ def test_strip_itags():
 
     r = Ref("Genesis 1:1")
     c = TextChunk(r, "he")
-    text = c._get_text_after_modifications([c._strip_itags])
+    text = c._get_text_after_modifications([c.strip_itags])
     assert text == TextChunk(r, "he").text
 
     r = Ref("Genesis 1")
     c = TextChunk(r, "he")
-    modified_text = c._get_text_after_modifications([c._strip_itags])
+    modified_text = c._get_text_after_modifications([c.strip_itags])
     original_text = TextChunk(r, "he").text
     for mod, ori in zip(modified_text, original_text):
         assert mod == ori
@@ -489,15 +482,16 @@ def test_strip_itags():
         "versionTitle": "Hadran Test",
         "chapter": ['Cool text <sup>1</sup><i class="footnote yo">well, not that cool</i>',
                     'Silly text <sup>1</sup><i class="footnote">See <i>cool text</i></i>',
-                    'More text <i data-commentator="Boring comment" data-order="1"></i> and yet more']
+                    'More text <i data-commentator="Boring comment" data-order="1"></i> and yet more',
+                    'Where the <i data-overlay="Other system" data-value=""></i>']
     }).save()
     modified_text = ['Cool text', 'Silly text', 'More text and yet more']
     c = TextChunk(Ref("Hadran"), "en", "Hadran Test")
-    test_modified_text = c._get_text_after_modifications([c._strip_itags, lambda x, _: ' '.join(x.split()).strip()])
+    test_modified_text = c._get_text_after_modifications([c.strip_itags, lambda x, _: ' '.join(x.split()).strip()])
     for m, t in zip(modified_text, test_modified_text):
         assert m == t
 
-    test_modified_text = v._get_text_after_modifications([v._strip_itags, lambda x, _: ' '.join(x.split()).strip()])
+    test_modified_text = v._get_text_after_modifications([v.strip_itags, lambda x, _: ' '.join(x.split()).strip()])
     for m, t in zip(modified_text, test_modified_text):
         assert m == t
 
@@ -511,5 +505,5 @@ def test_strip_itags():
         assert m == t
 
     text = '<i></i>Lo, his spirit.'
-    assert TextChunk._strip_itags(text) == text
+    assert TextChunk.strip_itags(text) == text
 

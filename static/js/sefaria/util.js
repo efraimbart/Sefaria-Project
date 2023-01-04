@@ -4,11 +4,34 @@ import striptags from 'striptags';
 import humanizeDuration from 'humanize-duration';
 import sanitizeHtml from 'sanitize-html';
 import Sefaria  from './sefaria';
-
+import {HDate, months} from '@hebcal/core';
+import FeatureTrack from "./track_ga4";
 
 var INBROWSER = (typeof document !== 'undefined');
 
 class Util {
+    
+    /**
+     * Method to scroll into view port, if it's outside the viewport
+     * From: https://medium.com/@makk.bit/scroll-into-view-if-needed-10a96e0bdb61
+     * @param {Object} target - DOM Element
+     * @returns {undefined}
+     * See also: https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport/
+     * 
+     */
+    static scrollIntoViewIfNeeded(target, scrollIntoViewOptions) {
+        // Target is outside the viewport from the bottom
+        if (target.getBoundingClientRect().bottom > window.innerHeight) {
+            //  The bottom of the target will be aligned to the bottom of the visible area of the scrollable ancestor.
+            target.scrollIntoView(scrollIntoViewOptions);
+        }
+    
+        // Target is outside the view from the top
+        if (target.getBoundingClientRect().top < 0) {
+            // The top of the target will be aligned to the top of the visible area of the scrollable ancestor
+            target.scrollIntoView(scrollIntoViewOptions);
+        }
+    }
     static selectElementContents(el) {
       //source: https://stackoverflow.com/questions/4183401/can-you-set-and-or-change-the-user-s-text-selection-in-javascript
       if (window.getSelection && document.createRange) {
@@ -26,14 +49,48 @@ class Util {
     static encodeVtitle(vtitle) {
       return vtitle.replace(/\s/g, '_').replace(/;/g, '%3B');
     }
+    static getUrlVersionsParams(currVersions, i=0) {
+      currVersions = this.getCurrVersionsWithoutAPIResultFields(currVersions);
+      if (currVersions) {
+        return Object.entries(currVersions)
+          .filter(([vlang, vtitle]) => !!vtitle)
+          .map(([vlang, vtitle]) =>`&v${vlang}${i > 1 ? i : ""}=${this.encodeVtitle(vtitle)}`)
+          .join("");
+      } else {
+        return "";
+      }
+    }
+    static getCurrVersionsWithoutAPIResultFields(currVersions) {
+      /**
+       * currVersions can contain fields like `enAPIResult` and `heAPIResult`.
+       * returns an object without these fields
+       */
+      if (!currVersions) { return currVersions; }
+      return Object.entries(currVersions).reduce(
+        (a, [vlang, vtitle]) => {
+          if (vlang.endsWith("APIResult")) { return a; }
+          a[vlang] = vtitle;
+          return a;
+        }, {}
+      );
+    }
     static decodeVtitle(vtitle) {
       return vtitle.replace(/_/g, ' ').replace(/%3B/g, ';');
     }
     static localeDate(dateString) {
         // takes dateString (usually generated from Python datetime object) and returns a human readable string depending on interfaceLang
-        const locale = Sefaria.interfaceLang === 'english' ? 'en-US' : 'iw-IL';
-        const dateOptions = {year: 'numeric', month: 'short', day: 'numeric'};
-        return (new Date(dateString)).toLocaleDateString(locale, dateOptions).replace(',', '');  // remove comma from english date
+        const locale = Sefaria.interfaceLang === 'english' ? 'en-US' : 'he-Hebr-IL';
+        const dateOptions = {year: 'numeric', month: 'long', day: 'numeric'};
+        return (new Date(dateString)).toLocaleDateString(locale, dateOptions);  // remove comma from english date
+    }
+    static hebrewCalendarDateStr(dateObjStr){
+        //returns a fully qualified Hebrew calendar date from a Gregorian input. Can output in English or Hebrew
+        const hd = new HDate(new Date(dateObjStr));
+        //Up to this we could have gotten away with built in international date objects in js:
+        // By specifying dateOptions['calendar'] = 'hebrew'; as in the function above. 
+        //That would result in a hybrid hebrew date though, that still uses English numerals for day and year.
+        //So we use Hebcal's renderGematriya()
+        return Sefaria.interfaceLang === 'english' ? hd.render() : hd.renderGematriya();
     }
     static sign_up_user_testing() {
       // temporary function to be used in template 'user_testing_israel.html'
@@ -56,6 +113,21 @@ class Util {
         };
         const postData = {json: JSON.stringify(feedback)};
         $.post('/api/send_feedback', postData);
+    }
+     static subscribeToNbList(email) {
+        if (Sefaria.util.isValidEmailAddress(email)) {
+            const lists = Sefaria.interfaceLang == "hebrew" ?  "ANNOUNCEMENTS_General_Hebrew" : "ANNOUNCEMENTS_General"
+            $.post("/api/subscribe/" + email + "?lists=" + lists, function(data) {
+                if ("error" in data) {
+                    console.log(data.error);
+                } else {
+                    console.log("Subscribed! Welcome to our list.");
+                    FeatureTrack.clicked(`subscribeToNbList`,`${lists}`)
+                }
+            }).error(data => console.log("Sorry, there was an error."));
+        } else {
+        console.log("not valid email address")
+        }
     }
     static naturalTimePlural(n, singular, plural) {
       return n <= 1 ? singular : plural;
@@ -245,6 +317,20 @@ class Util {
         relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
         segments: a.pathname.replace(/^\//,'').split('/')
       };
+    }
+
+    static parseHash(urlHash) {
+      let sections = urlHash.split("&");
+      let hashDict = {}
+      sections.forEach(x => {
+        const i = x.indexOf("=");
+        if (i !== -1) {
+          hashDict[x.slice(0,i)] = x.slice(i+1);
+        } else {
+          hashDict[x] = x;
+        }
+      })
+      return hashDict;
     }
     static isValidEmailAddress(emailAddress) {
       var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
@@ -650,6 +736,7 @@ class Util {
       return vars;
     }
     static replaceUrlParam(paramName, paramValue){
+      //TODO: This does not create the correct urls for multipanel views. It ends up just tacking on an extra "with" param on the end  
       var url = INBROWSER ? window.location.href : this._initialPath;
       if(paramValue == null)
           paramValue = '';

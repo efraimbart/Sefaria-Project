@@ -60,7 +60,8 @@ class Lexicon(abst.AbstractMongoRecord):
         'text_categories',
         'index_title',          # The title of the Index record that corresponds to this Lexicon
         'version_title',        # The title of the Version record that corresponds to this Lexicon
-        'version_lang'          # The language of the Version record that corresponds to this Lexicon
+        'version_lang',         # The language of the Version record that corresponds to this Lexicon
+        'should_autocomplete'   # enables search box
     ]
 
     def word_count(self):
@@ -68,6 +69,10 @@ class Lexicon(abst.AbstractMongoRecord):
 
     def entry_set(self):
         return LexiconEntrySet({"parent_lexicon": self.name})
+
+
+class LexiconSet(abst.AbstractMongoSet):
+    recordClass = Lexicon
 
 
 class Dictionary(Lexicon):
@@ -106,9 +111,19 @@ class LexiconEntry(abst.AbstractMongoRecord):
         "orig_word",
         "orig_ref",
         "catane_number",
-        "rid"
+        "rid",
+        "strong_numbers",
+        "GK",
+        "TWOT",
+        'peculiar',
+        'all_cited',
+        'ordinal',
+        'brackets',
+        'headword_suffix',
+        'root',
+        'occurrences'
     ]
-    ALLOWED_TAGS    = ("i", "b", "br", "u", "strong", "em", "big", "small", "img", "sup", "span", "a")
+    ALLOWED_TAGS    = ("i", "b", "br", "u", "strong", "em", "big", "small", "img", "sup", "sub", "span", "a")
     ALLOWED_ATTRS   = {
         'span':['class', 'dir'],
         'i': ['data-commentator', 'data-order', 'class', 'data-label', 'dir'],
@@ -141,8 +156,10 @@ class DictionaryEntry(LexiconEntry):
         return text
 
     def headword_string(self):
-        return ', '.join(
-            ['<strong dir="rtl">{}</strong>'.format(hw) for hw in [self.headword] + getattr(self, 'alt_headwords', [])])
+        headwords = [self.headword] + getattr(self, 'alt_headwords', [])
+        string = ', '.join(
+            ['<strong dir="rtl">{}</strong>'.format(hw) for hw in headwords])
+        return string
 
     def word_count(self):
         return JaggedTextArray(self.as_strings()).word_count()
@@ -192,6 +209,9 @@ class DictionaryEntry(LexiconEntry):
             new_content += next_line
         return [new_content]
 
+    def get_alt_headwords(self):
+        return getattr(self, "alt_headwords", [])
+
 
 class StrongsDictionaryEntry(DictionaryEntry):
     required_attrs = DictionaryEntry.required_attrs + ["content", "strong_number"]
@@ -199,6 +219,15 @@ class StrongsDictionaryEntry(DictionaryEntry):
 
 class RashiDictionaryEntry(DictionaryEntry):
     required_attrs = DictionaryEntry.required_attrs + ["content", "orig_word", "orig_ref", "catane_number"]
+
+
+class HebrewDictionaryEntry(DictionaryEntry):
+    required_attrs = DictionaryEntry.required_attrs + ["rid"]
+
+    def headword_string(self):
+        headwords = [self.headword] + getattr(self, 'alt_headwords', [])
+        string = ', '.join([f'<strong><big>{hw}</big></strong>' for hw in headwords]) + '\xa0\xa0'
+        return string
 
 
 class JastrowDictionaryEntry(DictionaryEntry):
@@ -241,6 +270,92 @@ class KleinDictionaryEntry(DictionaryEntry):
             text += sense.get(field, '') + ' '
         return text[:-1]
 
+class BDBEntry(DictionaryEntry):
+    required_attrs = DictionaryEntry.required_attrs + ["content", "rid"]
+    optional_attrs = ['strong_numbers', 'next_hw', 'prev_hw', 'peculiar', 'all_cited', 'ordinal', 'brackets', 'headword_suffix', 'alt_headwords', 'root', 'occurrences', 'quotes', 'GK', 'TWOT']
+
+    def headword_string(self):
+        hw = f'<span dir="rtl">{re.sub("[⁰¹²³⁴⁵⁶⁷⁸⁹]*", "", self.headword)}</span>'
+        if hasattr(self, 'occurrences') and not hasattr(self, 'headword_suffix'):
+            hw += f'</big><sub>{self.occurrences}</sub><big>' #the sub shouldn't be in big
+        alts = []
+        if hasattr(self, 'alt_headwords'):
+            for alt in self.alt_headwords:
+                a = f'<span dir="rtl">{alt["word"]}</span>'
+                if 'occurrences' in alt:
+                    a += f'</big><sub>{alt["occurrences"]}</sub><big>' #the sub shouldn't be in big
+                alts.append(a)
+        if getattr(self, 'brackets', '') == 'all':
+            if hasattr(self, 'headword_suffix'):
+                hw = f'[{hw}{self.headword_suffix}]' #if there's a space, it'll be part of headword_suffix
+                if hasattr(self, 'occurrences'):
+                    hw += f'</big><sub>{self.occurrences}</sub><big>'
+            else:
+                hw = f'[{", ".join([hw] + alts)}]'
+        else:
+            if hasattr(self, 'brackets') and self.brackets == 'first_word':
+                hw = f'[{hw}]'
+            if hasattr(self, 'alt_headwords'):
+                hw = ", ".join([hw] + alts)
+        hw = f'<big>{hw}</big>'
+        if hasattr(self, 'root'):
+            hw = re.sub('(</?big>)', r'\1\1', hw)
+        if hasattr(self, 'ordinal'):
+            hw = f'{self.ordinal} {hw}'
+        if hasattr(self, 'all_cited'):
+            hw = f'† {hw}'
+        if hasattr(self, 'peculiar'):
+            hw = f'‡ {hw}'
+        hw = re.sub('<big></big>', '', hw)
+        return hw
+
+    def get_alt_headwords(self):
+        alts = getattr(self, "alt_headwords", [])
+        return [a['word'] for a in alts]
+
+    def get_sense(self, sense):
+        string = ''
+        if 'note' in sense:
+            string = '<em>Note.</em>'
+        if 'pre_num' in sense:
+            string += f"{sense['pre_num']} "
+        if 'all_cited' in sense:
+            string += '†'
+        if 'form' in sense:
+            if 'note' in sense:
+                string += f' {sense["num"]}'
+            else:
+                string += f'<strong>{sense["form"]}</strong>'
+        elif 'num' in sense:
+            string += f'<strong>{sense["num"]}</strong>'
+        if 'occurrences' in sense:
+            string += f'<sub>{sense["occurrences"]}</sub>'
+        string += ' '
+        if 'definition' in sense:
+            return string + sense['definition']
+        else:
+            senses = []
+            for s in sense['senses']:
+                subsenses = self.get_sense(s)
+                if type(subsenses) == list:
+                    senses += subsenses
+                else:
+                    senses.append(subsenses)
+            senses[0] = string + senses[0]
+            return senses
+
+    def as_strings(self, with_headword=True):
+        strings = []
+        for sense in self.content['senses']:
+            sense = self.get_sense(sense)
+            if type(sense) == list:
+                strings.append(' '.join(sense))
+            else:
+                strings.append(sense)
+        if with_headword:
+            strings[0] = self.headword_string() + ' ' + strings[0]
+        return ['<br>'.join(strings)]
+
 
 class LexiconEntrySubClassMapping(object):
     lexicon_class_map = {
@@ -249,6 +364,10 @@ class LexiconEntrySubClassMapping(object):
         'Jastrow Dictionary': JastrowDictionaryEntry,
         "Jastrow Unabbreviated" : JastrowDictionaryEntry,
         'Klein Dictionary': KleinDictionaryEntry,
+        'Sefer HaShorashim': HebrewDictionaryEntry,
+        'Animadversions by Elias Levita on Sefer HaShorashim': HebrewDictionaryEntry,
+        'BDB Dictionary': BDBEntry,
+        'BDB Aramaic Dictionary': BDBEntry
     }
 
     @classmethod
