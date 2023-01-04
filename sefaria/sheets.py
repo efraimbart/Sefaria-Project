@@ -32,7 +32,7 @@ from sefaria.utils.hebrew import is_hebrew
 from sefaria.system.exceptions import InputError, DuplicateRecordError
 from sefaria.system.cache import django_cache
 from .history import record_sheet_publication, delete_sheet_publication
-from .settings import SEARCH_INDEX_ON_SAVE
+from .settings import SEARCH_INDEX_ON_SAVE, DISCOURSE_HOST, DISCOURSE_API_KEY
 from . import search
 from sefaria.google_storage_manager import GoogleStorageManager
 import re
@@ -256,6 +256,9 @@ def annotate_displayed_collections(sheets):
 				sheet["displayedCollectionName"] = collection.name
 
 	return sheets
+
+
+# def get_discourse_user_
 
 
 def annotate_user_links(sources):
@@ -489,6 +492,7 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 				nextNode += 1
 			checked_sources.append(source)
 		sheet["sources"] = checked_sources
+		# create_discourse_topic_for_sheet(user_id, sheet)
 
 	if status_changed and not new_sheet:
 		if sheet["status"] == "public" and "datePublished" not in sheet:
@@ -550,6 +554,19 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 			logger.error("Failed index on " + str(sheet["id"]))
 
 	return sheet
+
+
+def create_discourse_topic_for_sheet(user_id, sheet):
+	from pydiscourse import DiscourseClient
+
+	profile = UserProfile(id=user_id)
+
+	client = DiscourseClient(DISCOURSE_HOST, api_username="system", api_key=DISCOURSE_API_KEY)
+	discourse_user = client.user_by_external_id(profile.id)
+
+	client = DiscourseClient(DISCOURSE_HOST, api_username=discourse_user["username"], api_key=DISCOURSE_API_KEY)
+	topic = client.create_post("This is a test because we need a body, why? I cannot say.", title=sheet["title"])
+	sheet["discourseTopicId"] = topic["topic_id"]
 
 
 def is_valid_source(source):
@@ -1180,6 +1197,7 @@ class Sheet(abstract.AbstractMongoRecord):
         "sheetLanguage",
         "ownerImageUrl",   # TODO this shouldn't be stored on sheets, but it is for many
         "ownerProfileUrl", # TODO this shouldn't be stored on sheets, but it is for many
+		"discourseTopicId",
 	]
 
 	def _sanitize(self):
