@@ -30,7 +30,7 @@ class Sheet extends Component {
     const sheet = this.getSheetFromCache();
 
     if (sheet.discourseTopicId) {
-      window.DiscourseEmbed = { discourseUrl: 'http://localhost:4200/',
+      window.DiscourseEmbed = { discourseUrl: 'https://discuss.seforim.app/',
                        /* discourseEmbedUrl: 'http://localhost:8000/sheets/' + this.props.id */ topicId: sheet.discourseTopicId/*,
       discourseReferrerPolicy: 'unsafe-url'*/};
 

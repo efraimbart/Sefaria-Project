@@ -4,6 +4,7 @@ sheets.py - backend core for Sefaria Source sheets
 
 Writes to MongoDB Collection: sheets
 """
+
 from sefaria.client.util import jsonResponse
 import sys
 import hashlib
@@ -17,6 +18,8 @@ from functools import wraps
 from bson.son import SON
 from collections import defaultdict
 from pymongo.errors import DuplicateKeyError
+from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
 import uuid
 
 import sefaria.model as model
@@ -45,6 +48,9 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 
 import structlog
 logger = structlog.get_logger(__name__)
+
+current_site = Site.objects.get_current()
+domain       = current_site.domain
 
 
 def get_sheet(id=None):
@@ -512,7 +518,6 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 				source["media"] = duped_image_url
 			checked_sources.append(source)
 		sheet["sources"] = checked_sources
-		# create_discourse_topic_for_sheet(user_id, sheet)
 
 	if status_changed and not new_sheet:
 		if sheet["status"] == "public" and "datePublished" not in sheet:
@@ -551,6 +556,10 @@ def save_sheet(sheet, user_id, search_override=False, rebuild_nodes=False):
 			except DuplicateKeyError:
 				pass
 
+		sheet["discourseTopicId"] = create_discourse_topic_for_sheet(user_id, sheet)
+		db.sheets.update_one({"id": sheet["id"]}, {"$set": {"discourseTopicId": sheet["discourseTopicId"]}})
+
+
 	else:
 		db.sheets.find_one_and_replace({"id": sheet["id"]}, sheet)
 
@@ -585,8 +594,9 @@ def create_discourse_topic_for_sheet(user_id, sheet):
 	discourse_user = client.user_by_external_id(profile.id)
 
 	client = DiscourseClient(DISCOURSE_HOST, api_username=discourse_user["username"], api_key=DISCOURSE_API_KEY)
-	topic = client.create_post("This is a test because we need a body, why? I cannot say.", title=sheet["title"])
-	sheet["discourseTopicId"] = topic["topic_id"]
+	topic = client.create_post(f'<iframe src="http://{current_site.domain}{reverse("sheet", args=[sheet["id"]])}?embed=1" '
+							   f'width="1000" height="500"></iframe>', title=sheet["title"])
+	return topic["topic_id"]
 
 
 def is_valid_source(source):

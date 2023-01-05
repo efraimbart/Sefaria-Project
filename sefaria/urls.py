@@ -69,7 +69,7 @@ urlpatterns += [
 # Source Sheet Builder
 urlpatterns += [
     url(r'^sheets/new/?$', sheets_views.new_sheet),
-    url(r'^sheets/(?P<sheet_id>\d+)$', sheets_views.view_sheet),
+    url(r'^sheets/(?P<sheet_id>\d+)$', sheets_views.view_sheet, name='sheet'),
     url(r'^sheets/visual/(?P<sheet_id>\d+)$', sheets_views.view_visual_sheet),
 ]
 
