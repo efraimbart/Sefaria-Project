@@ -42,7 +42,7 @@ from sefaria.system.cache import in_memory_cache
 from sefaria.client.util import jsonResponse, subscribe_to_list, send_email, read_webpack_bundle
 from sefaria.forms import SefariaNewUserForm, SefariaNewUserFormAPI
 from sefaria.settings import MAINTENANCE_MESSAGE, USE_VARNISH, MULTISERVER_ENABLED, RTC_SERVER,\
-    DISCOURSE_CONNECT_SECRET, DISCOURSE_HOST
+    DISCOURSE_CONNECT_SECRET, DISCOURSE_HOST, DISCOURSE_API_KEY
 from sefaria.model.user_profile import UserProfile, user_link
 from sefaria.model.collection import CollectionSet
 from sefaria.export import export_all as start_export_all
@@ -1127,6 +1127,19 @@ def library_stats(request):
 
 def core_link_stats(request):
     return HttpResponse(get_core_link_stats(), content_type="text/csv")
+
+
+def discuss_user(request, username):
+    from pydiscourse import DiscourseClient
+
+    client = DiscourseClient(DISCOURSE_HOST, api_username="system", api_key=DISCOURSE_API_KEY)
+    # TODO: Change to use external ids?
+    user_emails =  client.user_emails(username)
+    # discourse_user = client.user(username)
+    profile = UserProfile(email=user_emails['email'])
+
+    return redirect("/profile/%s" % profile.slug)
+
 
 @staff_member_required
 def run_tests(request):

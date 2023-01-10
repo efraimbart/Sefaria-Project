@@ -438,6 +438,11 @@ urlpatterns += [
     url(r'^gauth/callback$', gauth_views.auth_return, name="gauth_callback"),
 ]
 
+# Discuss redirects
+urlpatterns += [
+    url(r'^discuss/u/(?P<username>[^/]+)', sefaria_views.discuss_user)
+]
+
 # Site specific URLS loaded from
 urlpatterns += site_urlpatterns
 
