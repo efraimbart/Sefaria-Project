@@ -167,7 +167,6 @@ def sso(request):
     # import django.contrib.auth.views as django_auth_views
 
     logout = request.GET.get("logout") == "true"
-
     if logout:
         # referrer = request.META.get("HTTP_REFERER", "/")
         # logout_view = django_auth_views.LogoutView
@@ -229,6 +228,10 @@ def sso(request):
     return redirect(f"{DISCOURSE_HOST}/session/sso_login"
                     f"?sso={return_payload_base64_encoded}"
                     f"&sig={return_payload_signature}")
+
+
+def sso_check(request):
+    return jsonResponse({'sso': request.user.is_authenticated()})
 
 
 def maintenance_message(request):
