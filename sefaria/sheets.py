@@ -594,8 +594,11 @@ def create_discourse_topic_for_sheet(user_id, sheet):
 	discourse_user = client.user_by_external_id(profile.id)
 
 	client = DiscourseClient(DISCOURSE_HOST, api_username=discourse_user["username"], api_key=DISCOURSE_API_KEY)
-	topic = client.create_post(f'<iframe src="http://{current_site.domain}{reverse("sheet", args=[sheet["id"]])}?embed=1" '
-							   f'width="1000" height="500"></iframe>', title=sheet["title"])
+	url = f'https://{current_site.domain}{reverse("sheet", args=[sheet["id"]])}'
+	topic = client.create_post(
+		f'<iframe src="{url}?embed=1&discourse=1" width="1000" height="500"></iframe>', # To add a fake button to take back to source: \r\n\r\n[![lengthxwidth](upload://jdWZsW5jlFp2aGbedyStU1iIgVf.png)]({url})
+		title=sheet["title"], embed_url=url, external_id=sheet["id"]
+	)
 	return topic["topic_id"]
 
 

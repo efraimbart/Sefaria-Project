@@ -52,6 +52,12 @@ $(window).on("beforeunload", function() {
 	}
 });
 
+if (sjs.discourse) {
+	$(window).on("load", function() {
+		window.parent.postMessage({ height: document.body.scrollHeight }, "*");
+	});
+}
+
 //hide dixed bottom message when scrolled to the bottom of the page so footer is visible
 $(window).scroll(function() {
   var fixedBottom = $("#fileControls");

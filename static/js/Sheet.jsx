@@ -26,21 +26,6 @@ class Sheet extends Component {
   componentDidMount() {
     this.$container = $(ReactDOM.findDOMNode(this));
     this.ensureData();
-
-    const sheet = this.getSheetFromCache();
-
-    if (sheet.discourseTopicId) {
-      window.DiscourseEmbed = { discourseUrl: 'https://discuss.seforim.app/',
-                       /* discourseEmbedUrl: 'http://localhost:8000/sheets/' + this.props.id */ topicId: sheet.discourseTopicId/*,
-      discourseReferrerPolicy: 'unsafe-url'*/};
-
-      (function() {
-        const d = document.createElement('script');
-        d.type = 'text/javascript'; d.async = true;
-        d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-      })();
-    }
   }
   getSheetFromCache() {
     return Sefaria.sheets.loadSheetByID(this.props.id);
@@ -113,6 +98,21 @@ class Sheet extends Component {
       content = (<LoadingMessage />);
     }
     else {
+      if (!this.embeddedDiscourse && sheet.discourseTopicId) {
+        this.embeddedDiscourse = true;
+
+        window.DiscourseEmbed = { discourseUrl: 'https://discuss.seforim.app/',
+                         /* discourseEmbedUrl: 'http://localhost:8000/sheets/' + this.props.id */ topicId: sheet.discourseTopicId/*,
+        discourseReferrerPolicy: 'unsafe-url'*/};
+  
+        (function() {
+          const d = document.createElement('script');
+          d.type = 'text/javascript'; d.async = true;
+          d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+        })();
+      }
+
       content = (
             <SheetContent
           sheetNotice={sheet.sheetNotice}

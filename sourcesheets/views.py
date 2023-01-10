@@ -192,8 +192,9 @@ def view_sheet(request, sheet_id, editorMode = False):
     """
     editor = request.GET.get('editor', '0')
     embed = request.GET.get('embed', '0')
+    discourse = request.GET.get('discourse', '0')
 
-    if editor != '1' and embed !='1' and editorMode is False:
+    if editor != '1' and embed != '1' and editorMode is False:
         return catchall(request, sheet_id, True)
 
     sheet_id = int(sheet_id)
@@ -233,11 +234,12 @@ def view_sheet(request, sheet_id, editorMode = False):
         "sheetJSON": json.dumps(sheet),
         "sheet": sheet,
         "sheet_class": sheet_class,
-        "can_edit": can_edit_flag,
-        "can_add": can_add_flag,
+        "can_edit": discourse != '1' and can_edit_flag,
+        "can_add": discourse != '1' and can_add_flag,
+        "discourse": discourse == '1',
         "title": sheet["title"],
         "author": author,
-        "is_owner": request.user.id == sheet["owner"],
+        "is_owner": discourse != '1' and request.user.id == sheet["owner"],
         "sheet_collections": sheet_collections,
         "displayed_collection":  displayed_collection,
         "like_count": like_count,

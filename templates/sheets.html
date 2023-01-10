@@ -580,8 +580,8 @@
     {% else %}
         {{ sheet_class|default:'hebrew' }}
     {% endif %}
-" role="main">
-    {% if not user.email %}
+" role="main" {% if discourse %} style="min-height: auto;" {% endif %}>
+    {% if not user.email and not discourse %}
 	<div id="fileControls">
         <div id="fileControlMsg">
             <span class="int-en">
@@ -605,6 +605,9 @@
             <a href="#"><img id="collectionHeader"/></a>
 		{% endif %}
 	</div>
+
+    {% if not discourse %}
+
 	<div id="title" role="heading" aria-level="1">
 		{% autoescape off %}
             {% with title_t=title|default:_("Loading...") %}
@@ -642,7 +645,9 @@
 	</div>
 	{% endif %}
 
-	{% if not new_sheet %}
+    {% endif %}
+
+	{% if not new_sheet and not discourse %}
 
     <details id="sheetMetadata">
     <summary>
@@ -904,6 +909,8 @@
 	</div>
 	{% endif %}
 
+	{% if not discourse %}
+
 	<div id="printFooter">
 		<img src="{% static 'img/samekh.png' %}">
 		<div>
@@ -956,6 +963,8 @@
     </div>
 	{% endif %}
 </div>
+{% endif %}
+
 {% endif %}
 
 <div id="belowSheet"></div>
@@ -1474,6 +1483,7 @@
 		can_edit: {% if can_edit %}true{% else %}false{% endif %},
         can_add: {% if can_add %}true{% else %}false{% endif %},
 		is_owner: {% if is_owner %}true{% else %}false{% endif %},
+		discourse: {% if discourse %}true{% else %}false{% endif %},
 		editing: {},
 		ref: {},
 		loading: 0,
