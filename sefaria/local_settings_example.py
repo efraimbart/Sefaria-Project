@@ -151,11 +151,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #    "MANDRILL_API_KEY": "your api key",
 # }
 
+MONGO_CONNECTION_STRING = ""
+# Leave host and port empty if using a connection string
 MONGO_HOST = "localhost"
 MONGO_PORT = 27017
 # Name of the MongoDB database to use.
 SEFARIA_DB = 'sefaria'
-# Leave user and password blank if not using Mongo Auth
+# Leave user and password blank if not using Mongo Auth or if using a connection string
 SEFARIA_DB_USER = ''
 SEFARIA_DB_PASSWORD = ''
 APSCHEDULER_NAME = "apscheduler"

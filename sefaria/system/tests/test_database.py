@@ -37,7 +37,10 @@ def test_test_db():
 
 
 def get_test_connection():
-    connection = pymongo.Connection(MONGO_HOST)
+    if MONGO_CONNECTION_STRING:
+        connection = pymongo.Connection(MONGO_CONNECTION_STRING)
+    else:
+        connection = pymongo.Connection(MONGO_HOST)
     db = connection[d.TEST_DB]
     if SEFARIA_DB_USER and SEFARIA_DB_PASSWORD:
         db.authenticate(SEFARIA_DB_USER, SEFARIA_DB_PASSWORD)

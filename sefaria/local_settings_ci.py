@@ -58,13 +58,16 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+MONGO_CONNECTION_STRING = ""
+
+# Leave host and port empty if using a connection string
 MONGO_HOST = "localhost"
 MONGO_PORT = 27017
 
 # Name of the MongoDB database to use.
 SEFARIA_DB = os.getenv('MONGO_DB_NAME')
 
-# Leave user and password blank if not using Mongo Auth
+# Leave user and password blank if not using Mongo Auth or if using a connection string
 SEFARIA_DB_USER = ''
 SEFARIA_DB_PASSWORD = ''
 APSCHEDULER_NAME = "apscheduler"
