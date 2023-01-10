@@ -176,6 +176,11 @@ class CORSDebugMiddleware(MiddlewareMixin):
             response["Access-Control-Allow-Origin"] = "*"
             response["Access-Control-Allow-Methods"] = "POST, GET"
             response["Access-Control-Allow-Headers"] = "*"
+
+        # Override for discourse subdomain 
+        # TODO: Consider doing this properly via a plugin just for the necessary endpoint or using jsonp.
+        response["Access-Control-Allow-Credentials"] = 'true' # DISCOURSE_HOST
+        response["Access-Control-Allow-Origin"] = 'https://discuss.seforim.app' # DISCOURSE_HOST
         return response
 
 
