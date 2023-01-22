@@ -69,7 +69,7 @@ data:
     }
 
     # Commenting server portion out out default vcl_hash.
-    # calls to sefaria.org and sefaria.org.il will be cached together.
+    # calls to sefaria.org and seforim.app will be cached together.
     sub vcl_hash {
         hash_data(req.url);
         # if (req.http.host) {

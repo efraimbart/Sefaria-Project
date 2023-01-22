@@ -6,9 +6,9 @@ You can find outputs of our entire database in [Sefaria-Export](https://github.c
 
 Interested developers should join the [sefaria-dev mailing list](https://groups.google.com/forum/#!forum/sefaria-dev).
 
-For general discussion questions about the project, please email [hello@sefaria.org](mailto:hello@sefaria.org).
+For general discussion questions about the project, please email [hello@seforim.app](mailto:hello@seforim.app).
 
-If you find textual problems in our library, please email [corrections@sefaria.org](mailto:corrections@sefaria.org).
+If you find textual problems in our library, please email [corrections@seforim.app](mailto:corrections@seforim.app).
 
 You can post bugs or request/discuss features on [GitHub Issues](https://github.com/sefaria/Sefaria-Project/issues?direction=desc&page=1&sort=created&state=open). Tackling an issue marked as a "Starter Project" is a good way to sink your teeth into Sefaria.
 

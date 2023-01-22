@@ -446,11 +446,11 @@ const UserInBeitMidrash = ({user, userClasses, startChat, onBlockUser, setVideoC
 const BeitMidrashFooter = () => {
     return(<div className="beitMidrashHomeFooter">
             <p className="int-en">
-                Questions? Email <a href="mailto:hello@sefaria.org" target="_blank">hello@sefaria.org</a>
+                Questions? Email <a href="mailto:hello@seforim.app" target="_blank">hello@seforim.app</a>
             </p>
 
             <p className="int-he">
-                לשאלות פנו/כתבו לדוא"ל <a href="mailto:hello@sefaria.org" target="_blank">hello@sefaria.org</a>
+                לשאלות פנו/כתבו לדוא"ל <a href="mailto:hello@seforim.app" target="_blank">hello@seforim.app</a>
             </p>
         </div>
     )
@@ -1065,12 +1065,12 @@ const BlockReportModal = ({showBlockReportModal, onClose, setBlockedUsers, setCu
         he: "אחרי ביצוע השתקה למשתמש זה, לא תראו עוד את המשתמש בבית המדרש ולא תקבלו יותר הודעות או הזמנות לשיחות וידאו ממשתמש זה."
     }
     const actionCompleteDescription = {
-        en: "Your request has been completed. If you need further assistance, please email hello@sefaria.org.",
-        he: "בקשתכם הושלמה. אם אתם זקוקים לעזרה נוספת, אנא פנו באימייל לכתובת hello@sefaria.org."
+        en: "Your request has been completed. If you need further assistance, please email hello@seforim.app.",
+        he: "בקשתכם הושלמה. אם אתם זקוקים לעזרה נוספת, אנא פנו באימייל לכתובת hello@seforim.app."
     }
     const muteFailedDescription = {
-        en: "Mute Failed. If you need further assistance, please email hello@sefaria.org.",
-        he: "Mute Failed. אם אתם זקוקים לעזרה נוספת, אנא פנו באימייל לכתובת hello@sefaria.org."
+        en: "Mute Failed. If you need further assistance, please email hello@seforim.app.",
+        he: "Mute Failed. אם אתם זקוקים לעזרה נוספת, אנא פנו באימייל לכתובת hello@seforim.app."
     }
 
     const closeAndReset = () => {

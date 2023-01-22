@@ -72,7 +72,7 @@ def get_links(ref, server="", msg=False):
         return []
 
 
-def get_text(ref, lang="", versionTitle="", server="http://draft.sefaria.org"):
+def get_text(ref, lang="", versionTitle="", server="http://draft.seforim.app"):
     ref = ref.replace(" ", "_")
     versionTitle = versionTitle.replace(" ", "_")
     url = '{}/api/texts/{}'.format(server, ref)

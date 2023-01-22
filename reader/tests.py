@@ -30,13 +30,13 @@ c = Client()
 
 class SefariaTestCase(TestCase):
     def make_test_user(self):
-        user = User.objects.create_user(username="test@sefaria.org", email='test@sefaria.org', password='!!!')
+        user = User.objects.create_user(username="test@seforim.app", email='test@seforim.app', password='!!!')
         user.set_password('!!!')
         user.first_name = "Test"
         user.last_name = "Testerberg"
         user.is_staff = True
         user.save()
-        c.login(email="test@sefaria.org", password="!!!")
+        c.login(email="test@seforim.app", password="!!!")
 
     def in_cache(self, title):
         self.assertTrue(title in library.full_title_list())

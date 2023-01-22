@@ -41,7 +41,7 @@ data:
       server {
         listen 80;
         listen [::]:80;
-        server_name sefaria.org sefaria.org.il;
+        server_name seforim.app;
         return 301 https://www.$host$request_uri;
       }
 

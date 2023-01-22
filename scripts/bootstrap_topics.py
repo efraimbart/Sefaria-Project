@@ -881,7 +881,7 @@ def recat_toc():
             "Slug": t.slug,
             "Description": getattr(t, 'description', {}).get('en', ''),
             "Order": getattr(t, 'displayOrder', '10000'),
-            'Link': f'topics-dev.sandbox.sefaria.org/topics/{t.slug}'
+            'Link': f'topics-dev.sandbox.seforim.app/topics/{t.slug}'
         }
         # old_slug = getattr(t, 'alt_ids', {}).get('_old_slug', None)
         # if old_slug:
@@ -1007,7 +1007,7 @@ def fix_recat_toc():
         if not Topic().load({"slug": row["Slug"]}):
             print("No Topic for", row["Slug"])
         else:
-            row["Link"] = "topics-dev.sandbox.sefaria.org/topics/{}".format(row["Slug"])
+            row["Link"] = "topics-dev.sandbox.seforim.app/topics/{}".format(row["Slug"])
 
     with open("data/fixed_recat_toc.csv", "w") as fout:
         c = csv.DictWriter(fout, c.fieldnames)
@@ -1040,7 +1040,7 @@ def recat_law():
                 "Num Sources": c.numSources,
                 "Order": i,
                 "Slug": c.slug,
-                "Link": "topics-dev.sandbox.sefaria.org/topics/" + c.slug,
+                "Link": "topics-dev.sandbox.seforim.app/topics/" + c.slug,
                 "Description": getattr(c, 'description', {}).get('en', '')
             }]
     with open('data/recat_law.csv', 'w') as fout:
@@ -1253,7 +1253,7 @@ def find_ambiguous_topics():
                 "Disambiguation En": "",
                 "Disambiguation He": "",
                 "Other Titles": " | ".join([tit['text'] for tit in t.titles if not tit.get('primary', False)]),
-                "Link": "topics-dev.sandbox.sefaria.org/topics/{}".format(t.slug)
+                "Link": "topics-dev.sandbox.seforim.app/topics/{}".format(t.slug)
             }
             if len(t.titles) > max_titles:
                 max_titles = len(t.titles)
@@ -1286,7 +1286,7 @@ def more_title_changes():
             "En": t.get_primary_title('en'),
             "He": t.get_primary_title('he'),
             "Slug": t.slug,
-            "Link": f"topics-dev.sandbox.sefaria.org/topics/{t.slug}",
+            "Link": f"topics-dev.sandbox.seforim.app/topics/{t.slug}",
             "New En": "",
             "New He": "",
         }]
@@ -1324,7 +1324,7 @@ def more_rabbi_matching_oh_boy():
             'Slug': t.slug,
             'En': t.get_primary_title('en'),
             'He': t.get_primary_title('he'),
-            'Link': f'topics-dev.sandbox.sefaria.org/topics/{t.slug}'
+            'Link': f'topics-dev.sandbox.seforim.app/topics/{t.slug}'
         })
         for p in props:
             pval, _ = t.get_property(p)
@@ -1543,7 +1543,7 @@ def make_desc_csv():
             "He": t.get_primary_title('he'),
             "Desc En": t.description['en'],
             "Desc He": t.description['he'],
-            "Link": "topics-dev.sandbox.sefaria.org/topics/{}".format(t.slug)
+            "Link": "topics-dev.sandbox.seforim.app/topics/{}".format(t.slug)
         }]
     with open("data/edit_descriptions.csv", "w") as fout:
         c = csv.DictWriter(fout, ['Slug', 'En', 'He', 'Desc En', 'Desc He', 'Link'])

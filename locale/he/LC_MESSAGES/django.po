@@ -641,14 +641,14 @@ msgid ""
 "\t\tSefaria is a free living library of Jewish texts. Collections on Sefaria "
 "help you easily build and share collections of source sheets you create or "
 "find on Sefaria.<br>.\n"
-"\t\tFeel free to send any questions over <a href=\"mailto:hello@sefaria.org"
+"\t\tFeel free to send any questions over <a href=\"mailto:hello@seforim.app"
 "\">email</a>.\n"
 "\t\t"
 msgstr ""
 "\n"
 "\t\tספריא היא ספרייה חיה של מקורות יהודיים. \"האסופות של ספריא\" מאפשרות לך "
 "להכין בקלות אסופות של דפי מקורות שיצרת או שאחרים יצרו, ולשתף אותן.<br>\n"
-"\t\tבכל שאלה אפשר בשמחה לשלוח אלינו <a href=\"mailto:hello@sefaria.org\">דוא"
+"\t\tבכל שאלה אפשר בשמחה לשלוח אלינו <a href=\"mailto:hello@seforim.app\">דוא"
 "\"ל</a>.\n"
 "\t\t"
 
@@ -690,7 +690,7 @@ msgid " Hello %(recipient)s, "
 msgstr " שלום %(recipient)s, "
 
 #: templates/email/notifications_email.html:9
-msgid " Here's some new activity on Sefaria that you may have missed."
+msgid " Here's some new activity on Seforim.app that you may have missed."
 msgstr "להלן מעט מהעדכונים האחרונים שיתכן ופספסת בספריא"
 
 #: templates/explore.html:4
@@ -875,9 +875,9 @@ msgstr "קישור לאיפוס סיסמא נשלח"
 #: templates/registration/password_reset_email.txt:3
 msgid ""
 "A request has been made to reset the password for this email address on "
-"Sefaria.org."
+"seforim.app."
 msgstr ""
-"בקשה התקבלה במערכת לאיפוס ססמת משתמש בעל כתובת מייל זו באתר sefaria.org.il"
+"בקשה התקבלה במערכת לאיפוס ססמת משתמש בעל כתובת מייל זו באתר seforim.app.il"
 
 #: templates/registration/password_reset_email.html:6
 #: templates/registration/password_reset_email.txt:5
@@ -899,7 +899,7 @@ msgid "Request a link to change your Sefaria password if you've forgotten it."
 msgstr "שכחתם סיסמא? ספריא יכולה לשלוח קישור לאיפוס סיסמת החשבון שלכם."
 
 #: templates/registration/password_reset_subject.txt:2
-msgid "Sefaria.org Password Reset"
+msgid "Seforim.app Password Reset"
 msgstr "איפוס סיסמא"
 
 #: templates/registration/register.html:4

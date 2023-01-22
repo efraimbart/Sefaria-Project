@@ -6,7 +6,7 @@ from fuzzywuzzy import process, fuzz
 from fuzzywuzzy import utils as fuzzyutils
 from sefaria.model import *
 
-url_base = 'http://www.sefaria.org/'
+url_base = 'http://www.seforim.app/'
 
 def laaz_process(s):
     return fuzzyutils.full_process(re.sub(r'[\":]','', s), False)

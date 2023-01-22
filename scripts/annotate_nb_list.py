@@ -41,7 +41,7 @@ with open("data/private/nationbuilder-people-export-2017-09-01-1120.csv", 'r') a
       organization        = profile.organization
       position            = profile.position
       jewish_education    = ". ".join(profile.jewish_education)
-      profile_url         = "https://www.sefaria.org/profile/%s" % profile.slug
+      profile_url         = "https://www.seforim.app/profile/%s" % profile.slug
 
       new_row = row + [
                         has_account, 

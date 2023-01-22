@@ -146,7 +146,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Example using anymail, replaces block above
 # EMAIL_BACKEND = 'anymail.backends.mandrill.EmailBackend'
-# DEFAULT_FROM_EMAIL = "Sefaria <hello@sefaria.org>"
+# DEFAULT_FROM_EMAIL = "Sefaria <hello@seforim.app>"
 # ANYMAIL = {
 #    "MANDRILL_API_KEY": "your api key",
 # }

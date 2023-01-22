@@ -842,7 +842,7 @@ def search(request):
         "initialSheetSearchSortType": search_params["sheetSort"]
     }
     return render_template(request,'base.html', props, {
-        "title":     (search_params["query"] + " | " if search_params["query"] else "") + _("Sefaria Search"),
+        "title":     (search_params["query"] + " | " if search_params["query"] else "") + _("Seforim.app Search"),
         "desc":      _("Search 3,000 years of Jewish texts in Hebrew and English translation.")
     })
 
@@ -867,7 +867,7 @@ def public_collections(request):
     props.update({
         "collectionListing": CollectionSet.get_collection_listing(request.user.id)
     })
-    title = _("Sefaria Collections")
+    title = _("Seforim.app Collections")
     return menu_page(request, props, "collectionsPublic")
 
 
@@ -928,7 +928,7 @@ def collection_page(request, slug):
     del props["collectionData"]["lastModified"]
 
     return render_template(request, 'base.html', props, {
-        "title": collection.name + " | " + _("Sefaria Collections"),
+        "title": collection.name + " | " + _("Seforim.app Collections"),
         "desc": props["collectionData"].get("description", ""),
         "noindex": not getattr(collection, "listed", False)
     })
@@ -1040,7 +1040,7 @@ def calendars(request):
 @login_required
 def saved(request):
     title = _("My Saved Content")
-    desc = _("See your saved content on Sefaria")
+    desc = _("See your saved content on Seforim.app")
     profile = UserProfile(user_obj=request.user)
     props = {"saved": {"loaded": True, "items": profile.get_history(saved=True, secondary=False, serialized=True, annotate=True, limit=20)}}
     return menu_page(request, props, page="saved", title=title, desc=desc)
@@ -1054,12 +1054,12 @@ def user_history(request):
         uhistory = _get_anonymous_user_history(request)
     props = {"userHistory": {"loaded": True, "items": uhistory}}
     title = _("My User History")
-    desc = _("See your user history on Sefaria")
+    desc = _("See your user history on Seforim.app")
     return menu_page(request, props, page="history", title=title, desc=desc)
 
 
 def updates(request):
-    title = _("New Additions to the Sefaria Library")
+    title = _("New Additions to the Seforim.app Library")
     desc  = _("See texts, translations and connections that have been recently added to Sefaria.")
     return menu_page(request, page="updates", title=title, desc=desc)
 
@@ -1073,7 +1073,7 @@ def user_stats(request):
 @login_required
 def notifications(request):
     # Notifications content is not rendered server side
-    title = _("Sefaria Notifications")
+    title = _("Seforim.app Notifications")
     notifications = UserProfile(user_obj=request.user).recent_notifications()
     props = {
         "notifications": notifications.client_contents(),
@@ -1093,11 +1093,11 @@ def canonical_url(request):
 
     path = request.get_full_path()
     if request.interfaceLang == "hebrew":
-        host = "https://www.sefaria.org.il"
+        host = "https://www.seforim.app"
         # Default params for texts, text toc, and text category
         path = re.sub("\?lang=he(&aliyot=0)?$", "", path)
     else:
-        host = "https://www.sefaria.org"
+        host = "https://www.seforim.app"
         # Default params for texts, text toc, and text category
         path = re.sub("\?lang=bi(&aliyot=0)?$", "", path)
 
@@ -1250,7 +1250,7 @@ def edit_text_info(request, title=None, new_title=None):
         if not (request.user.is_staff or user_started_text(request.user.id, title)):
             return render_template(request,'static/generic.html', None, {
                 "title": "Permission Denied",
-                "content": "The Text Info for %s is locked.<br><br>Please email hello@sefaria.org if you believe edits are needed." % title
+                "content": "The Text Info for %s is locked.<br><br>Please email hello@seforim.app if you believe edits are needed." % title
             })
         indexJSON = json.dumps(i.contents() if "toc" in request.GET else i.contents())
         versions = VersionSet({"title": title})
@@ -1666,7 +1666,7 @@ def index_api(request, title, raw=False):
         j["title"] = title.replace("_", " ")
         #todo: move this to texts_api, pass the changes down through the tracker and text chunk
         #if "versionTitle" in j:
-        #    if j["versionTitle"] == "Sefaria Community Translation":
+        #    if j["versionTitle"] == "Seforim.app Community Translation":
         #        j["license"] = "CC0"
         #        j["licenseVetter"] = True
         if not request.user.is_authenticated:
@@ -1683,7 +1683,7 @@ def index_api(request, title, raw=False):
                 library.get_index(title)  # getting the index just to tell if it exists
                 # Only allow staff and the person who submitted a text to edit
                 if not request.user.is_staff and not user_started_text(request.user.id, title):
-                   return jsonResponse({"error": "{} is protected from change.<br/><br/>See a mistake?<br/>Email hello@sefaria.org.".format(title)})
+                   return jsonResponse({"error": "{} is protected from change.<br/><br/>See a mistake?<br/>Email hello@seforim.app.".format(title)})
             except BookNameError:
                 pass  # if this is a new text, allow any logged in user to submit
         @csrf_protect
@@ -2010,7 +2010,7 @@ def links_api(request, link_id_or_ref=None):
             return jsonResponse({"error": "No link id given for deletion."})
 
         if not user.is_staff:
-            return jsonResponse({"error": "Only Sefaria Moderators can delete links."})
+            return jsonResponse({"error": "Only Seforim.app Moderators can delete links."})
 
         try:
             ref = Ref(link_id_or_ref)
@@ -2290,7 +2290,7 @@ def lock_text_api(request, title, lang, version):
     To unlock, include the URL parameter "action=unlock"
     """
     if not request.user.is_staff:
-        return jsonResponse({"error": "Only Sefaria Moderators can lock texts."})
+        return jsonResponse({"error": "Only Seforim.app Moderators can lock texts."})
 
     title   = title.replace("_", " ")
     version = version.replace("_", " ")
@@ -2328,7 +2328,7 @@ def flag_text_api(request, title, lang, version):
             return jsonResponse({"error": "Unrecognized API key."})
         user = User.objects.get(id=apikey["uid"])
         if not user.is_staff:
-            return jsonResponse({"error": "Only Sefaria Moderators can flag texts."})
+            return jsonResponse({"error": "Only Seforim.app Moderators can flag texts."})
 
         flags = json.loads(request.POST.get("json"))
         title   = title.replace("_", " ")
@@ -2424,7 +2424,7 @@ def category_api(request, path=None):
                 return jsonResponse({"error": "Unrecognized API key."})
             user = User.objects.get(id=apikey["uid"])
             if not user.is_staff:
-                return jsonResponse({"error": "Only Sefaria Moderators can add or delete categories."})
+                return jsonResponse({"error": "Only Seforim.app Moderators can add or delete categories."})
             uid = apikey["uid"]
             kwargs = {"method": "API"}
         elif request.user.is_staff:
@@ -2432,7 +2432,7 @@ def category_api(request, path=None):
             kwargs = {}
             _internal_do_post = csrf_protect(_internal_do_post)
         else:
-            return jsonResponse({"error": "Only Sefaria Moderators can add or delete categories."})
+            return jsonResponse({"error": "Only Seforim.app Moderators can add or delete categories."})
 
         j = request.POST.get("json")
         if not j:
@@ -2544,7 +2544,7 @@ def terms_api(request, name):
                 return jsonResponse({"error": "Unrecognized API key."})
             user = User.objects.get(id=apikey["uid"])
             if not user.is_staff:
-                return jsonResponse({"error": "Only Sefaria Moderators can add or edit terms."})
+                return jsonResponse({"error": "Only Seforim.app Moderators can add or edit terms."})
             uid = apikey["uid"]
             kwargs = {"method": "API"}
         elif request.user.is_staff:
@@ -2552,7 +2552,7 @@ def terms_api(request, name):
             kwargs = {}
             _internal_do_post = csrf_protect(_internal_do_post)
         else:
-            return jsonResponse({"error": "Only Sefaria Moderators can add or edit terms."})
+            return jsonResponse({"error": "Only Seforim.app Moderators can add or edit terms."})
 
         return jsonResponse(_internal_do_post(request, uid))
 
@@ -2760,7 +2760,7 @@ def updates_api(request, gid=None):
                 return jsonResponse({"error": "Unrecognized API key."})
             user = User.objects.get(id=apikey["uid"])
             if not user.is_staff:
-                return jsonResponse({"error": "Only Sefaria Moderators can add announcements."})
+                return jsonResponse({"error": "Only Seforim.app Moderators can add announcements."})
 
             payload = json.loads(request.POST.get("json"))
             try:
@@ -2964,7 +2964,7 @@ def texts_history_api(request, tref, lang=None, version=None):
             summary["editors"].update([act["user"]])
         elif act["rev_type"] == "review":
             summary["reviewers"].update([act["user"]])
-        elif act["version"] == "Sefaria Community Translation":
+        elif act["version"] == "Seforim.app Community Translation":
             summary["translators"].update([act["user"]])
         else:
             summary["copiers"].update([act["user"]])
@@ -3007,7 +3007,7 @@ def topics_page(request):
     }
     return render_template(request, 'base.html', props, {
         "title":          _("Topics") + " | " + _("Sefaria"),
-        "desc":           _("Explore Jewish Texts by Topic on Sefaria"),
+        "desc":           _("Explore Jewish Texts by Topic on Seforim.app"),
     })
 
 
@@ -3108,7 +3108,7 @@ def topics_api(request, topic, v2=False):
         return jsonResponse(response, callback=request.GET.get("callback", None))
     elif request.method == "POST":
         if not request.user.is_staff:
-            return jsonResponse({"error": "Adding topics is locked.<br><br>Please email hello@sefaria.org if you believe edits are needed."})
+            return jsonResponse({"error": "Adding topics is locked.<br><br>Please email hello@seforim.app if you believe edits are needed."})
         topic_data = json.loads(request.POST["json"])
         topic_obj = Topic().load({'slug': topic_data["origSlug"]})
         topic_obj.data_source = "sefaria"   #any topic edited manually should display automatically in the TOC and this flag ensures this
@@ -3260,7 +3260,7 @@ def global_activity(request, page=1):
     if page > 40:
         return render_template(request,'static/generic.html', None, {
             "title": "Activity Unavailable",
-            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@sefaria.org'>email us</a>."
+            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
         })
 
     if "api" in request.GET:
@@ -3303,7 +3303,7 @@ def user_activity(request, slug, page=1):
     if page > 40:
         return render_template(request,'static/generic.html', None, {
             "title": "Activity Unavailable",
-            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@sefaria.org'>email us</a>."
+            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
         })
 
     q              = {"user": profile.id}
@@ -3449,8 +3449,8 @@ def user_profile(request, username):
         "initialProfile": requested_profile.to_api_dict(),
         "initialTab": tab,
     }
-    title = _("%(full_name)s on Sefaria") % {"full_name": requested_profile.full_name}
-    desc = _('%(full_name)s is on Sefaria. Follow to view their public source sheets, notes and translations.') % {"full_name": requested_profile.full_name}
+    title = _("%(full_name)s on Seforim.app") % {"full_name": requested_profile.full_name}
+    desc = _('%(full_name)s is on Seforim.app. Follow to view their public source sheets, notes and translations.') % {"full_name": requested_profile.full_name}
     return render_template(request,'base.html', props, {
         "title":          title,
         "desc":           desc,
@@ -3655,7 +3655,7 @@ def profile_sync_api(request):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def delete_user_account_api(request):
-    # Deletes the user and emails sefaria staff for followup
+    # Deletes the user and emails Seforim.app staff for followup
     if not request.user.is_authenticated:
         return jsonResponse({"error": _("You must be logged in to delete your account.")})
     uid = request.user.id
@@ -3675,7 +3675,7 @@ def delete_user_account_api(request):
         logger.error("User {} deletion failed. {}".format(uid, e))
         response = jsonResponse({"error": "There was an error deleting the account", "user": user_email})
 
-    EmailMultiAlternatives(email_subject, email_msg, from_email="Sefaria System <dev@sefaria.org>", to=["Sefaria <hello@sefaria.org>"], reply_to=[reply_email if reply_email else "hello@sefaria.org"]).send()
+    EmailMultiAlternatives(email_subject, email_msg, from_email="Seforim.app System <dev@seforim.app>", to=["Seforim.app <hello@seforim.app>"], reply_to=[reply_email if reply_email else "hello@seforim.app"]).send()
     return response
 
 
@@ -3802,8 +3802,8 @@ def community_page(request, props={}):
     """
     Community Page
     """
-    title = _("From the Community: Today on Sefaria")
-    desc  = _("New and featured source sheets, divrei torah, articles, sermons and more created by members of the Sefaria community.")
+    title = _("From the Community: Today on seforim.app")
+    desc  = _("New and featured source sheets, divrei torah, articles, sermons and more created by members of the Seforim.app community.")
     data  = community_page_data(request, language=request.interfaceLang)
     data.update(props) # don't overwrite data that was passed n with props
     return menu_page(request, page="community", props=data, title=title, desc=desc)
@@ -3960,7 +3960,7 @@ def daf_yomi_redirect(request):
 
 def random_ref(categories=None, titles=None):
     """
-    Returns a valid random ref within the Sefaria library.
+    Returns a valid random ref within the Seforim.app library.
     """
 
     # refs = library.ref_list()
@@ -4119,7 +4119,7 @@ def random_by_topic_api(request):
 def dummy_search_api(request):
     # Thou shalt upgrade thine app or thou shalt not glean the results of search thou seeketh
     # this api is meant to information users of the old search.sefaria.org to upgrade their apps to get search to work again
-    were_sorry = "We're sorry, but your version of the app is no longer compatible with our new search. We recommend you upgrade the Sefaria app to fully enjoy all it has to offer <br> עמכם הסליחה, אך גרסת האפליקציה הנמצאת במכשירכם איננה תואמת את מנוע החיפוש החדש. אנא עדכנו את אפליקצית ספריא להמשך שימוש בחיפוש"
+    were_sorry = "We're sorry, but your version of the app is no longer compatible with our new search. We recommend you upgrade the Seforim.app app to fully enjoy all it has to offer <br> עמכם הסליחה, אך גרסת האפליקציה הנמצאת במכשירכם איננה תואמת את מנוע החיפוש החדש. אנא עדכנו את אפליקצית ספריא להמשך שימוש בחיפוש"
     resp = jsonResponse({
         "took": 613,
         "timed_out": False,
@@ -4223,7 +4223,7 @@ def serve_static_by_lang(request, page):
 
 def annual_report(request, report_year):
     pdfs = {
-        '2020': STATIC_URL + 'files/Sefaria 2020 Annual Report.pdf',
+        '2020': STATIC_URL + 'files/Seforim.app 2020 Annual Report.pdf',
         '2021': 'https://indd.adobe.com/embed/98a016a2-c4d1-4f06-97fa-ed8876de88cf?startpage=1&allowFullscreen=true',
     }
     if report_year not in pdfs:
@@ -4565,6 +4565,6 @@ def beit_midrash(request, slug):
 
     else:
         props = {"customBeitMidrashId": slug,}
-        title = _("Sefaria Beit Midrash")
+        title = _("Seforim.app Beit Midrash")
         desc  = _("The largest free library of Jewish texts available to read online in Hebrew and English including Torah, Tanakh, Talmud, Mishnah, Midrash, commentaries and more.")
         return menu_page(request, props, "navigation", title, desc)

@@ -375,18 +375,18 @@ localSettings:
   DEBUG: "False"
   DOMAIN_LANGUAGE: {}
     # https://www.sefaria.org: english
-    # https://www.sefaria.org.il: hebrew
+    # https://www.seforim.app: hebrew
   MONGO_HOST: "mongo"
   APSCHEDULER_NAME: "apscheduler-{{ .Values.deployEnv }}"
   SEARCH_ADMIN: "http://elasticsearch-data:9200"
   TURN_SERVER: ''
   USE_CLOUDFLARE: false
-  FRONT_END_URL: "http://www.sefaria.org"  # Use "http://${ENV_NAME}.sandbox.sefaria.org" in sandboxes and cauldrons
+  FRONT_END_URL: "http://www.seforim.app"  # Use "http://${ENV_NAME}.sandbox.sefaria.org" in sandboxes and cauldrons
   OFFLINE: "False"
   DOWN_FOR_MAINTENANCE: "False"
-  MAINTENANCE_MESSAGE: "Sefaria is down for scheduled maintenance. We expect to be back online within 15 minutes. Thank you for your patience."
+  MAINTENANCE_MESSAGE: "Seforim.app is down for scheduled maintenance. We expect to be back online within 15 minutes. Thank you for your patience."
   GLOBAL_WARNING: "False"
-  GLOBAL_WARNING_MESSAGE: "Sefaria will be in <b>Read-Only</b> mode for scheduled maintenance from 4:45pm-6:45pm Pacific time. Edits will <b>not</b> be saved during that time."
+  GLOBAL_WARNING_MESSAGE: "Seforim.app will be in <b>Read-Only</b> mode for scheduled maintenance from 4:45pm-6:45pm Pacific time. Edits will <b>not</b> be saved during that time."
   SITE_PACKAGE: "sites.sefaria"
-  DEFAULT_FROM_EMAIL: "Sefaria <hello@sefaria.org>"
-  SERVER_EMAIL: "dev@sefaria.org"
+  DEFAULT_FROM_EMAIL: "Seforim.app <hello@seforim.app>"
+  SERVER_EMAIL: "dev@seforim.app"
