@@ -95,7 +95,7 @@ class Footer extends Component {
                   <Link href={blgURL} en="Blog" he="בלוג" blank={true}/>
                   <br />
 
-                  <Link href="https://www.instagram.com/sefariaproject/" en="Instagram" he="אינסטגרם" />
+                  <Link href="https://www.instagram.com/seforimapp/" en="Instagram" he="אינסטגרם" />
                   &bull;
                   <Link href="mailto:hello@seforim.app" en="Email" he="דוא&quot;ל" />
               </div>

@@ -570,7 +570,7 @@ const GetTheApp = () => (
 
 
 const StayConnected = () => {
-  const fbURL = Sefaria.interfaceLang == "hebrew" ? "https://www.facebook.com/seforim.app" : "https://www.https://www.facebook.com/profile.php?id=100089914501501";
+  const fbURL = Sefaria.interfaceLang == "hebrew" ? "https://www.https://www.facebook.com/profile.php?id=100089914501501" : "https://www.https://www.facebook.com/profile.php?id=100089914501501";
 
   return (
     <Module>
@@ -582,15 +582,15 @@ const StayConnected = () => {
       <a target="_blank" className="button small white appButton iconOnly" href={fbURL}>
         <img src="/static/icons/facebook.svg" alt={Sefaria._("Sefaria on Facebook")} />
       </a>
-      <a target="_blank" className="button small white appButton iconOnly" href="https://twitter.com/SefariaProject">
+      <a target="_blank" className="button small white appButton iconOnly" href="https://twitter.com/seforimapp">
         <img src="/static/icons/twitter.svg" alt={Sefaria._("Sefaria on Twitter")} />
       </a>
-      <a target="_blank" className="button small white appButton iconOnly" href="https://www.instagram.com/sefariaproject">
+      <a target="_blank" className="button small white appButton iconOnly" href="https://www.instagram.com/seforimapp">
         <img src="/static/icons/instagram.svg" alt={Sefaria._("Sefaria on Instagram")} />
       </a>
-      <a target="_blank" className="button small white appButton iconOnly" href="https://www.youtube.com/user/SefariaProject">
+      {/* <a target="_blank" className="button small white appButton iconOnly" href="https://www.youtube.com/user/SefariaProject">
         <img src="/static/icons/youtube.svg" alt={Sefaria._("Sefaria on YouTube")} />
-      </a>
+      </a> */}
 
     </Module>
   );
