@@ -43,26 +43,24 @@ class Footer extends Component {
             <Section en="About" he="אודות">
                 <Link href="/about" en="What is Seforim.app?" he="מהי Seforim.app" />
                 <Link href="/collections/7GMAmJgl" en="Help" he="עזרה" />
-                <!-- <Link href="/team" en="Team" he="צוות" /> -->
-                <!-- <Link href="/testimonials" en="Testimonials" he="חוות דעת" /> -->
-                <!-- <Link href="/metrics" en="Metrics" he="מדדים" /> -->
-                <!-- <Link href="/annualreport/2021" en="Annual Report" he='דו"ח שנתי' /> -->
+                {/* <Link href="/team" en="Team" he="צוות" /> 
+                <Link href="/testimonials" en="Testimonials" he="חוות דעת" />
+                <Link href="/metrics" en="Metrics" he="מדדים" />
+                <Link href="/annualreport/2021" en="Annual Report" he='דו"ח שנתי' />*/}
                 <Link href="/terms" en="Terms of Use" he="תנאי שימוש" />
                 <Link href="/privacy-policy" en="Privacy Policy" he="מדיניות פרטיות" />
             </Section>
 
             <Section en="Tools" he="כלים">
-                <!-- <Link href="/educators" en="Teach with Seforim.app" he="מלמדים עם ספריא" />
+                {/* <Link href="/educators" en="Teach with Seforim.app" he="מלמדים עם ספריא" /> */}
                 <Link href="/calendars" en="Learning Schedules" he="לוח לימוד יומי" />
-                <!-- Commented until we can get this cleaned up <Link href="/sheets" en="Source Sheets" he="דפי מקורות" /> -->
-                <!-- Commented until we can get gardens cleaned up and kosher <Link href="/visualizations" en="Visualizations" he="תרשימים גרפיים" /> -->
-                <!-- <Link href="/mobile" en="Mobile Apps" he="ספריא בנייד" /> -->
-                <!-- <Link href="/daf-yomi" en="Daf Yomi" he="דף יומי" /> -->
-                <!-- <Link href="/torah-tab" en="Torah Tab" he="תורה טאב" /> -->
-                <!-- Commented till we remove the bad ones <Link href="/people" en="Authors" he="מחברים" /> -->
+                {/* <Link href="/mobile" en="Mobile Apps" he="ספריא בנייד" />
+                <Link href="/daf-yomi" en="Daf Yomi" he="דף יומי" />
+                <Link href="/torah-tab" en="Torah Tab" he="תורה טאב" />
+                Commented till we remove the bad ones <Link href="/people" en="Authors" he="מחברים" /> */}
                 <Link href="/collections" en="Collections" he="אסופות" />
-                <!-- Commented until we empty this out, start our own in place. They anyway have next to no updates recently <Link href="/updates" en="New Additions" he="עדכונים" /> -->
-                <!-- <Link href="/remote-learning" en="Remote Learning" he="למידה מרחוק" /> -->
+                {/* Commented until we empty this out, start our own in place. They anyway have next to no updates recently <Link href="/updates" en="New Additions" he="עדכונים" />
+                <Link href="/remote-learning" en="Remote Learning" he="למידה מרחוק" /> */}
             </Section>
 
             <Section en="Developers" he="מפתחים">
@@ -74,10 +72,10 @@ class Footer extends Component {
 
             <Section en="Join Us" he="הצטרפו אלינו">
                 <DonateLink source={"Footer"}><InterfaceText text={{en:"Donate", he:"תרומות"}}/></DonateLink>
-                <!-- Commented until we can get this cleaned up <Link href="/ways-to-give" en="Ways to Give" he="אפשרויות תרומה" /> -->
-                <!-- <Link href="/supporters" en="Supporters" he="תומכים" /> -->
-                <!-- <Link href="/jobs" en="Jobs" he="דרושים" /> -->
-                <!-- <Link href="https://store.sefaria.org" en="Shop" he="חנות" /> -->
+                {/* Commented until we can get this cleaned up <Link href="/ways-to-give" en="Ways to Give" he="אפשרויות תרומה" />
+                <Link href="/supporters" en="Supporters" he="תומכים" />
+                <Link href="/jobs" en="Jobs" he="דרושים" />
+                <Link href="https://store.sefaria.org" en="Shop" he="חנות" /> */}
             </Section>
 
           <div className="section last connect">
@@ -92,10 +90,10 @@ class Footer extends Component {
                   <Link href="https://twitter.com/seforimapp" en="Twitter" he="טוויטר" />
                   <br />
 
-                  <!-- Youtube is out of date anyway <Link href="https://www.youtube.com/user/SefariaProject" en="YouTube" he="יוטיוב" />
+                  {/*Youtube is out of date anyway <Link href="https://www.youtube.com/user/SefariaProject" en="YouTube" he="יוטיוב" /> */}
                   &bull;
                   <Link href={blgURL} en="Blog" he="בלוג" blank={true}/>
-                  <br /> -->
+                  <br />
 
                   <Link href="https://www.instagram.com/sefariaproject/" en="Instagram" he="אינסטגרם" />
                   &bull;
