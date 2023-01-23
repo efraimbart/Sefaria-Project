@@ -39,8 +39,8 @@ DATABASES = {
 # Map domain to an interface language that the domain should be pinned to.
 # Leave as {} to prevent language pinning, in which case one domain can serve either Hebrew or English
 DOMAIN_LANGUAGES = {
-    "http://hebrew.seforim.app": "hebrew",
-    "http://english.seforim.app": "english",
+    "http://hebrew.example.org": "hebrew",
+    "http://english.example.org": "english",
 }
 
 
