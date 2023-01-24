@@ -46,7 +46,7 @@ class TopicPageAll extends Component {
       {type: "Promo"},
       {type: "TrendingTopics"},
       {type: "JoinTheConversation"},
-      {type: "GetTheApp"},
+      /* {type: "GetTheApp"}, */
       {type: "SupportSefaria"},
     ];
 

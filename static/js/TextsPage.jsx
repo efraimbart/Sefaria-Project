@@ -92,7 +92,7 @@ const TextsPage = ({categories, settings, setCategories, onCompareBack, openSear
     {type: "Translations"},
     {type: "LearningSchedules"},
     {type: "JoinTheCommunity"},
-    {type: "Resources"},
+    /* {type: "Resources"}, */
   ];
 
   const footer = compare ? null : <Footer />;
@@ -140,7 +140,7 @@ const Dedication = () => {
 
     function get_google_sheet_data() {
       const url =
-        'https://docs.google.com/spreadsheets/d/11c9Yw9FdfLnfbIWqvUztCt-QICW5790dfFGgXH7IB1k/edit#gid=0';
+        'https://docs.google.com/spreadsheets/d/1SwfFKSyGH4fkzUXZWJGbqdtNrpcxHtR7aM-AiAkRxJg/edit#gid=0';
       const query = new google.visualization.Query(url);
       query.setQuery('select A, B, C');
       query.send(processSheetsData);
