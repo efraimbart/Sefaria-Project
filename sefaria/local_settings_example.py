@@ -214,6 +214,7 @@ ENABLE_LINKER = False
 
 # Caching with Cloudflare
 CLOUDFLARE_ZONE = ""
+# Leave email empty if using an api token instead of an api key
 CLOUDFLARE_EMAIL = ""
 CLOUDFLARE_TOKEN = ""
 
