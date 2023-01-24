@@ -23,7 +23,7 @@ class SefariaSiteMapGenerator(object):
 
     hostnames = {
         'org': {'interfaceLang': 'en', 'hostname':'https://www.seforim.app'},
-        'org.il': {'interfaceLang': 'he', 'hostname':'https://www.seforim.app'},
+        'org.il': {'interfaceLang': 'he', 'hostname':'https://www.seforim.org.il'},
     }
     static_urls = [
         "",

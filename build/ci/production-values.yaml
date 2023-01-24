@@ -96,19 +96,19 @@ varnish:
     enabled: true
 ingress:
   hosts: 
-    - host: "sefaria.org"
-      path: /*
-      serviceName: nginx
-      port: 80
     - host: "seforim.app"
       path: /*
       serviceName: nginx
       port: 80
-    - host: "www.sefaria.org"
+    - host: "seforim.org.il"
       path: /*
       serviceName: nginx
       port: 80
     - host: "www.seforim.app"
+      path: /*
+      serviceName: nginx
+      port: 80
+    - host: "www.seforim.org.il"
       path: /*
       serviceName: nginx
       port: 80
@@ -169,8 +169,8 @@ localSettings:
   DEBUG: false
   OFFLINE: "False"
   DOMAIN_LANGUAGE: {
-    "https://www.sefaria.org": "english",
-    "https://www.seforim.app": "hebrew",
+    "https://www.seforim.app": "english",
+    "https://www.seforim.org.il": "hebrew",
   }
   MONGO_HOST: "mongo"
   APSCHEDULER_NAME: "apscheduler-{{ .Values.deployEnv }}"

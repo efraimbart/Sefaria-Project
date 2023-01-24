@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: reader/templatetags/Seforim.app_tags.py:228 Seforim.app/settings.py:22
+#: reader/templatetags/sefaria.org_tags.py:228 sefaria.org/settings.py:22
 msgid "English"
 msgstr ""
 
-#: reader/templatetags/Seforim.app_tags.py:229 Seforim.app/settings.py:23
+#: reader/templatetags/sefaria.org_tags.py:229 sefaria.org/settings.py:23
 msgid "Hebrew"
 msgstr ""
 
-#: reader/templatetags/Seforim.app_tags.py:230
+#: reader/templatetags/sefaria.org_tags.py:230
 msgid "Bilingual"
 msgstr ""
 
