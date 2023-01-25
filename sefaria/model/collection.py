@@ -282,7 +282,7 @@ class Collection(abst.AbstractMongoRecord):
         finally:
             translation.activate(curr_lang)
         subject       = _("%(name)s invited you to a collection on Sefaria") % {'name': inviter.full_name}
-        from_email    = "Sefaria <hello@sefaria.org>"
+        from_email    = "Sefaria <hello@seforim.app>"
         to            = email
 
         msg = EmailMultiAlternatives(subject, message_html, from_email, [to])

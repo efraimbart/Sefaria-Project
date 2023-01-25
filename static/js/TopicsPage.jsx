@@ -54,7 +54,7 @@ const TopicsPage = ({setNavTopic, multiPanel, initialWidth}) => {
     multiPanel ? {type: "AboutTopics"} : {type: null},
     {type: "TrendingTopics"},
     {type: "JoinTheConversation"},
-    {type: "GetTheApp"},
+    /* {type: "GetTheApp"} */,
     {type: "SupportSefaria"},
   ];
   let topicStatus = null;

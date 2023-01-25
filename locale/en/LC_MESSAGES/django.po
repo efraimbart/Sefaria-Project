@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: reader/templatetags/sefaria_tags.py:228 sefaria/settings.py:22
+#: reader/templatetags/sefaria.org_tags.py:228 sefaria.org/settings.py:22
 msgid "English"
 msgstr ""
 
-#: reader/templatetags/sefaria_tags.py:229 sefaria/settings.py:23
+#: reader/templatetags/sefaria.org_tags.py:229 sefaria.org/settings.py:23
 msgid "Hebrew"
 msgstr ""
 
-#: reader/templatetags/sefaria_tags.py:230
+#: reader/templatetags/sefaria.org_tags.py:230
 msgid "Bilingual"
 msgstr ""
 
@@ -48,11 +48,11 @@ msgstr ""
 #: templates/static/linker.html:4 templates/static/newsletter.html:4
 #: templates/static/privacy-policy.html:4 templates/static/terms.html:4
 #: templates/static/visualizations.html:4
-msgid "Sefaria"
+msgid "Seforim.app"
 msgstr ""
 
 #: reader/views.py:627
-msgid "A source sheet created with Sefaria's Source Sheet Builder"
+msgid "A source sheet created with Seforim.app's Source Sheet Builder"
 msgstr ""
 
 #: reader/views.py:664
@@ -60,11 +60,11 @@ msgid "Recently Viewed"
 msgstr ""
 
 #: reader/views.py:665
-msgid "Texts that you've recently viewed on Sefaria."
+msgid "Texts that you've recently viewed on Seforim.app."
 msgstr ""
 
 #: reader/views.py:671
-msgid " | Sefaria"
+msgid " | Seforim.app"
 msgstr ""
 
 #: reader/views.py:672
@@ -74,7 +74,7 @@ msgstr ""
 
 #: reader/views.py:704 reader/views.py:3049
 msgid ""
-"Texts & Source Sheets from Torah, Talmud and Sefaria's library of Jewish "
+"Texts & Source Sheets from Torah, Talmud and Seforim.app's library of Jewish "
 "sources."
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Jewish texts and source sheets about %(topic)s from Torah, Talmud and other "
-"sources in Sefaria's library."
+"sources in Seforim.app's library."
 msgstr ""
 
 #: reader/views.py:722
@@ -96,7 +96,7 @@ msgid ""
 msgstr ""
 
 #: reader/views.py:777
-msgid "Sefaria Search"
+msgid "Seforim.app Search"
 msgstr ""
 
 #: reader/views.py:778
@@ -104,12 +104,12 @@ msgid "Search 3,000 years of Jewish texts in Hebrew and English translation."
 msgstr ""
 
 #: reader/views.py:802 reader/views.py:866
-msgid "Sefaria Collections"
+msgid "Seforim.app Collections"
 msgstr ""
 
 #: reader/views.py:928 templates/static/aramaic-translation-contest.html:4
 #: templates/static/home.html:5 templates/static/shavuot-map-2018.html:4
-msgid "Sefaria: a Living Library of Jewish Texts Online"
+msgid "Seforim.app: a Living Library of Jewish Texts Online"
 msgstr ""
 
 #: reader/views.py:929 templates/static/aramaic-translation-contest.html:6
@@ -134,7 +134,7 @@ msgid "My Saved Content"
 msgstr ""
 
 #: reader/views.py:942
-msgid "See your saved content on Sefaria"
+msgid "See your saved content on Seforim.app"
 msgstr ""
 
 #: reader/views.py:955
@@ -142,17 +142,17 @@ msgid "My User History"
 msgstr ""
 
 #: reader/views.py:956
-msgid "See your user history on Sefaria"
+msgid "See your user history on Seforim.app"
 msgstr ""
 
 #: reader/views.py:961
-msgid "New Additions to the Sefaria Library"
+msgid "New Additions to the Seforim.app Library"
 msgstr ""
 
 #: reader/views.py:962
 msgid ""
 "See texts, translations and connections that have been recently added to "
-"Sefaria."
+"Seforim.app."
 msgstr ""
 
 #: reader/views.py:968
@@ -164,7 +164,7 @@ msgid "User Stats"
 msgstr ""
 
 #: reader/views.py:981
-msgid "Sefaria Notifications"
+msgid "Seforim.app Notifications"
 msgstr ""
 
 #: reader/views.py:991
@@ -184,18 +184,18 @@ msgid "Texts"
 msgstr ""
 
 #: reader/views.py:3020
-msgid "Explore Jewish Texts by Topic on Sefaria"
+msgid "Explore Jewish Texts by Topic on Seforim.app"
 msgstr ""
 
 #: reader/views.py:3330
 #, python-format
-msgid "%(full_name)s on Sefaria"
+msgid "%(full_name)s on Seforim.app"
 msgstr ""
 
 #: reader/views.py:3331
 #, python-format
 msgid ""
-"%(full_name)s is on Sefaria. Follow to view their public source sheets, "
+"%(full_name)s is on Seforim.app. Follow to view their public source sheets, "
 "notes and translations."
 msgstr ""
 
@@ -216,95 +216,95 @@ msgid "You must be logged in to update your profile photo."
 msgstr ""
 
 #: reader/views.py:3658
-msgid "From the Community: Today on Sefaria"
+msgid "From the Community: Today on Seforim.app"
 msgstr ""
 
 #: reader/views.py:3659
 msgid ""
 "New and featured source sheets, divrei torah, articles, sermons and more "
-"created by members of the Sefaria community."
+"created by members of the Seforim.app community."
 msgstr ""
 
-#: sefaria/forms.py:28 sefaria/forms.py:33 sefaria/forms.py:124
+#: Seforim.app/forms.py:28 Seforim.app/forms.py:33 Seforim.app/forms.py:124
 #: templates/static/aramaic-translation-contest.html:140
 #: templates/static/home.html:362 templates/static/newsletter.html:24
 msgid "Email Address"
 msgstr ""
 
-#: sefaria/forms.py:29 sefaria/forms.py:36 templates/account_settings.html:125
+#: Seforim.app/forms.py:29 Seforim.app/forms.py:36 templates/account_settings.html:125
 msgid "Password"
 msgstr ""
 
-#: sefaria/forms.py:34
+#: Seforim.app/forms.py:34
 msgid "First Name"
 msgstr ""
 
-#: sefaria/forms.py:35
+#: Seforim.app/forms.py:35
 msgid "Last Name"
 msgstr ""
 
-#: sefaria/forms.py:37
+#: Seforim.app/forms.py:37
 msgid "I am an educator"
 msgstr ""
 
-#: sefaria/forms.py:65
+#: Seforim.app/forms.py:65
 msgid "A user with that email already exists."
 msgstr ""
 
-#: sefaria/forms.py:117
+#: Seforim.app/forms.py:117
 msgid "Incorrect mobile_app_key provided"
 msgstr ""
 
-#: sefaria/forms.py:128
+#: Seforim.app/forms.py:128
 msgid "New password"
 msgstr ""
 
-#: sefaria/forms.py:129
+#: Seforim.app/forms.py:129
 msgid "Enter New Password"
 msgstr ""
 
-#: sefaria/forms.py:134
+#: Seforim.app/forms.py:134
 msgid "New password confirmation"
 msgstr ""
 
-#: sefaria/forms.py:136
+#: Seforim.app/forms.py:136
 msgid "Repeat New Password"
 msgstr ""
 
-#: sefaria/model/collection.py:93
+#: Seforim.app/model/collection.py:93
 msgid "Please set a name for your collection."
 msgstr ""
 
-#: sefaria/model/collection.py:117
+#: Seforim.app/model/collection.py:117
 msgid ""
 "A public collection with this name already exists. Please choose a different "
 "name before publishing."
 msgstr ""
 
-#: sefaria/model/collection.py:119
+#: Seforim.app/model/collection.py:119
 msgid ""
 "Public Collections are required to include a collection image (a square "
 "image will work best)."
 msgstr ""
 
-#: sefaria/model/collection.py:121
+#: Seforim.app/model/collection.py:121
 msgid "Public Collections are required to have at least 3 public sheets."
 msgstr ""
 
-#: sefaria/model/collection.py:284
+#: Seforim.app/model/collection.py:284
 #, python-format
-msgid "%(name)s invited you to a collection on Sefaria"
+msgid "%(name)s invited you to a collection on Seforim.app"
 msgstr ""
 
-#: sefaria/model/user_profile.py:281
+#: Seforim.app/model/user_profile.py:281
 msgid "A user with that email already exists"
 msgstr ""
 
-#: sefaria/model/user_profile.py:286
+#: Seforim.app/model/user_profile.py:286
 msgid "The email address is not valid."
 msgstr ""
 
-#: sefaria/views.py:187 sefaria/views.py:230 templates/static/app.html:383
+#: Seforim.app/views.py:187 Seforim.app/views.py:230 templates/static/app.html:383
 #: templates/static/aramaic-translation-contest.html:189
 #: templates/static/home.html:392 templates/static/mobile.html:387
 #: templates/static/newsletter.html:56
@@ -326,7 +326,7 @@ msgid "You must be logged in to access this api."
 msgstr ""
 
 #: templates/404.html:4
-msgid "Page Not Found | Sefaria"
+msgid "Page Not Found | Seforim.app"
 msgstr ""
 
 #: templates/500.html:4
@@ -346,22 +346,22 @@ msgid "Revision History of"
 msgstr ""
 
 #: templates/activity.html:9 templates/activity.html:11
-msgid "Sefaria Activity"
+msgid "Seforim.app Activity"
 msgstr ""
 
 #: templates/activity.html:17
-msgid "View the complete revision hisotry of this text on Sefaria."
+msgid "View the complete revision hisotry of this text on Seforim.app."
 msgstr ""
 
 #: templates/activity.html:19
 msgid ""
-"View a user's acitvitiy history on Sefaria, including published source "
+"View a user's acitvitiy history on Seforim.app, including published source "
 "sheets, and text translations, edits or additions."
 msgstr ""
 
 #: templates/activity.html:21
 msgid ""
-"View the complete log of public activity on Sefaria, including published "
+"View the complete log of public activity on Seforim.app, including published "
 "source sheets, and text translations, edits or additions. "
 msgstr ""
 
@@ -407,7 +407,7 @@ msgid "Flagged"
 msgstr ""
 
 #: templates/edit_collection.html:9
-msgid "Edit Collection on Sefaria"
+msgid "Edit Collection on Seforim.app"
 msgstr ""
 
 #: templates/edit_collection.html:20 templates/metrics.html:18
@@ -416,7 +416,7 @@ msgid "Loading..."
 msgstr ""
 
 #: templates/edit_profile.html:5
-msgid "Edit Your Profile on Sefaria"
+msgid "Edit Your Profile on Seforim.app"
 msgstr ""
 
 #: templates/elements/activity_feed.html:7
@@ -587,7 +587,7 @@ msgstr ""
 msgid ""
 "\n"
 "\t\t%(inviter)s invited you to contribute to the collection %(collection)s "
-"on Sefaria.\n"
+"on Seforim.app.\n"
 "\t\t"
 msgstr ""
 
@@ -596,17 +596,17 @@ msgstr ""
 msgid ""
 "\n"
 "\t\tTo accept this invitation, <a href=\"%(register)s\">create a free "
-"Sefaria account</a>.\n"
+"Seforim.app account</a>.\n"
 "\t\t"
 msgstr ""
 
 #: templates/email/collection_signup_invitation_email.html:24
 msgid ""
 "\n"
-"\t\tSefaria is a free living library of Jewish texts. Collections on Sefaria "
+"\t\tSeforim.app is a free living library of Jewish texts. Collections on Seforim.app "
 "help you easily build and share collections of source sheets you create or "
-"find on Sefaria.<br>.\n"
-"\t\tFeel free to send any questions over <a href=\"mailto:hello@sefaria.org"
+"find on Seforim.app.<br>.\n"
+"\t\tFeel free to send any questions over <a href=\"mailto:hello@seforim.app"
 "\">email</a>.\n"
 "\t\t"
 msgstr ""
@@ -649,19 +649,19 @@ msgid " Hello %(recipient)s, "
 msgstr ""
 
 #: templates/email/notifications_email.html:9
-msgid " Here's some new activity on Sefaria that you may have missed."
+msgid " Here's some new activity on Seforim.app that you may have missed."
 msgstr ""
 
 #: templates/explore.html:4
 msgid ""
-"Link Explorer - Visualized Connections Between Talmud and Tanakh | Sefaria"
+"Link Explorer - Visualized Connections Between Talmud and Tanakh | Seforim.app"
 msgstr ""
 
 #: templates/explore.html:4
 #, python-format
 msgid ""
 "Link Explorer - Visualized Connections Between %(bottomCatTitle)s and "
-"%(topCatTitle)s | Sefaria"
+"%(topCatTitle)s | Seforim.app"
 msgstr ""
 
 #: templates/explore.html:6
@@ -679,22 +679,22 @@ msgid ""
 msgstr ""
 
 #: templates/leaderboard.html:4
-msgid "Top Contributors | Sefaria"
+msgid "Top Contributors | Seforim.app"
 msgstr ""
 
 #: templates/leaderboard.html:6
 msgid ""
-"See who has been contributing most to Sefaria in terms of texts, "
+"See who has been contributing most to Seforim.app in terms of texts, "
 "translations, and source sheet."
 msgstr ""
 
 #: templates/metrics.html:5
-msgid "Sefaria Metrics"
+msgid "Seforim.app Metrics"
 msgstr ""
 
 #: templates/metrics.html:7
 msgid ""
-"See graphs charting Sefaria's progress since 2013 across metrics including "
+"See graphs charting Seforim.app's progress since 2013 across metrics including "
 "word counts, number of links and number of source sheets."
 msgstr ""
 
@@ -711,7 +711,7 @@ msgid "Words in Translation"
 msgstr ""
 
 #: templates/metrics.html:38
-msgid "Words of Original Translation created by Sefaria Volunteers"
+msgid "Words of Original Translation created by Seforim.app Volunteers"
 msgstr ""
 
 #: templates/metrics.html:39
@@ -740,12 +740,12 @@ msgid "Links"
 msgstr ""
 
 #: templates/people.html:5
-msgid "Authors on Sefaria"
+msgid "Authors on Seforim.app"
 msgstr ""
 
 #: templates/people.html:7
 msgid ""
-"Biographies and information about the authors of Jewish texts on Sefaria, "
+"Biographies and information about the authors of Jewish texts on Seforim.app, "
 "together with links to their available texts."
 msgstr ""
 
@@ -758,12 +758,12 @@ msgid "People in the Talmud"
 msgstr ""
 
 #: templates/profile.html:4
-msgid "on Sefaria"
+msgid "on Seforim.app"
 msgstr ""
 
 #: templates/profile.html:6
 msgid ""
-"is on Sefaria. Follow to view their public source sheets, notes and "
+"is on Seforim.app. Follow to view their public source sheets, notes and "
 "translations."
 msgstr ""
 
@@ -792,17 +792,17 @@ msgid "Cancel"
 msgstr ""
 
 #: templates/registration/logged_out.html:4
-msgid "Logged Out | Sefaria"
+msgid "Logged Out | Seforim.app"
 msgstr ""
 
 #: templates/registration/login.html:4
-msgid "Log in to Sefaria"
+msgid "Log in to Seforim.app"
 msgstr ""
 
 #: templates/registration/login.html:6
 msgid ""
-"Log in to your Sefaria account to make source sheets, write notes, and "
-"follow other Sefaria users."
+"Log in to your Seforim.app account to make source sheets, write notes, and "
+"follow other Seforim.app users."
 msgstr ""
 
 #: templates/registration/password_reset_complete.html:3
@@ -821,7 +821,7 @@ msgstr ""
 #: templates/registration/password_reset_email.txt:3
 msgid ""
 "A request has been made to reset the password for this email address on "
-"Sefaria.org."
+"Seforim.app."
 msgstr ""
 
 #: templates/registration/password_reset_email.html:6
@@ -839,11 +839,11 @@ msgid "Forgot your Password"
 msgstr ""
 
 #: templates/registration/password_reset_form.html:6
-msgid "Request a link to change your Sefaria password if you've forgotten it."
+msgid "Request a link to change your Seforim.app password if you've forgotten it."
 msgstr ""
 
 #: templates/registration/password_reset_subject.txt:2
-msgid "Sefaria.org Password Reset"
+msgid "Seforim.app Password Reset"
 msgstr ""
 
 #: templates/registration/register.html:4
@@ -852,7 +852,7 @@ msgstr ""
 
 #: templates/registration/register.html:6
 msgid ""
-"Create an account on Sefaria to make source sheets, take notes and follow "
+"Create an account on Seforim.app to make source sheets, take notes and follow "
 "other people."
 msgstr ""
 
@@ -867,16 +867,16 @@ msgid ""
 msgstr ""
 
 #: templates/sheets.html:7 templates/sheets_visual.html:4
-msgid "Start a New Sheet - Sefaria Source Sheet Builder"
+msgid "Start a New Sheet - Seforim.app Source Sheet Builder"
 msgstr ""
 
 #: templates/sheets.html:9 templates/sheets.html:10
-msgid "A source sheet created with Sefaria's Source Sheet Builder."
+msgid "A source sheet created with Seforim.app's Source Sheet Builder."
 msgstr ""
 
 #: templates/sheets.html:9 templates/sheets.html:10
 #: templates/sheets_visual.html:6
-msgid "Create your own source sheet with Sefaria's Source Sheet Builder."
+msgid "Create your own source sheet with Seforim.app's Source Sheet Builder."
 msgstr ""
 
 #: templates/sheets.html:624 templates/sheets.html:632
@@ -904,7 +904,7 @@ msgid "Paste URL"
 msgstr ""
 
 #: templates/sheets.html:910
-msgid "Made with the Sefaria Source Sheet Builder"
+msgid "Made with the Seforim.app Source Sheet Builder"
 msgstr ""
 
 #: templates/sheets.html:933
@@ -947,14 +947,14 @@ msgid "Visualized"
 msgstr ""
 
 #: templates/sheets_visual.html:4
-msgid "Sefaria Source Sheet Builder"
+msgid "Seforim.app Source Sheet Builder"
 msgstr ""
 
 #: templates/sheets_visual.html:6
 #, python-format
 msgid ""
 "Visual layout of a source sheet by %(sheet.owner|user_name)s created with "
-"Sefaria's Source Sheet Builder."
+"Seforim.app's Source Sheet Builder."
 msgstr ""
 
 #: templates/static/all_home.html:4 templates/static/all_home.html:6
@@ -962,11 +962,11 @@ msgid "TBD"
 msgstr ""
 
 #: templates/static/app.html:4
-msgid "Sefaria App"
+msgid "Seforim.app App"
 msgstr ""
 
 #: templates/static/app.html:6
-msgid "Download the free Sefaria App for iOS and Android."
+msgid "Download the free Seforim.app App for iOS and Android."
 msgstr ""
 
 #: templates/static/app.html:314 templates/static/mobile.html:318
@@ -995,44 +995,44 @@ msgid "Please enter a valid email address."
 msgstr ""
 
 #: templates/static/chavruta.html:4
-msgid "Chavruta on Sefaria"
+msgid "Chavruta on Seforim.app"
 msgstr ""
 
 #: templates/static/chavruta.html:6
-msgid "Video learning on Sefaria with a partner."
+msgid "Video learning on Seforim.app with a partner."
 msgstr ""
 
 #: templates/static/connect.html:4
-msgid "Sefaria Newsletter, Social Media and More"
+msgid "Seforim.app Newsletter, Social Media and More"
 msgstr ""
 
 #: templates/static/connect.html:6
 msgid ""
-"Get updates on new texts and features on Sefaria by signing up for our "
+"Get updates on new texts and features on Seforim.app by signing up for our "
 "newsletter or following us on social media."
 msgstr ""
 
 #: templates/static/contest.html:4 templates/static/contest.html:6
-msgid "Powered by Sefaria Contest"
+msgid "Powered by Seforim.app Contest"
 msgstr ""
 
 #: templates/static/contributed-to-sefaria.html:4
-msgid "Texts Contributed to Sefaria"
+msgid "Texts Contributed to Seforim.app"
 msgstr ""
 
 #: templates/static/contributed-to-sefaria.html:6
 msgid ""
-"Texts on Sefaria that list this page as their source were contributed "
-"directly to Sefaria and have not yet been published elsewhere in print or on "
+"Texts on Seforim.app that list this page as their source were contributed "
+"directly to Seforim.app and have not yet been published elsewhere in print or on "
 "the web."
 msgstr ""
 
 #: templates/static/daf-yomi.html:4
-msgid "Daf Yomi | Sefaria"
+msgid "Daf Yomi | Seforim.app"
 msgstr ""
 
 #: templates/static/daf-yomi.html:6
-msgid "Learn the Talmud each day with Daf Yomi on Sefaria."
+msgid "Learn the Talmud each day with Daf Yomi on Seforim.app."
 msgstr ""
 
 #: templates/static/dicta-thanks.html:4
@@ -1040,58 +1040,58 @@ msgid "Dicta Thanks"
 msgstr ""
 
 #: templates/static/dicta-thanks.html:6
-msgid "Sefaria thanks Dicta for all of their help."
+msgid "Seforim.app thanks Dicta for all of their help."
 msgstr ""
 
-#: templates/static/digitized-by-sefaria.html:4
-msgid "Texts Digitized by Sefaria"
+#: templates/static/digitized-by-Seforim.app.html:4
+msgid "Texts Digitized by Seforim.app"
 msgstr ""
 
 #: templates/static/educators.html:4 templates/static/educators.html:6
-msgid "Teach with Sefaria"
+msgid "Teach with Seforim.app"
 msgstr ""
 
 #: templates/static/en/about.html:4 templates/static/he/about.html:4
-msgid "About Sefaria"
+msgid "About Seforim.app"
 msgstr ""
 
 #: templates/static/en/about.html:6 templates/static/he/about.html:6
 msgid ""
-"Sefaria is a non-profit organization dedicated to building the future of "
+"Seforim.app is a non-profit organization dedicated to building the future of "
 "Jewish learning in an open and participatory way."
 msgstr ""
 
 #: templates/static/en/team.html:4 templates/static/he/team.html:4
-msgid "The Sefaria Team"
+msgid "The Seforim.app Team"
 msgstr ""
 
 #: templates/static/en/team.html:6 templates/static/he/team.html:6
-msgid "Sefaria's team is working to create the Jewish future."
+msgid "Seforim.app's team is working to create the Jewish future."
 msgstr ""
 
 #: templates/static/en/ways-to-give.html:5
 #: templates/static/he/ways-to-give.html:5
-msgid "Donate to Sefaria"
+msgid "Donate to Seforim.app"
 msgstr ""
 
 #: templates/static/en/ways-to-give.html:7
 #: templates/static/he/ways-to-give.html:7
 msgid ""
-"Support Sefaria by making a tax-deductible donation online or by check or "
+"Support Seforim.app by making a tax-deductible donation online or by check or "
 "wire transfer."
 msgstr ""
 
 #: templates/static/ios.html:4
-msgid "Sefaria iOS"
+msgid "Seforim.app iOS"
 msgstr ""
 
 #: templates/static/jobs.html:4
-msgid "Jobs at Sefaria"
+msgid "Jobs at Seforim.app"
 msgstr ""
 
 #: templates/static/jobs.html:6
 msgid ""
-"Job openings at Sefaria, a non-profit technology organization dedicated to "
+"Job openings at Seforim.app, a non-profit technology organization dedicated to "
 "building the Jewish future."
 msgstr ""
 
@@ -1102,24 +1102,24 @@ msgstr ""
 #: templates/static/linker.html:6
 msgid ""
 "Automatically turn citations on your website into links or dynamic popups "
-"with the full text from Sefaria."
+"with the full text from Seforim.app."
 msgstr ""
 
 #: templates/static/mobile.html:4
-msgid "Sefaria Mobile Apps"
+msgid "Seforim.app Mobile Apps"
 msgstr ""
 
 #: templates/static/mobile.html:6
-msgid "Download the free Sefaria Apps for iOS and Android."
+msgid "Download the free Seforim.app Apps for iOS and Android."
 msgstr ""
 
 #: templates/static/newsletter.html:4 templates/static/newsletter.html:6
-msgid "Sign up for Sefaria's Newsletter"
+msgid "Sign up for Seforim.app's Newsletter"
 msgstr ""
 
-#: templates/static/powered-by-sefaria-contest-2020.html:4
-#: templates/static/powered-by-sefaria-contest-2020.html:6
-msgid "Powered by Sefaria Contest 2020"
+#: templates/static/powered-by-Seforim.app-contest-2020.html:4
+#: templates/static/powered-by-Seforim.app-contest-2020.html:6
+msgid "Powered by Seforim.app Contest 2020"
 msgstr ""
 
 #: templates/static/privacy-policy.html:4
@@ -1132,40 +1132,40 @@ msgid "Ramban on Torah - Thank you to our Sponsors"
 msgstr ""
 
 #: templates/static/remote-learning.html:4
-msgid "Remote Learning | Sefaria"
+msgid "Remote Learning | Seforim.app"
 msgstr ""
 
 #: templates/static/remote-learning.html:6
 msgid "Resources for teaching and learning virtually."
 msgstr ""
 
-#: templates/static/sefaria-community-translation.html:4
-msgid "About Sefaria Community Translations"
+#: templates/static/Seforim.app-community-translation.html:4
+msgid "About Seforim.app Community Translations"
 msgstr ""
 
-#: templates/static/sefaria-community-translation.html:6
+#: templates/static/Seforim.app-community-translation.html:6
 msgid ""
-"Sefaria Community Translations are open, crowd-sourced translations of texts "
-"available in the Sefaria Library."
+"Seforim.app Community Translations are open, crowd-sourced translations of texts "
+"available in the Seforim.app Library."
 msgstr ""
 
-#: templates/static/sefaria-edition.html:4
-msgid "About Sefaria Editions"
+#: templates/static/Seforim.app-edition.html:4
+msgid "About Seforim.app Editions"
 msgstr ""
 
-#: templates/static/sefaria-edition.html:6
+#: templates/static/Seforim.app-edition.html:6
 msgid ""
-"The Sefaria Edition is a Sefaria commissioned translation created by "
+"The Seforim.app Edition is a Seforim.app commissioned translation created by "
 "professional translators."
 msgstr ""
 
 #: templates/static/sheets.html:4
-msgid "Sheets on Sefaria"
+msgid "Sheets on Seforim.app"
 msgstr ""
 
 #: templates/static/sheets.html:6
 msgid ""
-"Mix and match sources from Sefaria’s library of Jewish texts, and add your "
+"Mix and match sources from Seforim.app’s library of Jewish texts, and add your "
 "comments, images and videos."
 msgstr ""
 
@@ -1174,17 +1174,17 @@ msgid "In Memory of Rabbi Shraga Silverstein"
 msgstr ""
 
 #: templates/static/strategy.html:4
-msgid "Sefaria Strategy"
+msgid "Seforim.app Strategy"
 msgstr ""
 
 #: templates/static/supporters.html:4
-msgid "Sefaria's Supporters"
+msgid "Seforim.app's Supporters"
 msgstr ""
 
 #: templates/static/supporters.html:6
 msgid ""
-"Sefaria gratefully acknowledges the following donors whose generosity and "
-"leadership are making Sefaria possible."
+"Seforim.app gratefully acknowledges the following donors whose generosity and "
+"leadership are making Seforim.app possible."
 msgstr ""
 
 #: templates/static/terms.html:4
@@ -1192,27 +1192,27 @@ msgid "Terms of Use"
 msgstr ""
 
 #: templates/static/testimonials.html:4
-msgid "Sefaria Testimonials"
+msgid "Seforim.app Testimonials"
 msgstr ""
 
 #: templates/static/testimonials.html:6
-msgid "Sefaria’s Impact – Reflections and Insights from Users"
+msgid "Seforim.app’s Impact – Reflections and Insights from Users"
 msgstr ""
 
-#: templates/static/the-sefaria-story.html:4
-msgid "The Sefaria Story"
+#: templates/static/the-Seforim.app-story.html:4
+msgid "The Seforim.app Story"
 msgstr ""
 
-#: templates/static/the-sefaria-story.html:6
-msgid "Watch a video about the story of Sefaria."
+#: templates/static/the-Seforim.app-story.html:6
+msgid "Watch a video about the story of Seforim.app."
 msgstr ""
 
 #: templates/static/torah-tab.html:5
-msgid "Sefaria Torah Tab"
+msgid "Seforim.app Torah Tab"
 msgstr ""
 
 #: templates/static/torah-tab.html:7
-msgid "Install the free Sefaria Torah Tab for your web browser."
+msgid "Install the free Seforim.app Torah Tab for your web browser."
 msgstr ""
 
 #: templates/static/visualizations.html:4
@@ -1222,7 +1222,7 @@ msgstr ""
 #: templates/static/visualizations.html:6
 msgid ""
 "Projects which have been created to make interactive visualizations of the "
-"texts and connections in the Sefaria Library of Torah texts."
+"texts and connections in the Seforim.app Library of Torah texts."
 msgstr ""
 
 #: templates/static/william-davidson-talmud.html:4
@@ -1262,13 +1262,13 @@ msgid "Explore how unique and verbose biblical commentators were."
 msgstr ""
 
 #: templates/visual_library.html:4
-msgid "Visualizing the Sefaria Library"
+msgid "Visualizing the Seforim.app Library"
 msgstr ""
 
 #: templates/visual_library.html:6
 msgid ""
 "How big is Torah compared to Talmud? This sunburst diagram lets you see the "
-"number of words in the texts and categories of Sefaria's library (which is "
+"number of words in the texts and categories of Seforim.app's library (which is "
 "growing every day!)."
 msgstr ""
 

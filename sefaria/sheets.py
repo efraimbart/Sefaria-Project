@@ -652,7 +652,7 @@ def test():
 	for s in ss:
 		lang = get_sheet_language(s)
 		if lang == "some hebrew":
-			print("{}\thttps://www.sefaria.org/sheets/{}".format(strip_tags(s["title"]).replace("\n", ""), s["id"]))
+			print("{}\thttps://www.seforim.app/sheets/{}".format(strip_tags(s["title"]).replace("\n", ""), s["id"]))
 
 
 
@@ -827,7 +827,7 @@ def get_sheets_for_ref(tref, uid=None, in_collection=None):
 	results = []
 	for sheet in sheets:
 		anchor_ref_list, anchor_ref_expanded_list = oref.get_all_anchor_refs(segment_refs, sheet.get("includedRefs", []), sheet.get("expandedRefs", []))
-		ownerData = user_profiles.get(sheet["owner"], {'first_name': 'Ploni', 'last_name': 'Almoni', 'email': 'test@sefaria.org', 'slug': 'Ploni-Almoni', 'id': None, 'profile_pic_url_small': ''})
+		ownerData = user_profiles.get(sheet["owner"], {'first_name': 'Ploni', 'last_name': 'Almoni', 'email': 'test@seforim.app', 'slug': 'Ploni-Almoni', 'id': None, 'profile_pic_url_small': ''})
 
 		if "assigner_id" in sheet:
 			asignerData = public_user_data(sheet["assigner_id"])

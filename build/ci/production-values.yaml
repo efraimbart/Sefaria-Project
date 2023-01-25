@@ -96,19 +96,19 @@ varnish:
     enabled: true
 ingress:
   hosts: 
-    - host: "sefaria.org"
+    - host: "seforim.app"
       path: /*
       serviceName: nginx
       port: 80
-    - host: "sefaria.org.il"
+    - host: "seforim.org.il"
       path: /*
       serviceName: nginx
       port: 80
-    - host: "www.sefaria.org"
+    - host: "www.seforim.app"
       path: /*
       serviceName: nginx
       port: 80
-    - host: "www.sefaria.org.il"
+    - host: "www.seforim.org.il"
       path: /*
       serviceName: nginx
       port: 80
@@ -116,7 +116,7 @@ ingress:
       path: /*
       serviceName: nginx
       port: 80
-    - host: "prod.sefaria.org.il"
+    - host: "prod.seforim.app"
       path: /*
       serviceName: nginx
       port: 80
@@ -124,7 +124,7 @@ ingress:
       path: /*
       serviceName: nginx
       port: 80
-    - host: "rollout.sefaria.org.il"
+    - host: "rollout.seforim.app"
       path: /*
       serviceName: nginx
       port: 80
@@ -169,15 +169,15 @@ localSettings:
   DEBUG: false
   OFFLINE: "False"
   DOMAIN_LANGUAGE: {
-    "https://www.sefaria.org": "english",
-    "https://www.sefaria.org.il": "hebrew",
+    "https://www.seforim.app": "english",
+    "https://www.seforim.org.il": "hebrew",
   }
   MONGO_HOST: "mongo"
   APSCHEDULER_NAME: "apscheduler-{{ .Values.deployEnv }}"
   SEARCH_ADMIN: "http://elasticsearch-data:9200"
   TURN_SERVER: ''
   USE_CLOUDFLARE: false
-  FRONT_END_URL:  "http://www.sefaria.org" 
+  FRONT_END_URL:  "http://www.seforim.app" 
   OFFLINE: false
   DOWN_FOR_MAINTENANCE: false
   MAINTENANCE_MESSAGE: "Sefaria is down for scheduled maintenance. We expect to be back online within 15 minutes. Thank you for your patience."
@@ -185,6 +185,6 @@ localSettings:
   GLOBAL_WARNING_MESSAGE: "Sefaria will be in <b>Read-Only</b> mode for scheduled maintenance from 4:45pm-6:45pm Pacific time. Edits will <b>not</b> be saved during that time."
   SITE_PACKAGE: "sites.sefaria"
   SEARCH_HOST: elasticsearch.data  
-  DEFAULT_FROM_EMAIL: "Sefaria <hello@sefaria.org>"
-  SERVER_EMAIL: "dev@sefaria.org"
+  DEFAULT_FROM_EMAIL: "Sefaria <hello@seforim.app>"
+  SERVER_EMAIL: "dev@seforim.app"
 

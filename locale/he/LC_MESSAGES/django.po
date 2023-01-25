@@ -101,7 +101,7 @@ msgstr ""
 "ובשלל חיבורים נוספים."
 
 #: reader/views.py:777
-msgid "Sefaria Search"
+msgid "Seforim.app Search"
 msgstr "חיפוש בספריא"
 
 #: reader/views.py:778
@@ -111,7 +111,7 @@ msgstr ""
 "לאנגלית."
 
 #: reader/views.py:802 reader/views.py:866
-msgid "Sefaria Collections"
+msgid "Seforim.app Collections"
 msgstr "האסופות של ספריא"
 
 #: reader/views.py:928 templates/static/aramaic-translation-contest.html:4
@@ -155,7 +155,7 @@ msgid "See your user history on Sefaria"
 msgstr "צפייה בהיסטורית הגלישה בספריא"
 
 #: reader/views.py:961
-msgid "New Additions to the Sefaria Library"
+msgid "New Additions to the Seforim.app Library"
 msgstr "חידושים בארון הספרים של ספריא"
 
 #: reader/views.py:962
@@ -173,7 +173,7 @@ msgid "User Stats"
 msgstr "סטטיסטיקות משתמשים"
 
 #: reader/views.py:981
-msgid "Sefaria Notifications"
+msgid "Seforim.app Notifications"
 msgstr "הודעות בספריא"
 
 #: reader/views.py:991
@@ -233,7 +233,7 @@ msgstr "מן הקהילה: היום בספריא"
 #: reader/views.py:3659
 msgid ""
 "New and featured source sheets, divrei torah, articles, sermons and more "
-"created by members of the Sefaria community."
+"created by members of the Seforim.app community."
 msgstr ""
 "דפי מקורות חדשים ומומלצים, דברי תורה, מאמרים, דרשות ועוד הרבה חומרים "
 "מעניינים שיצרו חברי קהילת ספריא."
@@ -363,7 +363,7 @@ msgid "Revision History of"
 msgstr "היסטורית עריכה של"
 
 #: templates/activity.html:9 templates/activity.html:11
-msgid "Sefaria Activity"
+msgid "Seforim.app Activity"
 msgstr "פעילות בספריא"
 
 #: templates/activity.html:17
@@ -627,7 +627,7 @@ msgstr ""
 msgid ""
 "\n"
 "\t\tTo accept this invitation, <a href=\"%(register)s\">create a free "
-"Sefaria account</a>.\n"
+"Seforim.app account</a>.\n"
 "\t\t"
 msgstr ""
 "\n"
@@ -638,17 +638,17 @@ msgstr ""
 #: templates/email/collection_signup_invitation_email.html:24
 msgid ""
 "\n"
-"\t\tSefaria is a free living library of Jewish texts. Collections on Sefaria "
+"\t\tSeforim.app is a free living library of Jewish texts. Collections on Seforim.app "
 "help you easily build and share collections of source sheets you create or "
 "find on Sefaria.<br>.\n"
-"\t\tFeel free to send any questions over <a href=\"mailto:hello@sefaria.org"
+"\t\tFeel free to send any questions over <a href=\"mailto:hello@seforim.app"
 "\">email</a>.\n"
 "\t\t"
 msgstr ""
 "\n"
 "\t\tספריא היא ספרייה חיה של מקורות יהודיים. \"האסופות של ספריא\" מאפשרות לך "
 "להכין בקלות אסופות של דפי מקורות שיצרת או שאחרים יצרו, ולשתף אותן.<br>\n"
-"\t\tבכל שאלה אפשר בשמחה לשלוח אלינו <a href=\"mailto:hello@sefaria.org\">דוא"
+"\t\tבכל שאלה אפשר בשמחה לשלוח אלינו <a href=\"mailto:hello@seforim.app\">דוא"
 "\"ל</a>.\n"
 "\t\t"
 
@@ -690,7 +690,7 @@ msgid " Hello %(recipient)s, "
 msgstr " שלום %(recipient)s, "
 
 #: templates/email/notifications_email.html:9
-msgid " Here's some new activity on Sefaria that you may have missed."
+msgid " Here's some new activity on Seforim.app that you may have missed."
 msgstr "להלן מעט מהעדכונים האחרונים שיתכן ופספסת בספריא"
 
 #: templates/explore.html:4
@@ -731,13 +731,13 @@ msgstr "מוסיפי טקסט מצטיינים"
 
 #: templates/leaderboard.html:6
 msgid ""
-"See who has been contributing most to Sefaria in terms of texts, "
+"See who has been contributing most to Seforim.app in terms of texts, "
 "translations, and source sheet."
 msgstr ""
 "רשימה של משתמשים שתרמו את הכמות הגדולה ביותר של טקסטים, תרגומים או דפי מקורות"
 
 #: templates/metrics.html:5
-msgid "Sefaria Metrics"
+msgid "Seforim.app Metrics"
 msgstr "סטטיסטיקות בספריא"
 
 #: templates/metrics.html:7
@@ -761,7 +761,7 @@ msgid "Words in Translation"
 msgstr "מספר מילים מתורגמות"
 
 #: templates/metrics.html:38
-msgid "Words of Original Translation created by Sefaria Volunteers"
+msgid "Words of Original Translation created by Seforim.app Volunteers"
 msgstr "מספר מילים בתרגומים מקוריים על ידי משתמשי ספריא"
 
 #: templates/metrics.html:39
@@ -853,8 +853,8 @@ msgstr "כניסה לחשבון בספריא"
 
 #: templates/registration/login.html:6
 msgid ""
-"Log in to your Sefaria account to make source sheets, write notes, and "
-"follow other Sefaria users."
+"Log in to your Seforim.app account to make source sheets, write notes, and "
+"follow other Seforim.app users."
 msgstr ""
 "כניסה לחשבונכם בספריא כדי להיעזר בבונה דפי המקורות, לרשום הערות פרטיות על "
 "מקורות וכדי להיות בקשר עם משתמשים אחרים"
@@ -875,9 +875,9 @@ msgstr "קישור לאיפוס סיסמא נשלח"
 #: templates/registration/password_reset_email.txt:3
 msgid ""
 "A request has been made to reset the password for this email address on "
-"Sefaria.org."
+"seforim.app."
 msgstr ""
-"בקשה התקבלה במערכת לאיפוס ססמת משתמש בעל כתובת מייל זו באתר sefaria.org.il"
+"בקשה התקבלה במערכת לאיפוס ססמת משתמש בעל כתובת מייל זו באתר seforim.app.il"
 
 #: templates/registration/password_reset_email.html:6
 #: templates/registration/password_reset_email.txt:5
@@ -895,11 +895,11 @@ msgid "Forgot your Password"
 msgstr "שכחתי את הסיסמא שלי"
 
 #: templates/registration/password_reset_form.html:6
-msgid "Request a link to change your Sefaria password if you've forgotten it."
+msgid "Request a link to change your Seforim.app password if you've forgotten it."
 msgstr "שכחתם סיסמא? ספריא יכולה לשלוח קישור לאיפוס סיסמת החשבון שלכם."
 
 #: templates/registration/password_reset_subject.txt:2
-msgid "Sefaria.org Password Reset"
+msgid "Seforim.app Password Reset"
 msgstr "איפוס סיסמא"
 
 #: templates/registration/register.html:4
@@ -908,7 +908,7 @@ msgstr "יצירת חשבון"
 
 #: templates/registration/register.html:6
 msgid ""
-"Create an account on Sefaria to make source sheets, take notes and follow "
+"Create an account on Seforim.app to make source sheets, take notes and follow "
 "other people."
 msgstr ""
 "צרו חשבון בספריא בכדי להיעזר בבונה דפי המקורות, לרשום הערות פרטיות על מקורות "
@@ -925,7 +925,7 @@ msgid ""
 msgstr "גרף המדגים כיצד קבוצות שונות של מצוות קשורות אחת לשניה"
 
 #: templates/sheets.html:7 templates/sheets_visual.html:4
-msgid "Start a New Sheet - Sefaria Source Sheet Builder"
+msgid "Start a New Sheet - Seforim.app Source Sheet Builder"
 msgstr "יצירת דף מקורות חדש - בונה דפי המקורות של ספריא"
 
 #: templates/sheets.html:9 templates/sheets.html:10
@@ -968,7 +968,7 @@ msgid "Paste URL"
 msgstr "הדבק קישור"
 
 #: templates/sheets.html:910
-msgid "Made with the Sefaria Source Sheet Builder"
+msgid "Made with the Seforim.app Source Sheet Builder"
 msgstr "נבנה באמצעות בונה דפי המקורות בספריא"
 
 #: templates/sheets.html:933
@@ -1014,7 +1014,7 @@ msgid "Visualized"
 msgstr "תצוגה גרפית"
 
 #: templates/sheets_visual.html:4
-msgid "Sefaria Source Sheet Builder"
+msgid "Seforim.app Source Sheet Builder"
 msgstr "בונה דפי המקורות בספריא"
 
 #: templates/sheets_visual.html:6
@@ -1031,11 +1031,11 @@ msgid "TBD"
 msgstr ""
 
 #: templates/static/app.html:4
-msgid "Sefaria App"
+msgid "Seforim.app App"
 msgstr "אפליקציית ספריא"
 
 #: templates/static/app.html:6
-msgid "Download the free Sefaria App for iOS and Android."
+msgid "Download the free Seforim.app App for iOS and Android."
 msgstr "הורידו את האפליקציות החינמיות של ספריא לאייפון ולאנדרואיד"
 
 #: templates/static/app.html:314 templates/static/mobile.html:318
@@ -1068,23 +1068,23 @@ msgid "Chavruta on Sefaria"
 msgstr "חברותא בספריא"
 
 #: templates/static/chavruta.html:6
-msgid "Video learning on Sefaria with a partner."
+msgid "Video learning on Seforim.app with a partner."
 msgstr ""
 
 #: templates/static/connect.html:4
-msgid "Sefaria Newsletter, Social Media and More"
+msgid "Seforim.app Newsletter, Social Media and More"
 msgstr "העלון של ספריא, פעילות ברשתות חברתיות ועוד"
 
 #: templates/static/connect.html:6
 msgid ""
-"Get updates on new texts and features on Sefaria by signing up for our "
+"Get updates on new texts and features on Seforim.app by signing up for our "
 "newsletter or following us on social media."
 msgstr ""
 "קבלו עדכונים על הנעשה בספריא על ידי הרשמות לעלון או מעקב אחרי ספריא באתרי "
 "מדיה חברתית"
 
 #: templates/static/contest.html:4 templates/static/contest.html:6
-msgid "Powered by Sefaria Contest"
+msgid "Powered by Seforim.app Contest"
 msgstr "תחרות פיתוח תוכנה"
 
 #: templates/static/contributed-to-sefaria.html:4
@@ -1093,8 +1093,8 @@ msgstr "טקסטים שהופיעו לראשונה בספריא"
 
 #: templates/static/contributed-to-sefaria.html:6
 msgid ""
-"Texts on Sefaria that list this page as their source were contributed "
-"directly to Sefaria and have not yet been published elsewhere in print or on "
+"Texts on Seforim.app that list this page as their source were contributed "
+"directly to Seforim.app and have not yet been published elsewhere in print or on "
 "the web."
 msgstr ""
 "טקסטים המציינים עמוד זה כמקור הטקסט נתרמו ישירות לספריא ולא פורסמו לפני כן "
@@ -1113,7 +1113,7 @@ msgid "Dicta Thanks"
 msgstr "תודות לדיקטה"
 
 #: templates/static/dicta-thanks.html:6
-msgid "Sefaria thanks Dicta for all of their help."
+msgid "Seforim.app thanks Dicta for all of their help."
 msgstr "ספריא מודה לארגון דיקטה על כל עזרתם"
 
 #: templates/static/digitized-by-sefaria.html:4
@@ -1132,14 +1132,14 @@ msgstr "אודות ספריא"
 
 #: templates/static/en/about.html:6 templates/static/he/about.html:6
 msgid ""
-"Sefaria is a non-profit organization dedicated to building the future of "
+"Seforim.app is a non-profit organization dedicated to building the future of "
 "Jewish learning in an open and participatory way."
 msgstr ""
 "ספריא היא עמותה ללא מטרות רווה השואפת לעיצוב עתיד הלימוד היהודי כך שיהא פתוח "
 "ושיתופי."
 
 #: templates/static/en/team.html:4 templates/static/he/team.html:4
-msgid "The Sefaria Team"
+msgid "The Seforim.app Team"
 msgstr "הצוות של ספריא"
 
 #: templates/static/en/team.html:6 templates/static/he/team.html:6
@@ -1154,12 +1154,12 @@ msgstr "תרומות לספריא"
 #: templates/static/en/ways-to-give.html:7
 #: templates/static/he/ways-to-give.html:7
 msgid ""
-"Support Sefaria by making a tax-deductible donation online or by check or "
+"Support Seforim.app by making a tax-deductible donation online or by check or "
 "wire transfer."
 msgstr "תמכו בספריא על ידי תרומה פטורה ממס בעזרת המחאה, העברה או תשלום מקוון"
 
 #: templates/static/ios.html:4
-msgid "Sefaria iOS"
+msgid "Seforim.app iOS"
 msgstr "ספריא לאייפון"
 
 #: templates/static/jobs.html:4
@@ -1187,11 +1187,11 @@ msgstr ""
 "הטקסט עצמו מתוך המאגר של ספריא"
 
 #: templates/static/mobile.html:4
-msgid "Sefaria Mobile Apps"
+msgid "Seforim.app Mobile Apps"
 msgstr "ספריא בנייד"
 
 #: templates/static/mobile.html:6
-msgid "Download the free Sefaria Apps for iOS and Android."
+msgid "Download the free Seforim.app Apps for iOS and Android."
 msgstr "הורידו את האפליקציות החינמיות של ספריא לאייפון ולאנדרואיד"
 
 #: templates/static/newsletter.html:4 templates/static/newsletter.html:6
@@ -1200,7 +1200,7 @@ msgstr "הרשמה לרשימת התפוצה של ספריא"
 
 #: templates/static/powered-by-sefaria-contest-2020.html:4
 #: templates/static/powered-by-sefaria-contest-2020.html:6
-msgid "Powered by Sefaria Contest 2020"
+msgid "Powered by Seforim.app Contest 2020"
 msgstr "תחרות פיתוח תוכנה 2020"
 
 #: templates/static/privacy-policy.html:4
@@ -1221,24 +1221,24 @@ msgid "Resources for teaching and learning virtually."
 msgstr "משאבים ללימוד ולמידה מרחוק באופן מקוון"
 
 #: templates/static/sefaria-community-translation.html:4
-msgid "About Sefaria Community Translations"
+msgid "About Seforim.app Community Translations"
 msgstr "אודות התרגומים הקהילתיים של ספריא"
 
 #: templates/static/sefaria-community-translation.html:6
 msgid ""
-"Sefaria Community Translations are open, crowd-sourced translations of texts "
-"available in the Sefaria Library."
+"Seforim.app Community Translations are open, crowd-sourced translations of texts "
+"available in the Seforim.app Library."
 msgstr ""
 "תרגומים קהילתיים בספריא הם תרגומי מקורות פתוחים וכתובים על ידי הציבור "
 "ומצויים במאגר לשימוש כללי"
 
 #: templates/static/sefaria-edition.html:4
-msgid "About Sefaria Editions"
+msgid "About Seforim.app Editions"
 msgstr "אודות גרסאות ספריא"
 
 #: templates/static/sefaria-edition.html:6
 msgid ""
-"The Sefaria Edition is a Sefaria commissioned translation created by "
+"The Seforim.app Edition is a Seforim.app commissioned translation created by "
 "professional translators."
 msgstr ""
 "גרסאות ספריא הן גרסאות תרגום מיוחדות שהוזמנו במיוחד עבור ספריא ונוצרו על ידי "
@@ -1261,7 +1261,7 @@ msgid "In Memory of Rabbi Shraga Silverstein"
 msgstr "לזכרו של הרב שרגא סילברשטיין"
 
 #: templates/static/strategy.html:4
-msgid "Sefaria Strategy"
+msgid "Seforim.app Strategy"
 msgstr "תכנון בספריא"
 
 #: templates/static/supporters.html:4
@@ -1270,8 +1270,8 @@ msgstr "התומכים של ספריא"
 
 #: templates/static/supporters.html:6
 msgid ""
-"Sefaria gratefully acknowledges the following donors whose generosity and "
-"leadership are making Sefaria possible."
+"Seforim.app gratefully acknowledges the following donors whose generosity and "
+"leadership are making Seforim.app possible."
 msgstr ""
 "אנו מכירים תודה לתורמים הבאים, שבזכות נדיבותם והנהגתם ספריא ממשיכה לפעול"
 
@@ -1280,7 +1280,7 @@ msgid "Terms of Use"
 msgstr "תנאי שימוש"
 
 #: templates/static/testimonials.html:4
-msgid "Sefaria Testimonials"
+msgid "Seforim.app Testimonials"
 msgstr "המלצות על ספריא"
 
 #: templates/static/testimonials.html:6
@@ -1288,7 +1288,7 @@ msgid "Sefaria’s Impact – Reflections and Insights from Users"
 msgstr "ההשפעה של ספריא- הרהורים ותובנות משתמשים"
 
 #: templates/static/the-sefaria-story.html:4
-msgid "The Sefaria Story"
+msgid "The Seforim.app Story"
 msgstr "תולדות ספריא"
 
 #: templates/static/the-sefaria-story.html:6
@@ -1296,11 +1296,11 @@ msgid "Watch a video about the story of Sefaria."
 msgstr "צפו בסרטון המתאר את קורות ספריא"
 
 #: templates/static/torah-tab.html:5
-msgid "Sefaria Torah Tab"
+msgid "Seforim.app Torah Tab"
 msgstr "לשונית לימוד בספריא"
 
 #: templates/static/torah-tab.html:7
-msgid "Install the free Sefaria Torah Tab for your web browser."
+msgid "Install the free Seforim.app Torah Tab for your web browser."
 msgstr "התקינו את תוסף ספריא ללשונית לימוד"
 
 #: templates/static/visualizations.html:4
@@ -1310,7 +1310,7 @@ msgstr "תרשימים גרפיים"
 #: templates/static/visualizations.html:6
 msgid ""
 "Projects which have been created to make interactive visualizations of the "
-"texts and connections in the Sefaria Library of Torah texts."
+"texts and connections in the Seforim.app Library of Torah texts."
 msgstr ""
 "רשימה של פרוייקטים שונים שעשו שימוש בנתונים בספריא כדי ליצור תרשימים גרפיים "
 "ומצגות אודות מאגר הטקסטים והקישורים"
@@ -1357,7 +1357,7 @@ msgid "Explore how unique and verbose biblical commentators were."
 msgstr "צפו בייחוד הלשוני של מפרשי המקרא"
 
 #: templates/visual_library.html:4
-msgid "Visualizing the Sefaria Library"
+msgid "Visualizing the Seforim.app Library"
 msgstr "ארון הספרים של ספריא במיצג גרפי"
 
 #: templates/visual_library.html:6
@@ -1389,13 +1389,13 @@ msgstr ""
 #~ msgstr "הרשומות שלי בספריא"
 
 #~ msgid ""
-#~ "Browse 1,000s of Jewish texts in the Sefaria Library by category and "
+#~ "Browse 1,000s of Jewish texts in the Seforim.app Library by category and "
 #~ "title."
 #~ msgstr ""
 #~ "גלשו בתוככי אלפי ספרי אוצר הספרות היהודית לדורותיה. מצאו ספרים לפי שם או "
 #~ "סוגה."
 
-#~ msgid "Sefaria Account"
+#~ msgid "Seforim.app Account"
 #~ msgstr "חשבון בספריא"
 
 #~ msgid "Learn about %(name)s - works written, biographies, dates and more."
@@ -1405,7 +1405,7 @@ msgstr ""
 #~ msgstr "כלים לאנשי חינוך | ספריא"
 
 #~ msgid ""
-#~ "Resources for educators using Sefaria in the classroom to teach Jewish "
+#~ "Resources for educators using Seforim.app in the classroom to teach Jewish "
 #~ "texts."
 #~ msgstr "משאבים למורים ומחנכים המשתמשים בספריא ככלי בכיתת הלימוד."
 
@@ -1419,7 +1419,7 @@ msgstr ""
 #~ "צפו בסרטוני הדרכה או קראו שאלות ותשובות נפוצות ומדריכים כתובים אודות "
 #~ "השימוש בספריא"
 
-#~ msgid "Sefaria Source Sheets"
+#~ msgid "Seforim.app Source Sheets"
 #~ msgstr "דפי המקורות בספריא"
 
 #~ msgid ""
@@ -1429,16 +1429,16 @@ msgstr ""
 #~ "סיירו בין אלפי דפי מקורות פומביים והשתמשו בבונה דפי המקורות בכדי ליצור דף "
 #~ "מקורות משלכם."
 
-#~ msgid "Sefaria Groups"
+#~ msgid "Seforim.app Groups"
 #~ msgstr "קבוצות בספריא"
 
-#~ msgid "My Source Sheets | Sefaria Source Sheets"
+#~ msgid "My Source Sheets | Seforim.app Source Sheets"
 #~ msgstr "דפי המקורות שלי | דפי מקורות בספריא"
 
 #~ msgid "My Sources Sheets on Sefaria, both private and public."
 #~ msgstr "דפי המקורות שלי בספריא. פרטיים ופומביים"
 
-#~ msgid "Public Source Sheets | Sefaria Source Sheets"
+#~ msgid "Public Source Sheets | Seforim.app Source Sheets"
 #~ msgstr "דפי המקורות פומביים | דפי מקורות בספריא"
 
 #~ msgid ""
@@ -1446,7 +1446,7 @@ msgstr ""
 #~ "Jewish texts."
 #~ msgstr "סיירו בין אלפי דפי מקורות פומביים השאובים מאוצר הספרות של ספריא"
 
-#~ msgid "Sefaria Source Sheet"
+#~ msgid "Seforim.app Source Sheet"
 #~ msgstr "דף המקורות בספריא"
 
 #~ msgid ""
@@ -1463,7 +1463,7 @@ msgstr ""
 #~ msgid "Sheets"
 #~ msgstr "דפי מקורות"
 
-#~ msgid "The Sefaria Library"
+#~ msgid "The Seforim.app Library"
 #~ msgstr "תוכן העניינים של ספריא"
 
 #~ msgid "Extended Notes"
@@ -1510,7 +1510,7 @@ msgstr ""
 #~ msgid "now"
 #~ msgstr "כעת"
 
-#~ msgid "Downland the free Sefaria Apps for iOS and Android."
+#~ msgid "Downland the free Seforim.app Apps for iOS and Android."
 #~ msgstr "הורידו את האפליקציות החינמיות של ספריא לאייפון ולאנדרואיד"
 
 #~ msgid ""

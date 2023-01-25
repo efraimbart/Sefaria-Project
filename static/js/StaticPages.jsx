@@ -244,7 +244,7 @@ const ContestLandingPage = () => (
 
 
 const RambanLandingPage = () => {
-    const emailLink = <a target="_blank" href="mailto:hannah@sefaria.org?Subject=Ramban Sponsorship">hannah@sefaria.org</a>
+    const emailLink = <a target="_blank" href="mailto:info@seforim.app?Subject=Ramban Sponsorship">hannah@seforim.app</a>
     return <StaticPage optionalClass="englishOnly">
         <Header
             enTitle="Ramban on Torah: A Translation"
@@ -700,9 +700,9 @@ const EducatorsPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Online Educator Course", "מדריך למשתמש בספריא", "https://sefaria.typeform.com/to/tJVexqpG", "https://www.sefaria.org.il/sheets/361600?lang=he"],
-          ["Lesson Plans on Sefaria", "ספריא לתלמידים", "/collections/pedagogy-on-sefaria-exemplary-lesson-plans", "https://www.sefaria.org.il/collections/KGMlHrvA"],
-          ["Schedule A Workshop", "שאלות נפוצות", "https://sefaria.typeform.com/to/Pl3biam8", "https://www.sefaria.org.il/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"]
+          ["Online Educator Course", "מדריך למשתמש בספריא", "https://sefaria.typeform.com/to/tJVexqpG", "https://www.seforim.app/sheets/361600?lang=he"],
+          ["Lesson Plans on Sefaria", "ספריא לתלמידים", "/collections/pedagogy-on-sefaria-exemplary-lesson-plans", "https://www.seforim.app/collections/KGMlHrvA"],
+          ["Schedule A Workshop", "שאלות נפוצות", "https://sefaria.typeform.com/to/Pl3biam8", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"]
       ].map(i =>
           <SimpleButton
               white={true}
@@ -732,9 +732,9 @@ const EducatorsPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Past Educator Newsletters", "10 רעיונות להערכה חלופית", "/collections/qZ0UWi5y", "https://www.sefaria.org.il/sheets/281661?lang=he"],
-          ["Sefaria in Action", "עבודת חקר: מסע בין מקורות", "/sheets/311116?lang=bi", "https://www.sefaria.org.il/collections/%D7%A2%D7%91%D7%95%D7%93%D7%AA-%D7%97%D7%A7%D7%A8-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90-%D7%9E%D7%A1%D7%A2-%D7%91%D7%99%D7%9F-%D7%9E%D7%A7%D7%95%D7%A8%D7%95%D7%AA"],
-          ["For Your Students", "מערכי שיעור", "/sheets/311291?lang=bi", "https://www.sefaria.org.il/sheets/361593?lang=he"]
+          ["Past Educator Newsletters", "10 רעיונות להערכה חלופית", "/collections/qZ0UWi5y", "https://www.seforim.app/sheets/281661?lang=he"],
+          ["Sefaria in Action", "עבודת חקר: מסע בין מקורות", "/sheets/311116?lang=bi", "https://www.seforim.app/collections/%D7%A2%D7%91%D7%95%D7%93%D7%AA-%D7%97%D7%A7%D7%A8-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90-%D7%9E%D7%A1%D7%A2-%D7%91%D7%99%D7%9F-%D7%9E%D7%A7%D7%95%D7%A8%D7%95%D7%AA"],
+          ["For Your Students", "מערכי שיעור", "/sheets/311291?lang=bi", "https://www.seforim.app/sheets/361593?lang=he"]
       ].map(i =>
           <SimpleButton
               white={true}
@@ -762,9 +762,9 @@ const EducatorsPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Educator FAQ", "אסופות מומלצות", "/collections/tutorials-for-educators","https://www.sefaria.org.il/sheets/360599?lang=he"],
-          ["Request New Resources", "עמוד הקהילה", "https://sefaria.typeform.com/to/aaZmi4JD","https://www.sefaria.org.il/community"],
-          ["Webinars for Educators", "הסודות של ספריא", "/collections/qJLU68HQ","https://www.sefaria.org.il/sheets/228260.2?lang=he"]
+          ["Educator FAQ", "אסופות מומלצות", "/collections/tutorials-for-educators","https://www.seforim.app/sheets/360599?lang=he"],
+          ["Request New Resources", "עמוד הקהילה", "https://sefaria.typeform.com/to/aaZmi4JD","https://www.seforim.app/community"],
+          ["Webinars for Educators", "הסודות של ספריא", "/collections/qJLU68HQ","https://www.seforim.app/sheets/228260.2?lang=he"]
       ].map(i =>
           <SimpleButton
               white={true}
@@ -782,11 +782,11 @@ const EducatorsPage = () => (
     <GreyBox>
       <H2Block en="Get in touch" he="אנחנו רוצים לשמוע מכם"/>
       <EnBlock padded={true}>
-          <p>Was your teaching enhanced by Sefaria? Did you have a “Sefaria moment” with your students? Share it with us! We love to hear how educators are using Sefaria in the field and we learn from the feedback we receive. We are also available to answer all of your Sefaria questions. Write to us at education@sefaria.org.</p>
+          <p>Was your teaching enhanced by Sefaria? Did you have a “Sefaria moment” with your students? Share it with us! We love to hear how educators are using Sefaria in the field and we learn from the feedback we receive. We are also available to answer all of your Sefaria questions. Write to us at education@seforim.app.</p>
       </EnBlock>
       <HeBlock padded={true}>
           <p>אנחנו לומדים רבות ממורים ותלמידים שמספרים לנו על ההתנסות שלהם עם ספריא. נשמח מאד אם תשתפו אותנו בחוויית הלימוד שלכם. אתם מוזמנים ליצור איתנו קשר כדי לתאם הדרכה למורים וגם לתלמידים,  לספר לנו על חוויית הלמידה עם ספריא ולהתייעץ איתנו בכל דבר ועניין</p>
-          <p>כתבו לנו לכתובת המייל hello@sefaria.org</p>
+          <p>כתבו לנו לכתובת המייל hello@seforim.app</p>
 
       </HeBlock>
       <Spacer/>
@@ -894,7 +894,7 @@ const RabbisPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Schedule A Workshop", "שאלות נפוצות", "https://www.sefaria.org/sheets/370615?lang=bi", "https://www.sefaria.org.il/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
+          ["Schedule A Workshop", "שאלות נפוצות", "https://www.sefaria.org/sheets/370615?lang=bi", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
           ["Innovating with a Digital Library", "", "https://www.sefaria.org/sheets/415628?lang=bi", ""],
           ["Collections: A Home for Sermons and Classes", "", "https://www.sefaria.org/sheets/370836?lang=bi", ""]
       ].map(i =>
@@ -968,7 +968,7 @@ const RabbisPage = () => (
     <GreyBox>
       <H2Block en="Keep in touch" he="אנחנו רוצים לשמוע מכם"/>
       <EnBlock padded={true}>
-          <p>Was your work enhanced by Sefaria? Did you have a “Sefaria moment” with your learning community? Share it with us! We love to hear how rabbis are using Sefaria in the field and we learn from the feedback we receive. We are also available to answer all of your Sefaria questions. Write to us at education@sefaria.org.</p>
+          <p>Was your work enhanced by Sefaria? Did you have a “Sefaria moment” with your learning community? Share it with us! We love to hear how rabbis are using Sefaria in the field and we learn from the feedback we receive. We are also available to answer all of your Sefaria questions. Write to us at education@seforim.app.</p>
       </EnBlock>
       <Spacer/>
     </GreyBox>
@@ -1469,8 +1469,8 @@ const DonatePage = () => (
                 heText=""
                 enButtonText="Email Us to Learn More"
                 heButtonText=""
-                enButtonUrl="mailto:hannah@sefaria.org"
-                heButtonUrl="mailto:hannah@sefaria.org"
+                enButtonUrl="mailto:hannah@seforim.app"
+                heButtonUrl="mailto:hannah@seforim.app"
                 borderColor="#7C416F"
             />
 
@@ -1511,14 +1511,14 @@ const DonatePage = () => (
                 <HeaderWithColorAccentBlockAndText
                     enTitle="Donor-Advised Fund"
                     heTitle=""
-                    enText="<p>Sefaria accepts donations from donor-advised funds; our <strong>EIN is 46-4406454</strong>. If you need additional information to make a DAF donation, please contact Sefaria’s development team at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>.</p>"
+                    enText="<p>Sefaria accepts donations from donor-advised funds; our <strong>EIN is 00-0000000</strong>. If you need additional information to make a DAF donation, please contact Seforim.app's development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>.</p>"
                     heText=""
                     colorBar="#CCB479"
                 />,
                 <HeaderWithColorAccentBlockAndText
                     enTitle="Additional Ways to Give"
                     heTitle=""
-                    enText="<p>Sefaria also accepts donations via <strong>wire transfer</strong>, <strong>stock</strong>, and <strong>Cryptocurrency</strong>. For more information, please email  Sefaria’s development team at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>. (For wire transfers, you can also <a href='https://sefaria.typeform.com/to/nxxyX62T'>click here</a> to get our account information)."
+                    enText="<p>Sefaria also accepts donations via <strong>wire transfer</strong>, <strong>stock</strong>, and <strong>Cryptocurrency</strong>. For more information, please email  Seforim.app's development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>."
                     heText=""
                     colorBar="#97B386"
                 />
@@ -1537,7 +1537,7 @@ const DonatePage = () => (
                 A Message to Our Supporters
             </h1>
 
-              <p>Due to the ongoing pandemic, we encourage donors to use our <a href="https://sefaria.nationbuilder.com/supportsefaria">online donation page</a> or make a <a href="https://sefaria.typeform.com/to/nxxyX62T">wire transfer</a>, rather than sending a gift by mail. Supporters can also make an electronic gift of stock by emailing us at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>. </p>
+              <p>Due to the ongoing pandemic, we encourage donors to use our online donation page or make a wire transfer, rather than sending a gift by mail. Supporters can also make an electronic gift of stock by emailing us at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. </p>
               <p>We apologize for any delay in check processing or in the receipt of gift acknowledgment letters in the mail due to the current situation and our remote office status. Donors who make their gift online will continue to receive acknowledgments immediately via email.</p>
               <p>To all of you: thank you for your continued generosity and support.</p>
 
@@ -1572,7 +1572,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="Can I make a gift to support a specific program or initiative?"
             heTitle=""
-            enText="<p>Our online giving page does not support restricted gifts. You can sponsor a day of learning <a href='https://sefaria.nationbuilder.com/sponsor'>here</a>. If you would like to sponsor a text or support a specific Sefaria program, please email Hannah Goldberger, Development Manager, at <a href='mailto:hannah@sefaria.org'>hannah@sefaria.org</a> for more information.</p>"
+            enText="<p>Our online giving page does not support restricted gifts. You can sponsor a day of learning <a href='https://sefaria.nationbuilder.com/sponsor'>here</a>. If you would like to sponsor a text or support a specific Sefaria program, please email Hannah Goldberger, Development Manager, at <a href='mailto:hannah@seforim.app'>hannah@seforim.app</a> for more information.</p>"
             heText=""
             colorBar="#B8D4D3"
         />
@@ -1580,7 +1580,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I want to sponsor a day of learning or a new text. How do I know what’s available and where my message will appear?"
             heTitle=""
-            enText="<p>To learn more about available sponsorship dates and texts on Sefaria, send an email to Samantha Shokin, Grant Writer and Development Associate, at <a href='mailto:samantha@sefaria.org'>samantha@sefaria.org</a>, with “Sponsorship” in your subject line. We’ll aim to get back to you within two business days.</p>
+            enText="<p>To learn more about available sponsorship dates and texts on Sefaria, send an email to Samantha Shokin, Grant Writer and Development Associate, at <a href='mailto:samantha@seforim.app'>samantha@seforim.app</a>, with “Sponsorship” in your subject line. We’ll aim to get back to you within two business days.</p>
             <p>Sponsorships can be made in honor, memory, or celebration of a person, group, occasion, or anything else that matters to you. </p>
             <p>Dedications for a day, week, or month of learning will appear on Sefaria’s homepage throughout the duration of the sponsorship period beginning the evening of the date you choose. <a href='https://docs.google.com/spreadsheets/d/1CUVb18QKbRcgBvBzH-x9R_Stx-_o5YkE9bi7oYBTlRw/edit#gid=0'>Available dates can be viewed in this calendar</a>. To convert a Hebrew date to the English calendar, we recommend <a href='https://www.hebcal.com/converter/'>HebCal’s date converter</a>.</p>"
             heText=""
@@ -1619,7 +1619,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="Will I get a gift receipt?"
             heTitle=""
-            enText="<p>Yes! If you make your gift online, you will receive an email acknowledgment that includes all the information necessary for use as a tax receipt. If you make your gift by mail, you will receive a printed acknowledgment within two months of the receipt of your donation. If you don’t receive your gift receipt within that time, please let us know at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a> and we will issue a replacement.</p>"
+            enText="<p>Yes! If you make your gift online, you will receive an email acknowledgment that includes all the information necessary for use as a tax receipt. If you make your gift by mail, you will receive a printed acknowledgment within two months of the receipt of your donation. If you don’t receive your gift receipt within that time, please let us know at <a href='mailto:donate@seforim.app'>donate@seforim.app</a> and we will issue a replacement.</p>"
             heText=""
             colorBar="#7F85A9"
         />
@@ -1628,7 +1628,7 @@ const DonatePage = () => (
             enTitle="I want to donate through a donor-advised fund, federation, or foundation. What do I need to send you?"
             heTitle=""
             enText="<p>Donations from these types of institutions can be made through any of the payment methods listed in the Ways to Give section above. If you are donating from a foundation, federation, or donor-advised fund, please include any relevant gift acknowledgment information or preferences along with your gift. <strong>Sefaria's EIN is 46-4406454</strong>.</p>
-                    <p>If you are sending your donation by mail, please include this information in a cover letter accompanying your check; if you are donating through a wire transfer or other electronic method, please send an email with this information to <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>. This ensures we have all the necessary information to send your gift acknowledgment and tax receipt.</p>"
+                    <p>If you are sending your donation by mail, please include this information in a cover letter accompanying your check; if you are donating through a wire transfer or other electronic method, please send an email with this information to <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. This ensures we have all the necessary information to send your gift acknowledgment and tax receipt.</p>"
             heText=""
             colorBar="#7F85A9"
         />
@@ -1644,7 +1644,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="My gift is going to be matched by someone else. Will you send them an acknowledgment as well?"
             heTitle=""
-            enText="<p>Typically, matching gifts are directly acknowledged through the third-party processor. If you would like to request a thank you letter from the Sefaria team for the individual or organization matching your gift, please send us an email at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>. </p>"
+            enText="<p>Typically, matching gifts are directly acknowledged through the third-party processor. If you would like to request a thank you letter from the Sefaria team for the individual or organization matching your gift, please send us an email at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. </p>"
             heText=""
             colorBar="#7F85A9"
         />
@@ -1657,7 +1657,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I’m having trouble making my donation."
             heTitle=""
-            enText="<p>If you’re having difficulty donating online, we want to help! Please email us at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a> with a detailed description of the issue you’re experiencing, and we will get back to you within two business days. The more information you provide in your email, the more we will be able to help resolve the situation. We appreciate your patience and generosity.</p>"
+            enText="<p>If you’re having difficulty donating online, we want to help! Please email us at <a href='mailto:donate@seforim.app'>donate@seforim.app</a> with a detailed description of the issue you’re experiencing, and we will get back to you within two business days. The more information you provide in your email, the more we will be able to help resolve the situation. We appreciate your patience and generosity.</p>"
             heText=""
             colorBar="#5A99B7"
         />
@@ -1665,7 +1665,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I made a one-time or monthly donation in error."
             heTitle=""
-            enText="<p>To cancel and/or request a refund for a donation, please email Rebecca Remis, Finance and Operations Manager, at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>, with relevant donation information. </p>"
+            enText="<p>To cancel and/or request a refund for a donation, please email Rebecca Remis, Finance and Operations Manager, at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>, with relevant donation information. </p>"
             heText=""
             colorBar="#5A99B7"
         />
@@ -1673,7 +1673,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I never received a gift receipt / I need a new gift receipt."
             heTitle=""
-            enText="<p>If you’re looking for a missing e-receipt, we first recommend checking your spam folder for any emails received from hello@sefaria.org. If you’re unable to find your gift receipt or you need a new copy of a mailed gift receipt, please email us at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>. </p>"
+            enText="<p>If you’re looking for a missing e-receipt, we first recommend checking your spam folder for any emails received from hello@seforim.app. If you’re unable to find your gift receipt or you need a new copy of a mailed gift receipt, please email us at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. </p>"
             heText=""
             colorBar="#5A99B7"
         />
@@ -1681,7 +1681,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I want to cancel my monthly donation."
             heTitle=""
-            enText="<p>We’re sorry to see you go! To cancel your sustaining donation, please contact Rebecca Remis, Finance and Operations Manager, at <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a>, or by phone at <a href='tel:+13477730077'>(347) 773-0077</a></p>"
+            enText="<p>We’re sorry to see you go! To cancel your sustaining donation, please contact Rebecca Remis, Finance and Operations Manager, at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>, or by phone at <a href='tel:+13477730077'>(347) 773-0077</a></p>"
             heText=""
             colorBar="#5A99B7"
         />
@@ -1689,7 +1689,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I want to change my monthly donation by updating the amount or changing my credit card."
             heTitle=""
-            enText="<p>For security purposes, Sefaria is unable to update your donation information directly. Please email <a href='mailto:donate@sefaria.org'>donate@sefaria.org</a> to cancel your current recurring donation, and then create a new recurring gift.</p>"
+            enText="<p>For security purposes, Sefaria is unable to update your donation information directly. Please email <a href='mailto:donate@seforim.app'>donate@seforim.app</a> to cancel your current recurring donation, and then create a new recurring gift.</p>"
             heText=""
             colorBar="#5A99B7"
         />
@@ -1832,7 +1832,7 @@ const PoweredByPage = () => (
         <GreyBox>
             <H2Block en="Tell us about your projects!" he="Tell us about your projects!"/>
             <EnBlock padded={true}>
-                <p>Have you used Sefaria’s data to build an app, visualization, website, or other digital tool? Tell us about it! We’d love to see your project. You can also reach out to us with your questions about our open source data and API by writing to us at <a href="mailto:hello@sefaria.org">hello@sefaria.org</a>.</p>
+                <p>Have you used Sefaria’s data to build an app, visualization, website, or other digital tool? Tell us about it! We’d love to see your project. You can also reach out to us with your questions about our open source data and API by writing to us at <a href="mailto:hello@seforim.app">hello@seforim.app</a>.</p>
             </EnBlock>
             <Spacer/>
         </GreyBox>
@@ -2459,7 +2459,7 @@ const ParashaSponsorship = ({title, sponsorNames, message, link}) => {
     if (!sponsorNames) {
         return <div className="parashaSponsorship">
             <div className="parashaTitle">{title}</div>
-            <div className="parashaSponsorNames"><a target="_blank" href='mailto:hannah@sefaria.org?subject=Ramban Sponsorship'><b><i>Available for Sponsorship</i></b></a></div>
+            <div className="parashaSponsorNames"><a target="_blank" href='mailto:hannah@seforim.app?subject=Ramban Sponsorship'><b><i>Available for Sponsorship</i></b></a></div>
         </div>
     }
     else {

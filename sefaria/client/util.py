@@ -52,8 +52,8 @@ def subscribe_to_list(lists, email, first_name=None, last_name=None, direct_sign
         method        = "Signed up directly" if direct_sign_up else "Signed up during account creation"
         message_html  = "%s<br>%s<br>%s" % (name, email, method)
         subject       = "Mailing list signup"
-        from_email    = "Sefaria <hello@sefaria.org>"
-        to            = "amelia@sefaria.org"
+        from_email    = "Sefaria <hello@seforim.app>"
+        to            = "amelia@seforim.app"
 
         msg = EmailMultiAlternatives(subject, message_html, from_email, [to])
         msg.content_subtype = "html"  # Main content is now text/html
@@ -93,7 +93,7 @@ def subscribe_to_list(lists, email, first_name=None, last_name=None, direct_sign
     return r
 
 def send_email(subject, message_html, from_email, to_email):
-    msg = EmailMultiAlternatives(subject, message_html, "Sefaria <hello@sefaria.org>", [to_email], reply_to=[from_email])
+    msg = EmailMultiAlternatives(subject, message_html, "Sefaria <hello@seforim.app>", [to_email], reply_to=[from_email])
     msg.send()
 
     return True

@@ -36,7 +36,7 @@ const io = require("socket.io")(httpServer, {
         "http://localhost:8000",
         "http://0.0.0.0:8000",
         "https://www.sefaria.org",
-        "https://www.sefaria.org.il",
+        "https://www.seforim.app",
         "https://chavruta.cauldron.sefaria.org",
         /\.sefaria\.org$/,
         /\.sefaria\.org.il$/

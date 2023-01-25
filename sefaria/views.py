@@ -293,15 +293,15 @@ def generate_feedback(request):
         from_email = model.user_profile.UserProfile(id=uid).email
 
     if fb_type == "content_issue":
-        to_email = "corrections@sefaria.org"
+        to_email = "corrections@seforim.app"
         subject = "Correction from website - " + ' / '.join(refs)
         message_html = msg + "\n\n" + "refs: " + ' / '.join(refs) + "\n" + "versions: " + str(versions) + "\n\n" + "URL: " + url
     elif fb_type == "user_testing":
-        to_email = "gabriel@sefaria.org"
+        to_email = "gabriel@seforim.app"
         subject = "User Testing Sign Up"
         message_html = "Hi! I want to sign up for user testing!"
     else:
-        to_email = "hello@sefaria.org"
+        to_email = "hello@seforim.app"
         subject = "Feedback from website - " + fb_type.replace("_"," ")
         message_html = msg + "\n\n" + "URL: " + url
 

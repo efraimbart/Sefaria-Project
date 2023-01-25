@@ -146,7 +146,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Example using anymail, replaces block above
 # EMAIL_BACKEND = 'anymail.backends.mandrill.EmailBackend'
-# DEFAULT_FROM_EMAIL = "Sefaria <hello@sefaria.org>"
+# DEFAULT_FROM_EMAIL = "Sefaria <hello@seforim.app>"
 # ANYMAIL = {
 #    "MANDRILL_API_KEY": "your api key",
 # }
@@ -214,6 +214,7 @@ ENABLE_LINKER = False
 
 # Caching with Cloudflare
 CLOUDFLARE_ZONE = ""
+# Leave email empty if using an api token instead of an api key
 CLOUDFLARE_EMAIL = ""
 CLOUDFLARE_TOKEN = ""
 

@@ -24,11 +24,16 @@ class SefariaCloudflareManager(object):
         import json
 
         url = 'https://api.cloudflare.com/client/v4/zones/%s/purge_cache' % CLOUDFLARE_ZONE
-        headers = {
-            "X-Auth-Email": CLOUDFLARE_EMAIL,
-            "X-Auth-Key": CLOUDFLARE_TOKEN,
-            "Content-Type": "application/json",
-        }
+        if not CLOUDFLARE_EMAIL:
+            headers = {
+                "Authorization": 'Bearer %s' % CLOUDFLARE_TOKEN,
+            }
+        else:
+            headers = {
+                "X-Auth-Email": CLOUDFLARE_EMAIL,
+                "X-Auth-Key": CLOUDFLARE_TOKEN,
+            }
+        headers["Content-Type"] =  "application/json"
         r = requests.delete(url, data=json.dumps({"purge_everything":True}), headers=headers)
         logger.info(r.json())
 
@@ -67,11 +72,15 @@ class SefariaCloudflareManager(object):
         url = 'https://api.cloudflare.com/client/v4/zones/%s/purge_cache' % CLOUDFLARE_ZONE
         logger.info("About to purge: {}".format(files))
         payload = {"files": files}
-        headers = {
-            "X-Auth-Email": CLOUDFLARE_EMAIL,
-            "X-Auth-Key": CLOUDFLARE_TOKEN,
-            "Content-Type": "application/json",
-        }
+            headers = {
+                "Authorization": 'Bearer %s' % CLOUDFLARE_TOKEN,
+            }
+        else:
+            headers = {
+                "X-Auth-Email": CLOUDFLARE_EMAIL,
+                "X-Auth-Key": CLOUDFLARE_TOKEN,
+            }
+        headers["Content-Type"] =  "application/json"
         r = requests.delete(url, data=json.dumps(payload), headers=headers)
         r = r.json()
         if not r["success"]:

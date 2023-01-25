@@ -6,7 +6,7 @@ substitutions:
   _GKE_NAMESPACE: sandboxes
   _GKE_REGION: us-east1-b
   _IMAGE_TAG: asdf
-  _SEFARIA_HOST: sefaria.org
+  _SEFARIA_HOST: seforim.app
   
 steps:
 
