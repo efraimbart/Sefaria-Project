@@ -894,9 +894,9 @@ const RabbisPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Schedule A Workshop", "שאלות נפוצות", "https://www.sefaria.org/sheets/370615?lang=bi", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
-          ["Innovating with a Digital Library", "", "https://www.sefaria.org/sheets/415628?lang=bi", ""],
-          ["Collections: A Home for Sermons and Classes", "", "https://www.sefaria.org/sheets/370836?lang=bi", ""]
+          ["Schedule A Workshop", "שאלות נפוצות", "https://www.seforim.app/sheets/370615?lang=bi", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
+          ["Innovating with a Digital Library", "", "https://www.seforim.app/sheets/415628?lang=bi", ""],
+          ["Collections: A Home for Sermons and Classes", "", "https://www.seforim.app/sheets/370836?lang=bi", ""]
       ].map(i =>
           <SimpleButton
               white={true}
