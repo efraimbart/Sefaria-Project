@@ -303,10 +303,10 @@ const RambamLinks = () => {
   const rambam = Sefaria.calendars.filter(c => c.title.en.startsWith("Rambam"))
   return (
     <>
-      {rambam.map(h => 
-      <div className="navSidebarLink ref serif" key={h.url}>
+      {rambam.map(r => 
+      <div className="navSidebarLink ref serif" key={r.url}>
         <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
-        <a href={"/" + h.url}><InterfaceText text={h.displayValue} /></a>
+        <a href={"/" + r.url}><InterfaceText text={r.displayValue} /></a>
       </div>)}
     </>
   );
@@ -327,16 +327,17 @@ const HaftarotLinks = () => {
 
 
 const TanyaLink = () => {
-  const tanya = Sefaria.calendars.filter(c => c.title.en === "Daily Tanya")[0];
+  const tanya = Sefaria.calendars.filter(c => c.title.en === "Daily Tanya")
   return (
-    <div className="navSidebarLink ref serif">
-      <img src="/static/icons/book.svg" className="navSidebarIcon" alt={Sefaria._("book icon")} />
-      <a href={"/" + tanya.url}>
-        <InterfaceText text={tanya.displayValue} />
-      </a>
-    </div>
+    <>
+      {tanya.map(t => 
+      <div className="navSidebarLink ref serif" key={t.url}>
+        <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
+        <a href={"/" + t.url}><InterfaceText text={t.displayValue} /></a>
+      </div>)}
+    </>
   );
-}
+};
 
 const Translations = () => {
   return (<Module>
