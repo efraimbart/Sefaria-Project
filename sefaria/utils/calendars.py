@@ -99,7 +99,7 @@ def daily_rambam(datetime_obj):
     display_value_en = rf.normal().replace("Mishneh Torah, ","")
     display_value_he = rf.he_normal().replace("משנה תורה, ", "")
     return [{
-        'title': {'en': 'Daily Rambam', 'he': 'הרמב"ם היומי'},
+        'title': {'en': 'Daily Rambam (1 Chapter)', 'he': 'הרמב"ם היומי'},
         'displayValue': {'en': display_value_en, 'he': display_value_he},
         'url': rf.url(),
         'ref': rf.normal(),
@@ -140,7 +140,7 @@ def daily_rambam_three(datetime_obj):
         display_en = rf.normal().replace("Mishneh Torah, ", "")
         display_he = rf.he_normal().replace("משנה תורה, ", "")
         rambam_items.append({
-            "title": {"en": "Daily Rambam (3 Chapters)", "he": 'הרמב"ם היומי {}'.format("(3 פרקים)")},
+            "title": {"en": "Daily Rambam", "he": 'הרמב"ם היומי {}'.format("(3 פרקים)")},
             "displayValue": {"en": display_en, "he": display_he},
             "url": rf.url(),
             "ref": rf.normal(),
@@ -392,7 +392,7 @@ def tanya_yomi(datetime_obj):
     display_en = database_obj["displayValue"]
     display_he = database_obj["heDisplayValue"]
     tanya_items.append({
-        "title": {"en": "Tanya Yomi", "he": 'תניא יומי'},
+        "title": {"en": "Daily Tanya", "he": 'תניא יומי'},
         "displayValue": {"en": display_en, "he": display_he},
         "url": rf.url(),
         "ref": rf.normal(),
