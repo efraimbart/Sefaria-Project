@@ -570,7 +570,7 @@ const GetTheApp = () => (
 
 
 const StayConnected = () => {
-  const fbURL = Sefaria.interfaceLang == "hebrew" ? "https://www.https://www.facebook.com/profile.php?id=100089914501501" : "https://www.https://www.facebook.com/profile.php?id=100089914501501";
+  const fbURL = Sefaria.interfaceLang == "hebrew" ? "https://www.facebook.com/profile.php?id=100089914501501" : "https://www.facebook.com/profile.php?id=100089914501501";
 
   return (
     <Module>

@@ -87,7 +87,7 @@ class Footer extends Component {
               <div className="socialLinks">
                   <Link href={fbURL} en="Facebook" he="פייסבוק" blank={true}/>
                   &bull;
-                  <Link href="https://twitter.com/seforimapp" en="Twitter" he="טוויטר" />
+                  <Link href="https://twitter.com/SeforimApp" en="Twitter" he="טוויטר" />
                   <br />
 
                   {/*Youtube is out of date anyway <Link href="https://www.youtube.com/user/SefariaProject" en="YouTube" he="יוטיוב" /> */}

@@ -244,7 +244,7 @@ const ContestLandingPage = () => (
 
 
 const RambanLandingPage = () => {
-    const emailLink = <a target="_blank" href="mailto:hannah@seforim.app?Subject=Ramban Sponsorship">hannah@seforim.app</a>
+    const emailLink = <a target="_blank" href="mailto:info@seforim.app?Subject=Ramban Sponsorship">hannah@seforim.app</a>
     return <StaticPage optionalClass="englishOnly">
         <Header
             enTitle="Ramban on Torah: A Translation"
@@ -894,9 +894,9 @@ const RabbisPage = () => (
 
     <ButtonRow white={true} enTitle="" heTitle="">
       { [
-          ["Schedule A Workshop", "שאלות נפוצות", "https://www.sefaria.org/sheets/370615?lang=bi", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
-          ["Innovating with a Digital Library", "", "https://www.sefaria.org/sheets/415628?lang=bi", ""],
-          ["Collections: A Home for Sermons and Classes", "", "https://www.sefaria.org/sheets/370836?lang=bi", ""]
+          ["Schedule A Workshop", "שאלות נפוצות", "https://www.seforim.app/sheets/370615?lang=bi", "https://www.seforim.app/collections/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%95%D7%AA-%D7%91%D7%A1%D7%A4%D7%A8%D7%99%D7%90"],
+          ["Innovating with a Digital Library", "", "https://www.seforim.app/sheets/415628?lang=bi", ""],
+          ["Collections: A Home for Sermons and Classes", "", "https://www.seforim.app/sheets/370836?lang=bi", ""]
       ].map(i =>
           <SimpleButton
               white={true}
@@ -1511,14 +1511,14 @@ const DonatePage = () => (
                 <HeaderWithColorAccentBlockAndText
                     enTitle="Donor-Advised Fund"
                     heTitle=""
-                    enText="<p>Sefaria accepts donations from donor-advised funds; our <strong>EIN is 46-4406454</strong>. If you need additional information to make a DAF donation, please contact Sefaria’s development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>.</p>"
+                    enText="<p>Sefaria accepts donations from donor-advised funds; our <strong>EIN is 00-0000000</strong>. If you need additional information to make a DAF donation, please contact Seforim.app's development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>.</p>"
                     heText=""
                     colorBar="#CCB479"
                 />,
                 <HeaderWithColorAccentBlockAndText
                     enTitle="Additional Ways to Give"
                     heTitle=""
-                    enText="<p>Sefaria also accepts donations via <strong>wire transfer</strong>, <strong>stock</strong>, and <strong>Cryptocurrency</strong>. For more information, please email  Sefaria’s development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. (For wire transfers, you can also <a href='https://sefaria.typeform.com/to/nxxyX62T'>click here</a> to get our account information)."
+                    enText="<p>Sefaria also accepts donations via <strong>wire transfer</strong>, <strong>stock</strong>, and <strong>Cryptocurrency</strong>. For more information, please email  Seforim.app's development team at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>."
                     heText=""
                     colorBar="#97B386"
                 />
@@ -1537,7 +1537,7 @@ const DonatePage = () => (
                 A Message to Our Supporters
             </h1>
 
-              <p>Due to the ongoing pandemic, we encourage donors to use our <a href="https://sefaria.nationbuilder.com/supportsefaria">online donation page</a> or make a <a href="https://sefaria.typeform.com/to/nxxyX62T">wire transfer</a>, rather than sending a gift by mail. Supporters can also make an electronic gift of stock by emailing us at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. </p>
+              <p>Due to the ongoing pandemic, we encourage donors to use our online donation page or make a wire transfer, rather than sending a gift by mail. Supporters can also make an electronic gift of stock by emailing us at <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. </p>
               <p>We apologize for any delay in check processing or in the receipt of gift acknowledgment letters in the mail due to the current situation and our remote office status. Donors who make their gift online will continue to receive acknowledgments immediately via email.</p>
               <p>To all of you: thank you for your continued generosity and support.</p>
 

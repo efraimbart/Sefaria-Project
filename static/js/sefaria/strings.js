@@ -20,8 +20,8 @@ const Strings = {
     " & ": " | ",
     "My Source Sheets" : "דפי המקורות שלי",
     "Public Source Sheets":"דפי מקורות פומביים",
-    "Log in": "התחבר",
-    "Sign up": "הרשם",
+    "Log in": "התחברות",
+    "Sign up": "הרשמה",
 
     // Texts Page
     "Learn More": "לקריאה נוספת",
@@ -56,7 +56,16 @@ const Strings = {
     "All Visualizations": "תרשימים גרפיים נוספים",
     "Daily Study": "לימוד יומי",
 
-    // Topics
+    // Topics and Category Admin tools
+    "English Short Description for Table of Contents": "תיאור קצר עבור עמוד מפתח תוכן העניינים אנגלית",
+    "Hebrew Short Description for Table of Contents": "תיאור קצר עבור עמוד מפתח תוכן העניינים עברית",
+    "Choose a Category": "בחר קטגוריה",
+    "Main Menu": "תפריט ראשי",
+    "Saving topic information.": "מעדכן נתוני נושא",
+    "Processing title changes may take some time.": "עדכון השינויים עלול להמשך זמן מה",
+    "Add a short description.": "הוסף תיאור קצר",
+    "Add a description.": "הוסף תיאור",
+    "Add a title.": "הוסף שם כותר",
     "Explore Jewish Texts by Topic": "עיון בארון הספרים היהודי לפי נושא",
     "Explore by Topic": "לימוד לפי נושאים",
     "About Topics": "אודות \"נושאים\"",
@@ -67,6 +76,23 @@ const Strings = {
     "Browse or search our complete list of topics.": "חיפוש ברשימת הנושאים.",
     "Create a Topic": "ליצירת נושא חדש",
     "Edit Topic": "עריכת נושא",
+    "English Title": "כותרת אנגלית",
+    "English Description": "תיאור אנגלית",
+    "Hebrew Description": "תיאור עברית",
+    "Topic Deleted": "הנושא נמחק",
+    "Topic Editor": "עריכת נושאים",
+    "Please choose a category.": "אנא בחרו קטגוריה",
+    "Title must be provided": "יש לספק כותרת",
+    "Unfortunately, there may have been an error saving this topic information": "הודעת שגיאה: נראה כי חלה שגיאה במהלך שמירת הנתונים",
+    "Something went wrong. Sorry!": "מצטערים, משהו השתבש",
+
+
+    // Topics Tool
+    "Search for a Topic.": "חפש נושא",
+    "Add Topic": "הוספת נושא",
+    "Create a new topic: ": "יצירת נושא: ",
+
+
 
     // All Topics
     "All Topics": "כל הנושאים",
