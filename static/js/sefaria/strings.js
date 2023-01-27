@@ -7,11 +7,11 @@ const Strings = {
     "Sefaria Notifications": "הודעות בספריא",
     "Sefaria: a Living Library of Jewish Texts Online": "ספריא: ספריה יהודית דינמית",
     "Recently Viewed" : "נצפו לאחרונה",
-    "The Seforim.app Library": "תוכן העניינים של ספריא",
-    "Seforim.app Search": "חיפוש בספריא",
-    "Seforim.app Account": "חשבון בספריא",
+    "The Sefaria Library": "תוכן העניינים של ספריא",
+    "Sefaria Search": "חיפוש בספריא",
+    "Sefaria Account": "חשבון בספריא",
     "Notifcations": "התראות",
-    "New Additions to the Seforim.app Library": "חידושים בארון הספרים של ספריא",
+    "New Additions to the Sefaria Library": "חידושים בארון הספרים של ספריא",
     "My Notes on Sefaria": "ההערות שלי בספריא",
     "Texts & Source Sheets from Torah, Talmud and Sefaria's library of Jewish sources.": "טקסטים ודפי מקורות מן התורה, התלמוד וספריית המקורות של ספריא.",
     "Moderator Tools": "כלי מנהלים",
@@ -20,8 +20,8 @@ const Strings = {
     " & ": " | ",
     "My Source Sheets" : "דפי המקורות שלי",
     "Public Source Sheets":"דפי מקורות פומביים",
-    "Log in": "התחבר",
-    "Sign up": "הרשם",
+    "Log in": "התחברות",
+    "Sign up": "הרשמה",
 
     // Texts Page
     "Learn More": "לקריאה נוספת",
@@ -31,22 +31,22 @@ const Strings = {
     "Torah Tab": "תורה טאב (תוסף)",
     "Get the Mobile App": "הורידו את היישומון",
     "Access the Jewish library anywhere and anytime with the": "בעזרת היישומון תוכלו לגשת לארון הספרים היהודי בכל מקום ובכל זמן.",
-    "Seforim.app mobile app.": "אפליקציית ספריא לנייד.",
+    "Sefaria mobile app.": "אפליקציית ספריא לנייד.",
     "Stay Connected": "הישארו מעודכנים",
     "Get updates on new texts, learning resources, features, and more.": "קבלו עדכונים על מקורות חדשים, כלי למידה חדשים ועוד.",
     "Support Sefaria": "תמכו בספריא",
-    "Seforim.app is an open source, non-profit project. Support us by making a tax-deductible donation.": "ספריא היא מאגר פתוח וחינמי. תמכו בנו בעזרת תרומה.",
+    "Sefaria is an open source, non-profit project. Support us by making a tax-deductible donation.": "ספריא היא מאגר פתוח וחינמי. תמכו בנו בעזרת תרומה.",
     "Make a Donation": "לתרומה",
     "Join the Conversation": "קחו חלק בשיח" ,
     "Explore the Community": "לעמוד הקהילה",
-    "People around the world use Seforim.app to create and share Torah resources. You're invited to add your voice.": "לומדים ולומדות מכל רחבי העולם משתמשים בספריא כדי ליצור ולשתף מקורות יהודיים. אנו מזמינים אתכם לקחת חלק בשיח זה.",
+    "People around the world use Sefaria to create and share Torah resources. You're invited to add your voice.": "לומדים ולומדות מכל רחבי העולם משתמשים בספריא כדי ליצור ולשתף מקורות יהודיים. אנו מזמינים אתכם לקחת חלק בשיח זה.",
     "Create with Sefaria": "צרו בעזרת ספריא",
     "Mobile Apps": "יישומון לטלפון הנייד",
     "Browse the Library": "עיון בספריה",
     "Weekly Torah Portion": "פרשת השבוע",
     "All Learning Schedules": "לוחות לימוד נוספים",
     "Sponsor A Day of Learning": "תרמו יום לימוד בספריא",
-    "With your help, we can add more texts and translations to the library, develop new tools for learning, and keep Seforim.app accessible for Torah study anytime, anywhere.": "בעזרת התרומה שלכם נוכל להוסיף מקורות, תרגומים, לפתח כלים חדשים ללימוד ולשמור על גישה חופשית ללימוד תורה, בכל מקום ובכל זמן.",
+    "With your help, we can add more texts and translations to the library, develop new tools for learning, and keep Sefaria accessible for Torah study anytime, anywhere.": "בעזרת התרומה שלכם נוכל להוסיף מקורות, תרגומים, לפתח כלים חדשים ללימוד ולשמור על גישה חופשית ללימוד תורה, בכל מקום ובכל זמן.",
     "Sponsor A Day": "הקדישו יום לימוד",
 
     // Text Category Pages
@@ -56,7 +56,16 @@ const Strings = {
     "All Visualizations": "תרשימים גרפיים נוספים",
     "Daily Study": "לימוד יומי",
 
-    // Topics
+    // Topics and Category Admin tools
+    "English Short Description for Table of Contents": "תיאור קצר עבור עמוד מפתח תוכן העניינים אנגלית",
+    "Hebrew Short Description for Table of Contents": "תיאור קצר עבור עמוד מפתח תוכן העניינים עברית",
+    "Choose a Category": "בחר קטגוריה",
+    "Main Menu": "תפריט ראשי",
+    "Saving topic information.": "מעדכן נתוני נושא",
+    "Processing title changes may take some time.": "עדכון השינויים עלול להמשך זמן מה",
+    "Add a short description.": "הוסף תיאור קצר",
+    "Add a description.": "הוסף תיאור",
+    "Add a title.": "הוסף שם כותר",
     "Explore Jewish Texts by Topic": "עיון בארון הספרים היהודי לפי נושא",
     "Explore by Topic": "לימוד לפי נושאים",
     "About Topics": "אודות \"נושאים\"",
@@ -67,6 +76,23 @@ const Strings = {
     "Browse or search our complete list of topics.": "חיפוש ברשימת הנושאים.",
     "Create a Topic": "ליצירת נושא חדש",
     "Edit Topic": "עריכת נושא",
+    "English Title": "כותרת אנגלית",
+    "English Description": "תיאור אנגלית",
+    "Hebrew Description": "תיאור עברית",
+    "Topic Deleted": "הנושא נמחק",
+    "Topic Editor": "עריכת נושאים",
+    "Please choose a category.": "אנא בחרו קטגוריה",
+    "Title must be provided": "יש לספק כותרת",
+    "Unfortunately, there may have been an error saving this topic information": "הודעת שגיאה: נראה כי חלה שגיאה במהלך שמירת הנתונים",
+    "Something went wrong. Sorry!": "מצטערים, משהו השתבש",
+
+
+    // Topics Tool
+    "Search for a Topic.": "חפש נושא",
+    "Add Topic": "הוספת נושא",
+    "Create a new topic: ": "יצירת נושא: ",
+
+
 
     // All Topics
     "All Topics": "כל הנושאים",
@@ -185,8 +211,8 @@ const Strings = {
     "Publish Sheet": "פרסום דף מקורות",
     "Your sheet is": "דף המקורות שלך",
     "published": "פורסם",
-    "on Seforim.app and visible to others through search and topics.": ".בספריא ומשתמשים אחרים יכולים למצוא אותו בחיפוש ובדפי הנושא",
-    "List your sheet on Seforim.app for others to discover.": ".רישום דף המקורות שלך בספריא באופן שמשתמשים אחרים יוכלו למצוא אותו",
+    "on Sefaria and visible to others through search and topics.": ".בספריא ומשתמשים אחרים יכולים למצוא אותו בחיפוש ובדפי הנושא",
+    "List your sheet on Sefaria for others to discover.": ".רישום דף המקורות שלך בספריא באופן שמשתמשים אחרים יוכלו למצוא אותו",
     "Summary": "תקציר דף המקורות",
     "Write a short description of your sheet..." : "תיאור קצר של דף המקורות...",
     "Add a topic...": "הוספת נושא...",
@@ -197,7 +223,7 @@ const Strings = {
     "Please add a description to publish your sheet.": "יש להוסיף תיאור כדי לפרסם את הדף",
     "The summary description is limited to 280 characters.": "תקציר דף המקורות מוגבל ל280 תווים.",
     "People with this link can": "משתמשים עם קישור זה יכולים",
-    "Publish your sheet on Seforim.app for others to discover.": "פרסמו את דף המקורות בספריא כדי שאחרים יוכלו ללמוד ממנו.",
+    "Publish your sheet on Sefaria for others to discover.": "פרסמו את דף המקורות בספריא כדי שאחרים יוכלו ללמוד ממנו.",
 
     // Reader Panel
     "Search" : "חיפוש",
@@ -247,8 +273,8 @@ const Strings = {
     "Public Collections": "אסופות ציבוריות",
     "About Collections": "אודות \"אסופות\"",
     "Collection": "אסופה",
-    "Collections of sheets are created by Seforim.app users and can be privately, shared with friends, or made public on Sefaria.": "אסופות הן מקבצים של דפי מקורות שנוצרו על ידי משתמשי האתר. הן ניתנות לשימוש פרטי, לצורך שיתוף עם אחרים או לשימוש ציבורי באתר ספריא.",
-    "Seforim.app Collections": "אסופות של ספריא",
+    "Collections of sheets are created by Sefaria users and can be privately, shared with friends, or made public on Sefaria.": "אסופות הן מקבצים של דפי מקורות שנוצרו על ידי משתמשי האתר. הן ניתנות לשימוש פרטי, לצורך שיתוף עם אחרים או לשימוש ציבורי באתר ספריא.",
+    "Sefaria Collections": "אסופות של ספריא",
     "Create a Collection": "יצירת אסופה",
     "Create a New Collection": "יצירת אסופה חדשה",
 
@@ -428,7 +454,7 @@ const Strings = {
     "Texts Read" : "ספרים שנקראו",
     "Sheets Read" : "דפי מקורות שנקראו",
     "Sheets Created" : "דפי מקורות שנוצרו",
-    "Average Seforim.app User" : "משתמש ממוצע בספריא",
+    "Average Sefaria User" : "משתמש ממוצע בספריא",
     "Etc": "שאר",
 
     // Chavruta and Beit Midrash
@@ -475,7 +501,7 @@ const Strings = {
     "Back to Profile": "חזרה לפרופיל האישי שלך",
     "Go back to old version": "חזרה לגרסה הישנה",
     "Request for Feedback": "נא למלא משוב",
-    "Thank you for trying the new Seforim.app editor! We’d love to hear what you thought. Please take a few minutes to give us feedback on your experience.": "תודה שניסית את עורך ספריא החדש! נשמח מאוד לשמוע את דעתך עליו. אנו מבקשים ממך להקדיש כמה דקות למילוי משוב על חוויית השימוש שלך.",
+    "Thank you for trying the new Sefaria editor! We’d love to hear what you thought. Please take a few minutes to give us feedback on your experience.": "תודה שניסית את עורך ספריא החדש! נשמח מאוד לשמוע את דעתך עליו. אנו מבקשים ממך להקדיש כמה דקות למילוי משוב על חוויית השימוש שלך.",
     "Did you encounter any issues while using the new editor? For example:": "האם נתקלת בבעיות בעת השימוש בעורך החדש? למשל...",
     "Technical problems": "בעיות טכניות",
     "Difficulties using the editor": "קושי להשתמש בעורך",
@@ -483,8 +509,8 @@ const Strings = {
     "Tell us about it...": "ספר/י לנו על כך...",
     "Submit Feedback": "לשליחת המשוב",
     "Thank you!": "תודה רבה!",
-    "You are currently testing the new Seforim.app editor.": "ברגע זה הינך עושה שימוש בעורך החדש של ספריא",
-    "You are currently using the old Seforim.app editor.": "כעת הינך עושה שימוש בגרסה הישנה של עורך ספריא",
+    "You are currently testing the new Sefaria editor.": "ברגע זה הינך עושה שימוש בעורך החדש של ספריא",
+    "You are currently using the old Sefaria editor.": "כעת הינך עושה שימוש בגרסה הישנה של עורך ספריא",
     "Try the new version": "להתנסוּת בגרסה החדשה",
     "Your feedback is greatly appreciated. You can now edit your sheets again using the old source sheet editor. If you have any questions or additional feedback you can reach us at": "אנחנו מעריכים מאוד את המשוב שלך. כעת באפשרותך לחזור לערוך את הדפים שלך באמצעות עורך המסמכים הישן. לשאלות או למשוב נוסף אפשר לפנות אלינו בדוא\"ל:",
 
