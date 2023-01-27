@@ -4,7 +4,7 @@ const Strings = {
     "Topics":"נושאים",
     "Community": "קהילה",
     "Donate": "תרומה",
-    "Seforim.app Notifications": "הודעות בספריא",
+    "Sefaria Notifications": "הודעות בספריא",
     "Sefaria: a Living Library of Jewish Texts Online": "ספריא: ספריה יהודית דינמית",
     "Recently Viewed" : "נצפו לאחרונה",
     "The Seforim.app Library": "תוכן העניינים של ספריא",
