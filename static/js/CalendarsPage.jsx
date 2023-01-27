@@ -16,8 +16,8 @@ const CalendarsPage = ({multiPanel, initialWidth}) => {
   const calendars = reformatCalendars();
 
   const parashaCalendars = ["Parashat Hashavua", "Haftarah (A)", "Haftarah (S)", "Haftarah"];
-  const dailyCalendars   = ["Daf Yomi", "929", "Daily Mishnah", "Daily Rambam", "Daily Rambam (3 Chapters)",
-    "Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul", "Chok LeYisrael", "Tanya Yomi"];
+  const dailyCalendars   = ["Daf Yomi", "929", "Daily Mishnah", "Daily Rambam (1 Chapter)", "Daily Rambam",
+    "Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul", "Chok LeYisrael", "Daily Tanya"];
   const weeklyCalendars  = ["Daf a Week"];
 
   const makeListings = list => calendars.filter(c => list.indexOf(c.title.en) != -1)
@@ -154,11 +154,11 @@ const calendarDescriptions = {
     en: "A program of daily learning in which participants study two Mishnahs (teachings) each day in order to finish the entire Mishnah in six years.",
     he: "סדר לימוד משנה שבמסגרתו נלמדות שתי משניות בכל יום. הלומדים בדרך זו מסיימים את קריאת המשנה כולה כעבור שש שנים."
   },
-  "Daily Rambam": {
+  "Daily Rambam (1 Chapter)": {
     en: "A learning program that divides Maimonides’ Mishneh Torah legal code into daily units, to complete the whole work in three years.",
     he: "סדר לימוד הספר ההלכתי של הרמב\"ם, \"משנה תורה\", המחלק את הספר ליחידות יומיות. הלומדים בדרך זו מסיימים את קריאת הספר כולו בתוך שלוש שנים."
   },
-  "Daily Rambam (3 Chapters)": {
+  "Daily Rambam": {
     en: "A learning program that divides Maimonides’ Mishneh Torah legal code into daily units, to complete the whole work in one year.",
     he: "סדר לימוד הספר ההלכתי של הרמב\"ם, \"משנה תורה\", המחלק את הספר ליחידות יומיות. הלומדים בדרך זו מסיימים את קריאת הספר כולו בתוך שנה אחת.",
   },
@@ -175,8 +175,8 @@ const calendarDescriptions = {
     en: "A four-year daily learning program covering ritual halakhot, practical kashrut and interpersonal mitzvot within Rabbi Yechiel Michel Epstein’s legal code, Arukh HaShulchan.",
     he: "תכנית לימוד ארבע-שנתית של הלכות מעשיות מתוך ספר ערוך השלחן, חיבורו ההלכתי של הרב יחיאל מיכל עפשטיין.",
   },
-  "Tanya Yomi": {
-    "en": "A daily learning cycle for completing Tanya annually, starting at the 19th of Kislev, “Rosh Hashanah of Chasidut.”",
+  "Daily Tanya": {
+    "en": "A daily learning cycle for completing the book of Tanya annually, starting on the 19th of Kislev, “Rosh Hashanah of Chassidus.”",
     "he": "סדר לימוד המשלים את ספר התניא אחת לשנה, החל מיום י\"ט בכסליו \"ראש השנה לחסידות\"."
   },
   "Tanakh Yomi": {

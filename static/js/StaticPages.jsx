@@ -1595,7 +1595,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="Is my donation tax-deductible?"
             heTitle=""
-            enText="<p>Sefaria is a registered 501(c)(3) in the United States, and all donations are fully tax-deductible under the extent of the law. We are not able to issue tax receipts to donors outside the United States.</p>"
+            enText=""
             heText=""
             colorBar="#7F85A9"
         />
@@ -1627,7 +1627,7 @@ const DonatePage = () => (
         <Accordian
             enTitle="I want to donate through a donor-advised fund, federation, or foundation. What do I need to send you?"
             heTitle=""
-            enText="<p>Donations from these types of institutions can be made through any of the payment methods listed in the Ways to Give section above. If you are donating from a foundation, federation, or donor-advised fund, please include any relevant gift acknowledgment information or preferences along with your gift. <strong>Sefaria's EIN is 46-4406454</strong>.</p>
+            enText="<p>Donations from these types of institutions can be made through any of the payment methods listed in the Ways to Give section above. If you are donating from a foundation, federation, or donor-advised fund, please include any relevant gift acknowledgment information or preferences along with your gift. <strong>Sefaria's EIN is 000000000</strong>.</p>
                     <p>If you are sending your donation by mail, please include this information in a cover letter accompanying your check; if you are donating through a wire transfer or other electronic method, please send an email with this information to <a href='mailto:donate@seforim.app'>donate@seforim.app</a>. This ensures we have all the necessary information to send your gift acknowledgment and tax receipt.</p>"
             heText=""
             colorBar="#7F85A9"

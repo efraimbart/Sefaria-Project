@@ -299,6 +299,18 @@ const ParashahName = () => {
   return <InterfaceText text={parashah.displayValue} />
 };
 
+const RambamLinks = () => {
+  const rambam = Sefaria.calendars.filter(c => c.title.en.startsWith("Rambam"))
+  return (
+    <>
+      {rambam.map(h => 
+      <div className="navSidebarLink ref serif" key={h.url}>
+        <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
+        <a href={"/" + h.url}><InterfaceText text={h.displayValue} /></a>
+      </div>)}
+    </>
+  );
+};
 
 const HaftarotLinks = () => {
   const haftarot = Sefaria.calendars.filter(c => c.title.en.startsWith("Haftarah"))
@@ -314,13 +326,13 @@ const HaftarotLinks = () => {
 };
 
 
-const DafLink = () => {
-  const daf = Sefaria.calendars.filter(c => c.title.en === "Daf Yomi")[0];
+const TanyaLink = () => {
+  const tanya = Sefaria.calendars.filter(c => c.title.en === "Daily Tanya")[0];
   return (
     <div className="navSidebarLink ref serif">
       <img src="/static/icons/book.svg" className="navSidebarIcon" alt={Sefaria._("book icon")} />
-      <a href={"/" + daf.url}>
-        <InterfaceText text={daf.displayValue} />
+      <a href={"/" + tanya.url}>
+        <InterfaceText text={tanya.displayValue} />
       </a>
     </div>
   );
@@ -354,15 +366,15 @@ const LearningSchedules = () => {
       </div>
       <div className="readingsSection">
         <span className="readingsSectionTitle">
-          <InterfaceText >Haftarah</InterfaceText>
+          <InterfaceText >Rambam</InterfaceText>
         </span>
-        <HaftarotLinks />
+        <RambamLinks />
       </div>
       <div className="readingsSection">
         <span className="readingsSectionTitle">
-          <InterfaceText >Daf Yomi</InterfaceText>
+          <InterfaceText >Daily Tanya</InterfaceText>
         </span>
-        <DafLink />
+        <TanyaLink />
       </div>
       <a href="/calendars" className="allLink">
         <InterfaceText>All Learning Schedules</InterfaceText> <InterfaceText>&rsaquo;</InterfaceText>
