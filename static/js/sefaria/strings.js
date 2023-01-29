@@ -1,11 +1,11 @@
 const Strings = {
   _i18nInterfaceStrings: {
-    "Seforim.app": "Seforim.app",
+    "Sefaria": "ספריא",
     "Topics":"נושאים",
     "Community": "קהילה",
     "Donate": "תרומה",
     "Sefaria Notifications": "הודעות בספריא",
-    "Seforim.app: a Living Library of Jewish Texts Online": "Seforim.app: ספריה יהודית דינמית",
+    "Sefaria: a Living Library of Jewish Texts Online": "ספריא: ספריה יהודית דינמית",
     "Recently Viewed" : "נצפו לאחרונה",
     "The Sefaria Library": "תוכן העניינים של ספריא",
     "Sefaria Search": "חיפוש בספריא",
@@ -101,8 +101,8 @@ const Strings = {
 
 
     // Community Page
-    "From the Community: Today on Seforim.app": "מן הקהילה: היום בSeforim.app",
-    "Today on Seforim.app": "היום בSeforim.app",
+    "From the Community: Today on Sefaria": "מן הקהילה: היום בספריא",
+    "Today on Sefaria": "היום בספריא",
     "Who to Follow": "משתמשים שכדאי לעקוב אחריהם",
     "Explore Collections": "עיינו באסופות",
     "Organizations, communities and individuals around the world curate and share collections of sheets for you to explore.": "ארגונים, קהילות ויחידים מרחבי העולם מציגים ומשתפים אסופות של דפי מקורות שתוכלו לגלות.",

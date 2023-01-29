@@ -664,9 +664,9 @@ def text_panels(request, ref, version=None, lang=None, sheet=None):
     else:
         sheet = panels[0].get("sheet",{})
         sheet["title"] = unescape(sheet["title"])
-        title = strip_tags(sheet["title"]) + " | " + _("Sefaria")
+        title = strip_tags(sheet["title"]) + " | " + _("Seforim.app")
         breadcrumb = sheet_crumbs(request, sheet)
-        desc = unescape(sheet.get("summary", _("A source sheet created with Sefaria's Source Sheet Builder")))
+        desc = unescape(sheet.get("summary", _("A source sheet created with Seforim.app's Source Sheet Builder")))
         noindex = sheet.get("noindex", False) or sheet["status"] != "public"
 
     if len(panels) > 0 and panels[0].get("refs") == [] and panels[0].get("mode") == "Text":
@@ -747,8 +747,8 @@ def topics_category_page(request, topicCategory):
     }
 
     short_lang = 'en' if request.interfaceLang == 'english' else 'he'
-    title = topic_obj.get_primary_title(short_lang) + " | " + _("Texts & Source Sheets from Torah, Talmud and Sefaria's library of Jewish sources.")
-    desc = _("Jewish texts and source sheets about %(topic)s from Torah, Talmud and other sources in Sefaria's library.") % {'topic': topic_obj.get_primary_title(short_lang)}
+    title = topic_obj.get_primary_title(short_lang) + " | " + _("Texts & Source Sheets from Seforim.app's library.")
+    desc = _("Jewish texts and source sheets about %(topic)s from Seforim.app's library.") % {'topic': topic_obj.get_primary_title(short_lang)}
 
     return render_template(request, 'base.html', props, {
         "title": title,
@@ -1026,8 +1026,8 @@ def _get_user_calendar_params(request):
 
 
 def texts_list(request):
-    title = _("Sefaria: a Living Library of Jewish Texts Online")
-    desc  = _("The largest free library of Jewish texts available to read online in Hebrew and English including Torah, Tanakh, Talmud, Mishnah, Midrash, commentaries and more.")
+    title = _("Seforim.app: Collaborative Tools for Torah")
+    desc  = _("Interact with Jewish texts together with all the Jewish people.")
     return menu_page(request, page="navigation", title=title, desc=desc)
 
 
@@ -1060,7 +1060,7 @@ def user_history(request):
 
 def updates(request):
     title = _("New Additions to the Seforim.app Library")
-    desc  = _("See texts, translations and connections that have been recently added to Sefaria.")
+    desc  = _("See texts, translations and connections that have been recently added to Seforim.app.")
     return menu_page(request, page="updates", title=title, desc=desc)
 
 
@@ -3006,7 +3006,7 @@ def topics_page(request):
         "initialTopic": None,
     }
     return render_template(request, 'base.html', props, {
-        "title":          _("Topics") + " | " + _("Sefaria"),
+        "title":          _("Topics") + " | " + _("Seforim.app"),
         "desc":           _("Explore Jewish Texts by Topic on Seforim.app"),
     })
 
@@ -3035,8 +3035,8 @@ def topic_page(request, topic):
     }
 
     short_lang = 'en' if request.interfaceLang == 'english' else 'he'
-    title = topic_obj.get_primary_title(short_lang) + " | " + _("Texts & Source Sheets from Torah, Talmud and Sefaria's library of Jewish sources.")
-    desc = _("Jewish texts and source sheets about %(topic)s from Torah, Talmud and other sources in Sefaria's library.") % {'topic': topic_obj.get_primary_title(short_lang)}
+    title = topic_obj.get_primary_title(short_lang) + " | " + _("Texts & Source Sheets from Seforim.app's library.")
+    desc = _("Jewish texts and source sheets about %(topic)s from Torah, Chassidus and other sources in Seforim.app's library.") % {'topic': topic_obj.get_primary_title(short_lang)}
     topic_desc = getattr(topic_obj, 'description', {}).get(short_lang, '')
     if topic_desc is not None:
         desc += " " + topic_desc
@@ -3260,7 +3260,7 @@ def global_activity(request, page=1):
     if page > 40:
         return render_template(request,'static/generic.html', None, {
             "title": "Activity Unavailable",
-            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
+            "content": "You have requested a page deep in Seforim.app's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
         })
 
     if "api" in request.GET:
@@ -3303,7 +3303,7 @@ def user_activity(request, slug, page=1):
     if page > 40:
         return render_template(request,'static/generic.html', None, {
             "title": "Activity Unavailable",
-            "content": "You have requested a page deep in Sefaria's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
+            "content": "You have requested a page deep in Seforim.app's history.<br><br>For performance reasons, this page is unavailable. If you need access to this information, please <a href='mailto:dev@seforim.app'>email us</a>."
         })
 
     q              = {"user": profile.id}
@@ -4458,7 +4458,7 @@ def custom_server_error(request, template_name='500.html'):
 
 def apple_app_site_association(request):
     teamID = "2626EW4BML"
-    bundleID = "org.sefaria.sefariaApp"
+    bundleID = "org.sefaria.sefaria"
     return jsonResponse({
         "applinks": {
             "apps": [],
