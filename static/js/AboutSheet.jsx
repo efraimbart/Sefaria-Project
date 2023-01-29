@@ -261,8 +261,8 @@ const AboutSheet = ({ masterPanelSheetId, toggleSignUpModal }) => {
             <div className={"publishButton"}>
                 <div className="publishedText">
                     <InterfaceText>
-                        <EnglishText>Your Sheet is <span className="publishedTextBold">published</span> on Sefaria and visible to others.</EnglishText>
-                        <HebrewText>דף המקורות שלך <span className="publishedTextBold">מפורסם</span> בספריא וגלוי למשתמשים אחרים</HebrewText>
+                        <EnglishText>Your Sheet is <span className="publishedTextBold">published</span> on Seforim.app and visible to others.</EnglishText>
+                        <HebrewText>דף המקורות שלך <span className="publishedTextBold">מפורסם</span> בSeforim.app וגלוי למשתמשים אחרים</HebrewText>
                     </InterfaceText>
                 </div>
                 <button className="button published" onClick={togglePublish}>

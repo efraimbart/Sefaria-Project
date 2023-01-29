@@ -52,9 +52,9 @@ class Footer extends Component {
             </Section>
 
             <Section en="Tools" he="כלים">
-                {/* <Link href="/educators" en="Teach with Seforim.app" he="מלמדים עם ספריא" /> */}
+                {/* <Link href="/educators" en="Teach with Seforim.app" he="מלמדים עם Seforim.app" /> */}
                 <Link href="/calendars" en="Learning Schedules" he="לוח לימוד יומי" />
-                {/* <Link href="/mobile" en="Mobile Apps" he="ספריא בנייד" />
+                {/* <Link href="/mobile" en="Mobile Apps" he="Seforim.app בנייד" />
                 <Link href="/daf-yomi" en="Daf Yomi" he="דף יומי" />
                 <Link href="/torah-tab" en="Torah Tab" he="תורה טאב" />
                 Commented till we remove the bad ones <Link href="/people" en="Authors" he="מחברים" /> */}

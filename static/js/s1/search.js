@@ -135,7 +135,7 @@ $.extend(Sefaria.search, {
             var cats = this.get_category_string();
 
             if (!(this.query)) {
-                return (lang == "en") ? "Search Jewish Texts | Sefaria.org" : "חיפוש מקורות בספריא";
+                return (lang == "en") ? "Search Jewish Texts | Seforim.app" : "חיפוש מקורות בSeforim.app";
             }
 
             var line = '"' + this.query + '" ';
@@ -146,7 +146,7 @@ $.extend(Sefaria.search, {
             } else {
                 line += '(' + String(this.hits.total) + ')';
                 if (lang == 'en') {
-                    line += ' | Sefaria Search';
+                    line += ' | Seforim.app Search';
                 } else if (lang == 'he') {
                     line += ' | חיפוש מקורות';
                 }

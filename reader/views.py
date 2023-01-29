@@ -704,7 +704,7 @@ def texts_category_list(request, cats):
 
     if cats == "recent":
         title = _("Recently Viewed")
-        desc  = _("Texts that you've recently viewed on Sefaria.")
+        desc  = _("Texts that you've recently viewed on Seforim.app.")
     else:
         cats = cats.split("/")
         tocObject = library.get_toc_tree().lookup(cats)
@@ -714,7 +714,7 @@ def texts_category_list(request, cats):
         catDesc = getattr(tocObject, "enDesc", '') if request.interfaceLang == "english" else getattr(tocObject, "heDesc", '')
         catShortDesc = getattr(tocObject, "enShortDesc", '') if request.interfaceLang == "english" else getattr(tocObject, "heShortDesc", '')
         catDefaultDesc = _("Read %(categories)s texts online with commentaries and connections.") % {'categories': cat_string}
-        title = cat_string + _(" | Sefaria")
+        title = cat_string + _(" | Seforim.app")
         desc  = catDesc if len(catDesc) else catShortDesc if len(catShortDesc) else catDefaultDesc
 
     props = {

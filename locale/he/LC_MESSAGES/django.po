@@ -65,8 +65,8 @@ msgid "Texts that you've recently viewed on Sefaria."
 msgstr "ספרים שנצפו לאחרונה בספריא"
 
 #: reader/views.py:671
-msgid " | Sefaria"
-msgstr " | ספריא"
+msgid " | Seforim.app"
+msgstr " | Seforim.app"
 
 #: reader/views.py:672
 #, python-format
@@ -343,8 +343,8 @@ msgid "You must be logged in to access this api."
 msgstr "הנכם צריכים להיות מחוברים כדי להשתמש באפשרות זו."
 
 #: templates/404.html:4
-msgid "Page Not Found | Sefaria"
-msgstr "הדף שביקשתם איננו נמצא | ספריא"
+msgid "Page Not Found | Seforim.app"
+msgstr "הדף שביקשתם איננו נמצא | Seforim.app"
 
 #: templates/500.html:4
 msgid "Internal Server Error"
