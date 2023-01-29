@@ -91,7 +91,7 @@ SEFARIA_EXPORT_PATH = '/path/to/your/Sefaria-Data/export' # used for exporting t
 # DafRoulette server
 RTC_SERVER = '' # Root URL/IP of the server
 
-GOOGLE_TAG_MANAGER_CODE = 'you tag manager code here'
+GOOGLE_TAG_MANAGER_CODE = 'GTM-K2SG45X'
 
 # Integration with a NationBuilder list
 NATIONBUILDER = False
