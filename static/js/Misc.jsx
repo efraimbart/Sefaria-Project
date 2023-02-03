@@ -144,16 +144,16 @@ const DonateLink = ({children, classes, source, link}) => {
   link = link || "default";
   const linkOptions = {
     default: {
-      en: "https://sefaria.nationbuilder.com/supportsefaria",
-      he: "https://sefaria.nationbuilder.com/supportsefaria_il"
+      en: "https://cash.app/$seforimapp",
+      he: "https://cash.app/$seforimapp"
     },
     header: {
-      en: "https://sefaria.nationbuilder.com/supportsefaria_w",
-      he: "https://sefaria.nationbuilder.com/supportsefaria_il_w"
+      en: "https://cash.app/$seforimapp",
+      he: "https://cash.app/$seforimapp"
     },
     sponsor: {
-      en: "https://sefaria.nationbuilder.com/sponsor",
-      he: "https://sefaria.nationbuilder.com/sponsor",
+      en: "https://cash.app/$seforimapp",
+      he: "https://cash.app/$seforimapp",
     }
   };
   const url = Sefaria._v(linkOptions[link]);
