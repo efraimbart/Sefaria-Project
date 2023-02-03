@@ -242,10 +242,10 @@ def base_props(request):
             "layoutDefault":     request.COOKIES.get("layoutDefault", "segmented"),
             "layoutTalmud":      request.COOKIES.get("layoutTalmud", "continuous"),
             "layoutTanakh":      request.COOKIES.get("layoutTanakh", "segmented"),
-            "aliyotTorah":       request.COOKIES.get("aliyotTorah", "aliyotOff"),
+            "aliyotTorah":       request.COOKIES.get("aliyotTorah", "aliyotOn"),
             "vowels":            request.COOKIES.get("vowels", "all"),
             "punctuationTalmud": request.COOKIES.get("punctuationTalmud", "punctuationOn"),
-            "biLayout":          request.COOKIES.get("biLayout", "stacked"),
+            "biLayout":          request.COOKIES.get("biLayout", "heLeft"),
             "color":             request.COOKIES.get("color", "light"),
             "fontSize":          request.COOKIES.get("fontSize", 62.5),
         },
@@ -1093,13 +1093,13 @@ def canonical_url(request):
 
     path = request.get_full_path()
     if request.interfaceLang == "hebrew":
-        host = "https://www.seforim.app"
+        host = "https://www.seforim.org.il"
         # Default params for texts, text toc, and text category
-        path = re.sub("\?lang=he(&aliyot=0)?$", "", path)
+        path = re.sub("\?lang=he(&aliyot=1)?$", "", path)
     else:
         host = "https://www.seforim.app"
         # Default params for texts, text toc, and text category
-        path = re.sub("\?lang=bi(&aliyot=0)?$", "", path)
+        path = re.sub("\?lang=bi(&aliyot=1)?$", "", path)
 
     path = "" if path == "/" else path
     return host + path
