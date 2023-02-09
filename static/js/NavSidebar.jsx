@@ -304,7 +304,7 @@ const RambamLinks = () => {
   return (
     <>
       {rambam.map(r => 
-      <div className="navSidebarLink ref serif" key={r.url}>
+      <div className="navSidebarLink ref serif">
         <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
         <a href={"/" + r.url}><InterfaceText text={r.displayValue} /></a>
       </div>)}
@@ -333,7 +333,7 @@ const TanyaLink = () => {
       {tanya.map(t => 
       <div className="navSidebarLink ref serif" key={t.url}>
         <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
-        <a href={"/" + t.url}><InterfaceText text={t.displayValue} /></a>
+        <a href={"/" + t.url}><InterfaceText text="{t.displayValue}" /></a>
       </div>)}
     </>
   );
