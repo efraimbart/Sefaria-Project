@@ -587,7 +587,7 @@ const RemoteLearningPage = () => (
                 white={true}
                 rounded={false}
                 tall={true}
-                href="/collections/sefaria-faqs?utm_source=sefaria&utm_medium=landingpage&utm_campaign=remotelearning"
+                href="/https://seforim.app/collections/7GMAmJgl"
                 he_href="/sheets/224919?lang=he?utm_source=sefaria&utm_medium=landingpage&utm_campaign=remotelearning"
                 he="מדריך למשתמש המתחיל"
                 en="Tutorials for Learners"
