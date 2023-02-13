@@ -392,7 +392,7 @@ def tanya_yomi(datetime_obj):
     display_en = database_obj["displayValue"]
     display_he = database_obj["heDisplayValue"]
     tanya_items.append({
-        "title": {"en": "Daily Tanya", "he": 'תניא יומי'},
+        "title": {"en": "Tanya Yomi", "he": 'תניא יומי'},
         "displayValue": {"en": display_en, "he": display_he},
         "url": rf.url(),
         "ref": rf.normal(),

@@ -16,9 +16,9 @@ const CalendarsPage = ({multiPanel, initialWidth}) => {
   const calendars = reformatCalendars();
 
   const parashaCalendars = ["Parashat Hashavua", "Haftarah (A)", "Haftarah (S)", "Haftarah"];
-  const dailyCalendars   = ["Daf Yomi", "929", "Daily Mishnah", "Daily Rambam (1 Chapter)", "Daily Rambam",
-    "Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul", "Chok LeYisrael", "Daily Tanya"];
-  const weeklyCalendars  = ["Daf a Week"];
+  const dailyCalendars   = [/* "Daf Yomi", "929", "Daily Mishnah",*/ "Daily Rambam (1 Chapter)", "Daily Rambam",
+    /*"Halakhah Yomit", "Arukh HaShulchan Yomi", "Tanakh Yomi", "Zohar for Elul", "Chok LeYisrael",*/ "Tanya Yomi"];
+  const weeklyCalendars  = [/*"Daf a Week"*/];
 
   const makeListings = list => calendars.filter(c => list.indexOf(c.title.en) != -1)
                               .map(c => <CalendarListing calendar={c} />);
@@ -137,60 +137,60 @@ const reformatCalendars = () => {
 const calendarDescriptions = {
   "Parashat Hashavua": {},
   "Haftarah": {
-    en: "The portion from Prophets (a section of the Bible) read on any given week, based on its thematic connection to the weekly Torah portion.",
-    he: "קטע קבוע לכל פרשה מספרי הנביאים הנקרא בכל שבת ומועד, ויש לו קשר רעיוני לפרשת השבוע."
+    en: "",
+    he: ""
   },
   "Daf Yomi": {
-    en: "A learning program that covers a page of Talmud a day. In this way, the entire Talmud is completed in about seven and a half years.",
-    he: "סדר לימוד לתלמוד הבבלי הכולל לימוד של דף אחד בכל יום. הלומדים בדרך זו מסיימים את קריאת התלמוד כולו בתוך כשבע שנים וחצי.",
+    en: "",
+    he: "",
     enSubtitle: "Talmud",
   },
   "929": {
-    en: "A learning program in which participants study five of the Bible’s 929 chapters a week, completing it in about three and a half years.",
-    he: "סדר שבועי ללימוד תנ\"ך שבו נלמדים בכל שבוע חמישה מתוך 929 פרקי התנ\"ך. הלומדים בדרך זו מסיימים את קריאת התנ\"ך כולו כעבור שלוש שנים וחצי.",
+    en: "",
+    he: "",
     enSubtitle: "Tanakh",
   },
   "Daily Mishnah": {
-    en: "A program of daily learning in which participants study two Mishnahs (teachings) each day in order to finish the entire Mishnah in six years.",
-    he: "סדר לימוד משנה שבמסגרתו נלמדות שתי משניות בכל יום. הלומדים בדרך זו מסיימים את קריאת המשנה כולה כעבור שש שנים."
+    en: "",
+    he: ""
   },
   "Daily Rambam (1 Chapter)": {
-    en: "A learning program that divides Maimonides’ Mishneh Torah legal code into daily units, to complete the whole work in three years.",
-    he: "סדר לימוד הספר ההלכתי של הרמב\"ם, \"משנה תורה\", המחלק את הספר ליחידות יומיות. הלומדים בדרך זו מסיימים את קריאת הספר כולו בתוך שלוש שנים."
+    en: "",
+    he: ""
   },
   "Daily Rambam": {
-    en: "A learning program that divides Maimonides’ Mishneh Torah legal code into daily units, to complete the whole work in one year.",
-    he: "סדר לימוד הספר ההלכתי של הרמב\"ם, \"משנה תורה\", המחלק את הספר ליחידות יומיות. הלומדים בדרך זו מסיימים את קריאת הספר כולו בתוך שנה אחת.",
+    en: "",
+    he: "",
   },
   "Daf a Week": {
-    en: "A learning program  that covers a page of Talmud a week. By going at a slower pace, it facilitates greater mastery and retention.",
-    he: "סדר שבועי ללימוד התלמוד הבבלי שבו נלמד דף תלמוד אחד בכל שבוע. קצב הלימוד האיטי מאפשר ללומדים הפנמה ושליטה רבה יותר בחומר הנלמד.",
+    en: "",
+    he: "",
     enSubtitle: "Talmud",
   },
   "Halakhah Yomit": {
-    en: "A four year daily learning program in which participants study central legal texts that cover most of the daily and yearly rituals.",
-    he: "תוכנית ארבע־שנתית ללימוד מקורות הלכתיים מרכזיים העוסקים ברוב הלכות היום־יום והמועדים.",
+    en: "",
+    he: "",
   },
   "Arukh HaShulchan Yomi": {
-    en: "A four-year daily learning program covering ritual halakhot, practical kashrut and interpersonal mitzvot within Rabbi Yechiel Michel Epstein’s legal code, Arukh HaShulchan.",
-    he: "תכנית לימוד ארבע-שנתית של הלכות מעשיות מתוך ספר ערוך השלחן, חיבורו ההלכתי של הרב יחיאל מיכל עפשטיין.",
+    en: "",
+    he: "",
   },
-  "Daily Tanya": {
-    "en": "A daily learning cycle for completing the book of Tanya annually, starting on the 19th of Kislev, “Rosh Hashanah of Chassidus.”",
-    "he": "סדר לימוד המשלים את ספר התניא אחת לשנה, החל מיום י\"ט בכסליו \"ראש השנה לחסידות\"."
+  "Tanya Yomi": {
+    "en": "",
+    "he": ""
   },
   "Tanakh Yomi": {
-    en: "A daily learning cycle for completing Tanakh annually. On Shabbat, each Torah portion is recited. On weekdays, Prophets and Writings are recited according to the ancient Masoretic division of sedarim.",
-    he: "סדר לימוד המשלים את קריאת התנ\"ך כולו אחת לשנה. בשבתות קוראים את התורה לפי סדר פרשיות השבוע. בימות החול קוראים את הנ\"ך על פי חלוקת הסדרים של המסורה.",
+    en: "",
+    he: "",
     enSubtitle: "Tanakh",
   },
   "Zohar for Elul": {
-    en: "A 40 day learning schedule in which participants learn the Kabbalistic work \"Tikkunei Zohar\" over the course of the days between the First of the month of Elul and Yom Kippur.",
-    he: "סדר יומי ללימוד הספר \"תיקוני הזהר\". הסדר נמשך 40 יום, בתקופה שבין ראש חודש אלול ויום הכיפורים.",
+    en: "",
+    he: "",
   },
   "Chok LeYisrael": {
-    en: "A book designed for daily study. Each day’s learning consists of biblical verses together with commentary, a chapter of Mishnah, and short passages of Talmud, Zohar, and of works of Halakhah and Musar.",
-    he: 'לימוד יומי הכולל פסוקי תנ״ך ופירושם, פרק משנה, קטע מהתלמוד, קטע מהזוהר, קטע מספר הלכה וקטע מספר מוסר.',
+    en: "",
+    he: "",
   }
 }
 
