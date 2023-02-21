@@ -300,11 +300,11 @@ const ParashahName = () => {
 };
 
 const RambamLinks = () => {
-  const rambam = Sefaria.calendars.filter(c => c.title.en.startsWith("Rambam"))
+  const rambam = Sefaria.calendars.filter(c => c.title.en.startsWith("Daily Rambam"))
   return (
     <>
       {rambam.map(r => 
-      <div className="navSidebarLink ref serif">
+      <div className="navSidebarLink ref serif" key={r.url}>
         <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
         <a href={"/" + r.url}><InterfaceText text={r.displayValue} /></a>
       </div>)}
