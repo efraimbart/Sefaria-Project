@@ -10,6 +10,8 @@ import re
 import urllib
 from django.utils import timezone
 
+from datetime import date
+
 import sefaria.model as model
 from sefaria.system.database import db
 from sefaria.utils.util import graceful_exception
@@ -284,7 +286,10 @@ def make_haftarah_response_from_calendar_entry(db_parasha, custom=None):
 
 def make_parashah_response_from_calendar_entry(db_parasha):
     rf = model.Ref(db_parasha["ref"])
-    aliyotrf = model.Ref(db_parasha["aliyot"][3])
+
+    today = date.today()
+    weekday = (today.weekday() + 1) % 7
+    aliyotrf = model.Ref(db_parasha["aliyot"][weekday])
     parashiot = db_parasha["parasha"].split("-") # Could be a double parashah
     p_en, p_he = [], []
     for p in parashiot:
