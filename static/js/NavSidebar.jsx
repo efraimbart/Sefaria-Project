@@ -1,4 +1,4 @@
-import { get_today_weekday } from '.sefaria/utils/date_utils.py';
+import { get_today_weekday } from './date_utils.py';
 
 function MyComponent() {
   const [weekdayNum, weekdayName] = get_today_weekday();
