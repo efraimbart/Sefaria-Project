@@ -284,7 +284,7 @@ def make_haftarah_response_from_calendar_entry(db_parasha, custom=None):
 
 def make_parashah_response_from_calendar_entry(db_parasha):
     rf = model.Ref(db_parasha["ref"])
-    
+    aliyotrf = model.Ref(db_parasha["aliyot"][3])
     parashiot = db_parasha["parasha"].split("-") # Could be a double parashah
     p_en, p_he = [], []
     for p in parashiot:
@@ -297,9 +297,9 @@ def make_parashah_response_from_calendar_entry(db_parasha):
     parasha = {
         'title': {'en': 'Parashat Hashavua', 'he': 'פרשת השבוע'},
         'displayValue': {'en': db_parasha["parasha"], 'he': hebrew_parasha_name(db_parasha["parasha"])},
-        'url': rf.url(),
-        'ref': rf.normal(),
-        'heRef': rf.he_normal(),
+        'url': aliyotrf.url(),
+        'ref': aliyotrf.normal(),
+        'heRef': aliyotrf.he_normal(),
         'order': 1,
         'category': rf.index.get_primary_category(),
         'extraDetails': {'aliyot': db_parasha["aliyot"]},
