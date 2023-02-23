@@ -1,5 +1,3 @@
-import { get_today_weekday } from './date_utils.py';
-
 function MyComponent() {
   const [weekdayNum, weekdayName] = get_today_weekday();
   // do something with weekdayNum and weekdayName...
@@ -289,16 +287,19 @@ const TranslationLinks = () => {
   );
 };
 
+const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const weekdayNamesHe = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום ששי', 'שבת קודש'];
+const today = new Date();
+const weekdayNumber = today.getDay();
+const weekdayName = weekdayNames[weekdayNumber];
+const weekdayNameHe = weekdayNamesHe[weekdayNumber];
 
 const ParashahLink = () => {
   const parashah = Sefaria.calendars.filter(c => c.title.en === "Parashat Hashavua")[0];
-  today = date.today()
-  weekdayNum = (today.weekday() + 1) % 7
-  weekdayName = today.strftime("%A")
   return (
     <div className="navSidebarLink ref serif">
       <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
-      <a href={"/" + parashah.url}><InterfaceText text={{en: "Portion for " + weekdayName, he: "עליה" + weekdayNum}} /></a>
+      <a href={"/" + parashah.url}><InterfaceText text={{en: "Portion for " + weekdayName, he: weekdayNameHe}} /></a>
     </div>
   );
 };
