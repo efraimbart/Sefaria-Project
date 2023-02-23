@@ -1,3 +1,10 @@
+import { get_today_weekday } from '.static/js/date_utils.py';
+
+function MyComponent() {
+  const [weekdayNum, weekdayName] = get_today_weekday();
+  // do something with weekdayNum and weekdayName...
+}
+
 import React, { useState, useEffect } from 'react';
 import classNames  from 'classnames';
 import PropTypes  from 'prop-types';
@@ -285,10 +292,13 @@ const TranslationLinks = () => {
 
 const ParashahLink = () => {
   const parashah = Sefaria.calendars.filter(c => c.title.en === "Parashat Hashavua")[0];
+  today = date.today()
+  weekdayNum = (today.weekday() + 1) % 7
+  weekdayName = today.strftime("%A")
   return (
     <div className="navSidebarLink ref serif">
       <img src="/static/icons/book.svg" className="navSidebarIcon" alt="book icon" />
-      <a href={"/" + parashah.url}><InterfaceText text={{en: parashah.ref, he: parashah.heRef}} /></a>
+      <a href={"/" + parashah.url}><InterfaceText text={{en: "Portion for " + weekdayName, he: "עליה" + weekdayNum}} /></a>
     </div>
   );
 };

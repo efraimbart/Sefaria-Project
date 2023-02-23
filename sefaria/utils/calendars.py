@@ -289,6 +289,7 @@ def make_parashah_response_from_calendar_entry(db_parasha):
 
     today = date.today()
     weekday = (today.weekday() + 1) % 7
+    weekday_name = today.strftime("%A")
     aliyotrf = model.Ref(db_parasha["aliyot"][weekday])
     parashiot = db_parasha["parasha"].split("-") # Could be a double parashah
     p_en, p_he = [], []
@@ -303,8 +304,8 @@ def make_parashah_response_from_calendar_entry(db_parasha):
         'title': {'en': 'Parashat Hashavua', 'he': 'פרשת השבוע'},
         'displayValue': {'en': db_parasha["parasha"], 'he': hebrew_parasha_name(db_parasha["parasha"])},
         'url': aliyotrf.url(),
-        'ref': aliyotrf.normal(),
-        'heRef': aliyotrf.he_normal(),
+        'ref': "Portion for" + weekday_name,
+        'heRef': "עליה" + (weekday + 1),
         'order': 1,
         'category': rf.index.get_primary_category(),
         'extraDetails': {'aliyot': db_parasha["aliyot"]},
