@@ -321,7 +321,7 @@ export class PopupManager {
 
         if (isTruncated) {
             const truncated = document.createElement('div');
-            truncated.innerHTML = this.interfaceLang === "english" ? "Read the complete text on Sefaria" : "לקריאת הטקסט המלא בספריא";
+            truncated.innerHTML = this.interfaceLang === "english" ? "Read the complete text on Seforim.app" : "לקריאת הטקסט המלא בseforim.app";
             truncated.className = "truncatedMessage";
             this.textBox.appendChild(truncated);
         }

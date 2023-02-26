@@ -665,7 +665,7 @@ const RemoteLearningPage = () => (
         </ButtonRow>
         <CallToActionFooterWithNewsletter
             enText="Sign up for our mailing list to get updates in your inbox."
-            heText="הרשמו לרשימת התפוצה שלנו על מנת לקבל עדכונים מספריא."
+            heText="הרשמו לרשימת התפוצה שלנו על מנת לקבל עדכונים מseforim.app."
             includeEducatorOption={true}
         />
     </StaticPage>

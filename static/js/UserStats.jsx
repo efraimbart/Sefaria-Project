@@ -96,11 +96,11 @@ const SiteDataBlock = ({site_data}) => (
                 <span className="int-he">
                     מזמן לא התראינו!
                     <br/>
-                    בואו ונראה מה משתמשים אחרים בספריא לומדים
+                    בואו ונראה מה משתמשים אחרים בseforim.app לומדים
                 </span>
                 <span className="int-en">
                     Looks like we haven’t seen you in a while!<br/>
-                    Discover what other people are doing on Sefaria...
+                    Discover what other people are doing on Seforim.app...
                 </span>
             </div>
         </div>
@@ -111,7 +111,7 @@ const SiteDataBlock = ({site_data}) => (
                 <span className="int-he">מה אנשים קוראים</span>
             </h2>
             <div className="chartRow centered">
-                <CategoriesDonut title="Average Sefaria User" heTitle="משתמש ממוצע בספריא" cats={site_data.categoriesRead}/>
+                <CategoriesDonut title="Average Seforim.app User" heTitle="משתמש ממוצע בseforim.app" cats={site_data.categoriesRead}/>
             </div>
         </div>
         <div>
@@ -166,7 +166,7 @@ const UserDonutsBlock = ({user_data, site_data}) => (
             </h2>
             <div className="chartRow">
                 <CategoriesDonut title="Your Reading" heTitle="הלימוד שלך" cats={user_data.categoriesRead}/>
-                <CategoriesDonut title="Average Sefaria User" heTitle="משתמש ממוצע בספריא" cats={site_data.categoriesRead}/>
+                <CategoriesDonut title="Average Seforim.app User" heTitle="משתמש ממוצע בseforim.app" cats={site_data.categoriesRead}/>
             </div>
         </div>
 );

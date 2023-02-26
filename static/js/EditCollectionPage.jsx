@@ -230,8 +230,8 @@ class EditCollectionPage extends Component {
             </div>
           </div>
           : <div>
-              <span className="int-en">Your collection was previously made public, but our moderators determined it was not generally useful for all Sefaria users. Please contact <a href="mailto:hello@sefari.org">hello@seforim.app</a> with any questions.</span>
-              <span className="int-he">האסופה שלך הוגדרה כציבורית, אך המנהלים שלנו הגיעו למסקנה שהיא אינה רלוונטית לכלל משתמשי ספריא. לשאלות יש ליצור עימנו קשר בכתובת <a href="mailto:hello@sefari.org">hello@seforim.app</a>.</span>
+              <span className="int-en">Your collection was previously made public, but our moderators determined it was not generally useful for all Sefaria users. Please contact <a href="mailto:hello@sefari.app">hello@seforim.app</a> with any questions.</span>
+              <span className="int-he">האסופה שלך הוגדרה כציבורית, אך המנהלים שלנו הגיעו למסקנה שהיא אינה רלוונטית לכלל משתמשי ספריא. לשאלות יש ליצור עימנו קשר בכתובת <a href="mailto:hello@sefarim.app">hello@seforim.app</a>.</span>
           </div> }
         </div>
         : null }
