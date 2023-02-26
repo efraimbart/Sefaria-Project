@@ -2580,8 +2580,8 @@ class AddressYear(AddressInteger):
 
 
 class AddressAliyah(AddressInteger):
-    en_map = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
-    he_map = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי"]
+    en_map = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eight", "Nine", "Ten"]
+    he_map = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי", "שמיני", "תשיעי", "יום י'"]
 
     @classmethod
     def toStr(cls, lang, i, **kwargs):
