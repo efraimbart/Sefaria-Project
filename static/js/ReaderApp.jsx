@@ -860,7 +860,7 @@ class ReaderApp extends Component {
         layoutDefault:     "segmented",
         layoutTalmud:      "continuous",
         layoutTanakh:      "segmented",
-        aliyotTorah:       "aliyotOff",
+        aliyotTorah:       "aliyotOn",
         vowels:            "all",
         punctuationTalmud: "punctuationOn",
         biLayout:          "stacked",
