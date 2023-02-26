@@ -287,7 +287,7 @@ const TranslationLinks = () => {
   );
 };
 
-const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Shabbat'];
 const weekdayNamesHe = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום ששי', 'שבת קודש'];
 const today = new Date();
 const weekdayNumber = today.getDay();

@@ -102,8 +102,8 @@ a, a:hover {
   --english-sans-serif-font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif;
   --hebrew-sans-serif-font-family: "Heebo", "Roboto", sans-serif;
 
-  --english-serif-font-family: "Cardo", "Meltho",  "HebrewInEnglish Serif Font", "adobe-garamond-pro", "Crimson Text", Georgia, "Times New Roman", serif, "Noto Sans Samaritan";
-  --hebrew-serif-font-family: "Noto Color Emoji", "EnglishInHebrew Serif Font", "Cardo", "Taamey Frank", "adobe-garamond-pro", "Crimson Text", "Times New Roman", serif;
+  --english-serif-font-family: "Alegreya Sans", "Cardo", "Meltho",  "HebrewInEnglish Serif Font", "adobe-garamond-pro", "Crimson Text", Georgia, "Times New Roman", serif, "Noto Sans Samaritan";
+  --hebrew-serif-font-family: "Alegreya Sans", "Noto Color Emoji", "EnglishInHebrew Serif Font", "Cardo", "Taamey Frank", "adobe-garamond-pro", "Crimson Text", "Times New Roman", serif;
 
   --serif-h1-font-size: 48px;
   --serif-h2-font-size: 30px;
@@ -121,7 +121,7 @@ a, a:hover {
   --inline-link-blue: #4871bf;
   --sefaria-blue: #18345D;
   --highlight-blue: #DDEEFF;
-  --highlight-blue-light: #F0F7FF;
+  --highlight-blue-light: #F9F5E1;
   --beit-midrash-grey: #333333;
   --dark-grey: #666666;
   --medium-grey: #999999;
@@ -1334,7 +1334,7 @@ div.interfaceLinks-row a {
 .readerContent {
   width: 100%;
   height: calc(100% - 60px);
-  background-color: inherit;
+  background-color: #F4ECD8;
 }
 .dark .readerContent {
   color: white;
@@ -4812,7 +4812,7 @@ body .ui-autocomplete.dictionary-toc-autocomplete .ui-menu-item a.ui-state-focus
   text-align: justify;
   background-color: inherit;
   margin: 0 auto;
-  max-width: 760px;
+  max-width: 840px;
   position: relative;
   padding: 0 30px;
 }
