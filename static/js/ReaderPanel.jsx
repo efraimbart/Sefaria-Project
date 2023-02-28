@@ -468,7 +468,7 @@ class ReaderPanel extends Component {
     const category = this.currentCategory();
     option = category === "Tanakh" || category === "Talmud" ? "layout" + category : "layoutDefault";
   }
-}
+
 
 
     this.state.settings[option] = value;
@@ -481,7 +481,7 @@ class ReaderPanel extends Component {
     }
     $.cookie(option, value, {path: "/"});
     this.conditionalSetState(state);
-  }
+ }
   setConnectionsMode(mode, connectionData = null) {
     let loginRequired = {
       "Add Connection": 1,
