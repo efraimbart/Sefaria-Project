@@ -121,7 +121,7 @@ a, a:hover {
   --inline-link-blue: #4871bf;
   --sefaria-blue: #18345D;
   --highlight-blue: #DDEEFF;
-  --highlight-blue-light: #F9F5E1;
+  --highlight-blue-light: #F0F7FF;
   --beit-midrash-grey: #333333;
   --dark-grey: #666666;
   --medium-grey: #999999;
@@ -713,10 +713,10 @@ input.noselect {
   vertical-align: middle;
   height: 25px;
   margin-top: -7px;
-  width: 92px;
+  width: 139px;
 }
 .interface-hebrew .header .home img {
-  width: 77px;
+  width: 99px;
 }
 .header .accountLinks {
   display: flex;
@@ -5087,7 +5087,7 @@ body .ui-autocomplete.dictionary-toc-autocomplete .ui-menu-item a.ui-state-focus
 .editorContent .sheetItem.highlight .SheetSource .en,
 .editorContent .sheetItem.highlight .SheetSource::after
 {
-  background-color: #F0F7FF;
+  background-color: #F9F5E1;
 }
 .sheetContent .segment.highlight .linkCount .en,
 .sheetContent .segment.highlight .linkCount .he,
