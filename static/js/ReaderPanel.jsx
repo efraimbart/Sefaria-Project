@@ -1676,7 +1676,7 @@ class ReaderDisplayOptionsMenu extends Component {
                   {layoutToggle}
                   {colorToggle}
                   {sizeToggle}
-                  /*{aliyahToggle}*/
+                  {/*aliyahToggle*/}
                   {vowelToggle}
                   {punctuationToggle}
                 </div>
