@@ -713,10 +713,10 @@ input.noselect {
   vertical-align: middle;
   height: 25px;
   margin-top: -7px;
-  width: 139px;
+  width: 92px;
 }
 .interface-hebrew .header .home img {
-  width: 99px;
+  width: 77px;
 }
 .header .accountLinks {
   display: flex;
@@ -1334,7 +1334,7 @@ div.interfaceLinks-row a {
 .readerContent {
   width: 100%;
   height: calc(100% - 60px);
-  background-color: #F4ECD8;
+  background-color: inherit;
 }
 .dark .readerContent {
   color: white;
@@ -4812,7 +4812,7 @@ body .ui-autocomplete.dictionary-toc-autocomplete .ui-menu-item a.ui-state-focus
   text-align: justify;
   background-color: inherit;
   margin: 0 auto;
-  max-width: 840px;
+  max-width: 760px;
   position: relative;
   padding: 0 30px;
 }
@@ -5087,7 +5087,7 @@ body .ui-autocomplete.dictionary-toc-autocomplete .ui-menu-item a.ui-state-focus
 .editorContent .sheetItem.highlight .SheetSource .en,
 .editorContent .sheetItem.highlight .SheetSource::after
 {
-  background-color: #F9F5E1;
+  background-color: #F0F7FF;
 }
 .sheetContent .segment.highlight .linkCount .en,
 .sheetContent .segment.highlight .linkCount .he,
