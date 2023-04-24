@@ -51,7 +51,7 @@ class Header extends Component {
           <a href="/texts" className="textLink"><InterfaceText context="Header">Texts</InterfaceText></a>
           {/*<a href="/topics" className="textLink"><InterfaceText>Topics</InterfaceText></a>*/}
           {/*<DonateLink classes={"textLink donate"} link={"header"} source={"Header"}><InterfaceText>Donate</InterfaceText></DonateLink>*/}
-          <a href="/calendar" className="textLink"><InterfaceText>Daily Study</InterfaceText></a>
+          <a href="/calendars" className="textLink"><InterfaceText>Daily Study</InterfaceText></a>
           <a href="/community" className="textLink"><InterfaceText>Community</InterfaceText></a>
           <a href="https://cash.app/$seforimapp" className="textLink" target="_blank"><InterfaceText context="Header">Donate</InterfaceText></a>
          </div>
