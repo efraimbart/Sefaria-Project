@@ -50,9 +50,9 @@ class Header extends Component {
           <a className="home" href="/" >{logo}</a> : null }
           <a href="/texts" className="textLink"><InterfaceText context="Header">Texts</InterfaceText></a>
           {/*<a href="/topics" className="textLink"><InterfaceText>Topics</InterfaceText></a>*/}
-          <a href="/community" className="textLink"><InterfaceText>Community</InterfaceText></a>
-          <DonateLink classes={"textLink donate"} link={"header"} source={"Header"}><InterfaceText>Donate</InterfaceText></DonateLink>
-        </div>
+          {/*<DonateLink classes={"textLink donate"} link={"header"} source={"Header"}><InterfaceText>Donate</InterfaceText></DonateLink>*/}
+          <a href="https://cash.app/$seforimapp" className="textLink" target="_blank"><InterfaceText context="Header">Donate</InterfaceText></a>
+         </div>
 
         <div className="headerLinksSection">
           <SearchBar

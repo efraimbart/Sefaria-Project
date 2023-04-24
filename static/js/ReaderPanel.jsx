@@ -453,17 +453,14 @@ class ReaderPanel extends Component {
   }
 
   setOption(option, value) {
-     if (option === "fontSize") {
-       const step = 1.15;
-       const size = this.state.settings.fontSize;
-       value = (value === "smaller" ? size/step : size*step);
-       //const newWidth = size * 9.5 + 50; // adjust the multiplication factor and constant as needed       
-     
-  } else if (option === "layout") {
-    const category = this.currentCategory();
-    option = category === "Tanakh" || category === "Talmud" ? "layout" + category : "layoutDefault";
-  }
-
+    if (option === "fontSize") {
+      const step = 1.15;
+      const size = this.state.settings.fontSize;
+      value = (value === "smaller" ? size/step : size*step);
+    } else if (option === "layout") {
+      const category = this.currentCategory();
+      option = category === "Tanakh" || category === "Talmud" ? "layout" + category : "layoutDefault";
+    }
 
 
     this.state.settings[option] = value;
