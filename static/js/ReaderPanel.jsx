@@ -451,7 +451,6 @@ class ReaderPanel extends Component {
   closeDisplaySettings() {
     this.conditionalSetState({displaySettingsOpen: false});
   }
-
   setOption(option, value) {
     if (option === "fontSize") {
       const step = 1.15;
@@ -461,7 +460,6 @@ class ReaderPanel extends Component {
       const category = this.currentCategory();
       option = category === "Tanakh" || category === "Talmud" ? "layout" + category : "layoutDefault";
     }
-
 
     this.state.settings[option] = value;
     let state = {settings: this.state.settings};
@@ -473,7 +471,7 @@ class ReaderPanel extends Component {
     }
     $.cookie(option, value, {path: "/"});
     this.conditionalSetState(state);
- }
+  }
   setConnectionsMode(mode, connectionData = null) {
     let loginRequired = {
       "Add Connection": 1,
@@ -522,9 +520,7 @@ class ReaderPanel extends Component {
     // this.replaceHistory to be false so that we don't override the previous page's history.
     // If history.state.panels[0].mode is undefined, we know that conditionalSetState has been called already, and we
     // can replace the history state. Otherwise, we want to push the history state, so we set replaceHistory to false.
-    this.replaceHistory = replaceHistoryIfReaderAppUpdated ?
-        history.state ? !history.state.panels[0].mode : true // on page load history state may not yet exist -- in that case force update
-        : false
+    this.replaceHistory = replaceHistoryIfReaderAppUpdated ? !history.state.panels[0].mode : false
     this.conditionalSetState({tab: tab})
   }
   currentMode() {
@@ -1491,10 +1487,10 @@ const TranslationLanguagePreferenceSuggestionBanner = ({ setTranslationLanguageP
 
 
 class ReaderDisplayOptionsMenu extends Component {
-  /*renderAliyotToggle() {
+  {/*renderAliyotToggle() {
     let torah = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Onkelos Genesis", "Onkelos Exodus", "Onkelos Leviticus", "Onkelos Numbers", "Onkelos Deuteronomy"];
     return this.props.currentBook ? torah.includes(this.props.currentBook()) : false;
-  }*/
+  }*/}
   vowelToggleAvailability(){
     let data = this.props.currentData();
     if(!data) return 2;
@@ -1605,7 +1601,7 @@ class ReaderDisplayOptionsMenu extends Component {
       {name: "aliyotOn",   content: Sefaria._("On"), role: "radio", ariaLabel: Sefaria._("Show Parasha Aliyot") },
       {name: "aliyotOff", content: Sefaria._("Off"), role: "radio", ariaLabel: Sefaria._("Hide Parasha Aliyot") },
     ];
-/*    let aliyahToggle = this.renderAliyotToggle() ? (
+    {/*let aliyahToggle = this.renderAliyotToggle() ? (
       this.props.parentPanel == "Sheet" ? null :
         <ToggleSet
           ariaLabel="Toggle Aliyot"
@@ -1614,7 +1610,7 @@ class ReaderDisplayOptionsMenu extends Component {
           options={aliyahOptions}
           setOption={this.props.setOption}
           currentValue={this.props.settings.aliyotTorah} />) : null;
-*/
+    */}
     let vowelsOptions = [
       {name: "all", content: "<span class='he'>אָ֑</span>", role: "radio", ariaLabel: Sefaria._("Show Vowels and Cantillation")},
       {name: "partial", content: "<span class='he'>אָ</span>", role: "radio", ariaLabel: Sefaria._("Show only vowel points")},
@@ -1668,7 +1664,7 @@ class ReaderDisplayOptionsMenu extends Component {
                   {layoutToggle}
                   {colorToggle}
                   {sizeToggle}
-                  {/*aliyahToggle*/}
+                  {/*{aliyahToggle}*/}
                   {vowelToggle}
                   {punctuationToggle}
                 </div>
