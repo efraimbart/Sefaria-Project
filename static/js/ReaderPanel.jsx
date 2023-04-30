@@ -1490,7 +1490,8 @@ class ReaderDisplayOptionsMenu extends Component {
   {/*renderAliyotToggle() {
     let torah = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Onkelos Genesis", "Onkelos Exodus", "Onkelos Leviticus", "Onkelos Numbers", "Onkelos Deuteronomy"];
     return this.props.currentBook ? torah.includes(this.props.currentBook()) : false;
-  }*/}
+  }
+  */}
   vowelToggleAvailability(){
     let data = this.props.currentData();
     if(!data) return 2;
@@ -1601,7 +1602,7 @@ class ReaderDisplayOptionsMenu extends Component {
       {name: "aliyotOn",   content: Sefaria._("On"), role: "radio", ariaLabel: Sefaria._("Show Parasha Aliyot") },
       {name: "aliyotOff", content: Sefaria._("Off"), role: "radio", ariaLabel: Sefaria._("Hide Parasha Aliyot") },
     ];
-    {/*let aliyahToggle = this.renderAliyotToggle() ? (
+    let aliyahToggle = this.renderAliyotToggle() ? (
       this.props.parentPanel == "Sheet" ? null :
         <ToggleSet
           ariaLabel="Toggle Aliyot"
@@ -1610,7 +1611,7 @@ class ReaderDisplayOptionsMenu extends Component {
           options={aliyahOptions}
           setOption={this.props.setOption}
           currentValue={this.props.settings.aliyotTorah} />) : null;
-    */}
+
     let vowelsOptions = [
       {name: "all", content: "<span class='he'>אָ֑</span>", role: "radio", ariaLabel: Sefaria._("Show Vowels and Cantillation")},
       {name: "partial", content: "<span class='he'>אָ</span>", role: "radio", ariaLabel: Sefaria._("Show only vowel points")},
@@ -1664,7 +1665,7 @@ class ReaderDisplayOptionsMenu extends Component {
                   {layoutToggle}
                   {colorToggle}
                   {sizeToggle}
-                  {/*{aliyahToggle}*/}
+                  {aliyahToggle}
                   {vowelToggle}
                   {punctuationToggle}
                 </div>
