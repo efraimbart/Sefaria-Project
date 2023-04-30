@@ -51,7 +51,7 @@ const CalendarsPage = ({multiPanel, initialWidth}) => {
             <div className="readerNavCategories">
               <ResponsiveNBox content={dailyListings} initialWidth={initialWidth} />
             </div>
-            <h2 className="styledH1 sans-serif"><InterfaceText>Weekly Learning</InterfaceText></h2>
+            {/*<h2 className="styledH1 sans-serif"><InterfaceText>Weekly Learning</InterfaceText></h2>*/}
             <div className="readerNavCategories">
               <ResponsiveNBox content={weeklyListings} initialWidth={initialWidth} />
             </div>

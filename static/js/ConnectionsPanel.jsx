@@ -791,7 +791,7 @@ const ResourcesList = ({ masterPanelMode, setConnectionsMode, counts }) => {
   return (
     <div className="toolButtonsList">
       <ToolsButton en="Sheets" he="דפי מקורות" image="sheet.svg" count={counts["sheets"]} urlConnectionsMode="Sheets" onClick={() => setConnectionsMode("Sheets")} />
-      <ToolsButton en="External Links" he="דפי אינטרנט" image="webpages.svg" count={counts["webpages"]} urlConnectionsMode="WebPages" onClick={() => setConnectionsMode("WebPages")} />
+      <ToolsButton en="From the Rebbe" he="דפי אינטרנט" image="webpages.svg" count={counts["webpages"]} urlConnectionsMode="WebPages" onClick={() => setConnectionsMode("WebPages")} />
       <ToolsButton en="Topics" he="נושאים" image="hashtag-icon.svg" count={counts["topics"]} urlConnectionsMode="Topics" onClick={() => setConnectionsMode("Topics")} />
       {/* <ToolsButton en="Images" he="כתבי יד" image="manuscripts.svg" count={counts["manuscripts"]} urlConnectionsMode="manuscripts" onClick={() => setConnectionsMode("manuscripts")} /> */}
       <ToolsButton en="Audio" he="קריאה בתורה" image="torahreadings.svg" count={counts["audio"]} urlConnectionsMode="Torah Readings" onClick={() => setConnectionsMode("Torah Readings")} />
@@ -1267,7 +1267,7 @@ class WebPagesList extends Component {
     let webpages = Sefaria.webPagesByRef(this.props.srefs)
     let content = [];
 
-    if (!this.props.filter) {
+    {/*if (!this.props.filter) {
       let sites = {};
       webpages.map(page => {
         if (page.siteName in sites) {
@@ -1283,8 +1283,8 @@ class WebPagesList extends Component {
           <span className="siteName">{site.name} <span className="connectionsCount">({site.count})</span></span>
         </div>);
       });
-    } else {
-      webpages = webpages.filter(page => this.props.filter == "all" || page.siteName == this.props.filter);
+    } else { */}
+      webpages = webpages.filter(page => this.props.filter == "all" || page.siteName == "Chabad.org" {/*this.props.filter)*/};
       content = webpages.map(webpage => {
         return (<div className={"webpage" + (webpage.isHebrew ? " hebrew" : "")} key={webpage.url}>
           <img className="icon" src={webpage.faviconUrl} />
@@ -1297,7 +1297,7 @@ class WebPagesList extends Component {
           </div>
         </div>)
       });
-    }
+    //}
 
     if (!content.length) {
       const filterName = this.props.filter !== "all" ? this.props.filter : null;
