@@ -1290,7 +1290,7 @@ class WebPagesList extends Component {
           <img className="icon" src={webpage.faviconUrl} />
           <a className="title" href={webpage.url} target="_blank">{webpage.title}</a>
           <div className="domain">{webpage.domain}</div>
-          {webpage.description ? <div className="segmentText">{webpage.description}</div> : null}
+          {webpage.description ? <div className="description">{webpage.description}</div> : null}
           <div className="stats">
             <span className="int-en">Citing: {webpage.anchorRef}</span>
             <span className="int-he">מצטט: {Sefaria._r(webpage.anchorRef)}</span>
