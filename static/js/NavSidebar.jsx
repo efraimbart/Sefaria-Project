@@ -98,13 +98,10 @@ const AboutSefaria = ({hideTitle}) => (
     <ModuleTitle h1={true}>A Living Library of Torah</ModuleTitle> : null }
     <InterfaceText>
       <EnglishText>
-          Sefaria is home to 3,000 years of Jewish texts. We are a non-profit organization offering free access to texts, translations,
-          and commentaries so that everyone can participate in the ongoing process of studying, interpreting, and creating Torah.
+          Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. We're at the very early stages, so stay tuned!
         </EnglishText>
         <HebrewText>
-          ספריא היא ביתם של 3,000 שנות ספרות יהודית.
-          אנו ארגון ללא מטרות רווח המציע גישה חופשית למקורות יהודיים, לתרגומים ולפרשנויות,
-          ומטרתנו לאפשר לכל אחד ואחת להשתתף בתהליך המתמשך של לימוד וחידוש בתורה.
+        Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!
         </HebrewText>
     </InterfaceText>
     <a href="/about" className="inTextLink">
@@ -120,17 +117,17 @@ const AboutSefaria = ({hideTitle}) => (
 const AboutTranslatedText = ({translationsSlug}) => {
 
   const translationLookup = {
-    "de": {title: "Eine lebendige Bibliothek der Tora", body: "Sefaria ist eine Bibliothek für jüdische Texte aus 3.000 Jahren. Wir sind eine gemeinnützige Organisation, die freien Zugang zu Texten, Übersetzungen und Kommentaren bietet, damit jede und jeder am fortlaufenden Prozess des Studierens, Interpretierens und der Entwicklung der Tora teilnehmen kann."},
-    "eo": {title: "Vivanta Biblioteko de Torao", body: "Sefaria estas hejmo de 3,000 jaroj da judaj tekstoj. Ni estas neprofitcela organizo ofertanta senpagan aliron al tekstoj, tradukoj kaj komentaĵoj por ke ĉiuj povu partopreni en la daŭra procezo de studado, interpretado kaj kreado de Torao."},
-    "es": {title: "Una biblioteca viva de la Torá", body: "Sefaria alberga 3.000 años de textos judíos. Somos una organización sin fines de lucro que ofrece acceso gratuito a textos, traducciones y comentarios para que todos puedan participar en el proceso continuo de estudio, interpretación y creación de la Torá."},
-    "fa": {title:"کتابخانه زنده تورات", body: "سفاریا خانه 3000 سال متون یهودی است. ما یک سازمان غیرانتفاعی هستیم که دسترسی رایگان به متون، ترجمه ها و تفسیرها را ارائه می دهیم تا همه بتوانند در روند مداوم مطالعه، تفسیر و ایجاد تورات شرکت کنند."},
-    "fi": {title: "Tooran elävä kirjasto", body: "Sefaria on koti 3000 vuoden juutalaisille teksteille. Olemme voittoa tavoittelematon organisaatio, joka tarjoaa ilmaisen pääsyn teksteihin, käännöksiin ja kommentteihin, jotta kaikki voivat osallistua jatkuvaan Tooran opiskelu-, tulkkaus- ja luomisprosessiin."},
-    "fr": {title: "Une bibliothèque vivante de la Torah", body: "Une bibliothèque de Torah vivante. Sefaria abrite 3 000 ans de textes juifs. Nous sommes une organisation à but non lucratif offrant un accès gratuit aux textes de la Torah, aux commentaires et aux traductions, afin que chacun puisse participer au processus infini de l'étude, de l'interprétation et de la création de la Torah."},
-    "it": {title: "Una biblioteca vivente della Torah", body: "Sefaria ospita 3.000 anni di testi ebraici. Siamo un'organizzazione senza scopo di lucro che offre libero accesso a testi, traduzioni e commenti in modo che tutti possano partecipare al processo in corso di studio, interpretazione e creazione della Torah."},
-    "pl": {title: "Żywa Biblioteka Tory", body: "Sefaria jest domem dla 3000 lat żydowskich tekstów. Jesteśmy organizacją non-profit oferującą bezpłatny dostęp do tekstów, tłumaczeń i komentarzy, dzięki czemu każdy może uczestniczyć w bieżącym procesie studiowania, tłumaczenia i tworzenia Tory."},
-    "pt": {title: "Uma Biblioteca Viva da Torá", body: "Sefaria é o lar de 3.000 anos de textos judaicos. Somos uma organização sem fins lucrativos que oferece acesso gratuito a textos, traduções e comentários para que todos possam participar do processo contínuo de estudo, interpretação e criação da Torá."},
-    "ru": {title: "Живая библиотека Торы", body: "Сефария является домом для еврейских текстов 3000-летней давности. Мы — некоммерческая организация, предлагающая бесплатный доступ к текстам, переводам и комментариям, чтобы каждый мог участвовать в продолжающемся процессе изучения, толкования и создания Торы."},
-    "yi": {title: "א לעבעדיקע ביבליאטעק פון תורה", body: "אין ספֿריאַ איז אַ היים פֿון 3,000 יאָר ייִדישע טעקסטן. מיר זענען אַ נאַן-נוץ אָרגאַניזאַציע וואָס אָפפערס פריי אַקסעס צו טעקסטן, איבערזעצונגען און קאָמענטאַרן אַזוי אַז אַלעמען קענען אָנטייל נעמען אין די אָנגאָינג פּראָצעס פון לערנען, ינטערפּריטיישאַן און שאפן תורה."}
+    "de": {title: "Eine lebendige Bibliothek der Tora", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "eo": {title: "Vivanta Biblioteko de Torao", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "es": {title: "Una biblioteca viva de la Torá", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "fa": {title:"کتابخانه زنده تورات", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "fi": {title: "Tooran elävä kirjasto", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "fr": {title: "Une bibliothèque vivante de la Torah", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "it": {title: "Una biblioteca vivente della Torah", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "pl": {title: "Żywa Biblioteka Tory", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "pt": {title: "Uma Biblioteca Viva da Torá", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "ru": {title: "Живая библиотека Торы", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"},
+    "yi": {title: "א לעבעדיקע ביבליאטעק פון תורה", body: "Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!"}
   }
   return (
   <Module>
@@ -140,13 +137,10 @@ const AboutTranslatedText = ({translationsSlug}) => {
           translationLookup[translationsSlug]["body"] :
           <InterfaceText>
           <EnglishText>
-          Sefaria is home to 3,000 years of Jewish texts. We are a non-profit organization offering free access to texts, translations,
-          and commentaries so that everyone can participate in the ongoing process of studying, interpreting, and creating Torah.
+          Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!
         </EnglishText>
         <HebrewText>
-          ספריא היא ביתם של 3,000 שנות ספרות יהודית.
-          אנו ארגון ללא מטרות רווח המציע גישה חופשית למקורות יהודיים, לתרגומים ולפרשנויות,
-          ומטרתנו לאפשר לכל אחד ואחת להשתתף בתהליך המתמשך של לימוד וחידוש בתורה.
+        Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!
         </HebrewText>
         </InterfaceText>
         }
@@ -182,8 +176,8 @@ const TheJewishLibrary = ({hideTitle}) => (
 
 const SupportSefaria = ({blue}) => (
   <Module blue={blue}>
-    <ModuleTitle>Support Sefaria</ModuleTitle>
-    <InterfaceText>Sefaria is an open source, non-profit project. Support us by making a tax-deductible donation.</InterfaceText>
+    <ModuleTitle>Support Seforim.app</ModuleTitle>
+    <InterfaceText>Seforim.app is a non-profit project. Support us by making a donation.</InterfaceText>
     <br />
     <DonateLink classes={"button small" + (blue ? " white" : "")} source={"NavSidebar / SupportSefaria"}>
       <img src="/static/img/heart.png" alt="donation icon" />
@@ -490,10 +484,10 @@ const AboutTopics = ({hideTitle}) => (
     <ModuleTitle>About Topics</ModuleTitle> }
     <InterfaceText>
         <HebrewText>
-בדפי הנושא מלוקטים מקורות נבחרים ודפי מקורות של משתמשים על נושא מסוים. המקורות המופיעים בדפי הנושא נאספים ממאגרים קיימים של ספרות יהודית (דוגמת 'אספקלריא') ומתוך דפי מקורות פומביים של משתמשי ספריא.
+        Placeholder text
         </HebrewText>
         <EnglishText>
-            Topics bring you straight to selections of texts and user created source sheets about thousands of subjects. Sources that appear are drawn from existing indices of Jewish texts (like Aspaklaria) and from the sources our users include on their public source sheets.
+            Placeholder text
         </EnglishText>
 
     </InterfaceText>
@@ -563,7 +557,7 @@ const JoinTheCommunity = ({wide}) => {
     <Module wide={wide}>
       <div>
         <ModuleTitle>Join the Conversation</ModuleTitle>
-        <InterfaceText>People around the world use Sefaria to create and share Torah resources. You're invited to add your voice.</InterfaceText>
+        <InterfaceText>Check out our interactive features</InterfaceText>
       </div>
       <div>
         <a className="button small" href="/community">
@@ -604,13 +598,13 @@ const StayConnected = () => {
       <NewsletterSignUpForm context="sidebar" />
 
       <a target="_blank" className="button small white appButton iconOnly" href={fbURL}>
-        <img src="/static/icons/facebook.svg" alt={Sefaria._("Sefaria on Facebook")} />
+        <img src="/static/icons/facebook.svg" alt={Sefaria._("Seforim.app on Facebook")} />
       </a>
       <a target="_blank" className="button small white appButton iconOnly" href="https://twitter.com/seforimapp">
-        <img src="/static/icons/twitter.svg" alt={Sefaria._("Sefaria on Twitter")} />
+        <img src="/static/icons/twitter.svg" alt={Sefaria._("Seforim.app on Twitter")} />
       </a>
       <a target="_blank" className="button small white appButton iconOnly" href="https://www.instagram.com/seforimapp">
-        <img src="/static/icons/instagram.svg" alt={Sefaria._("Sefaria on Instagram")} />
+        <img src="/static/icons/instagram.svg" alt={Sefaria._("Seforim.app on Instagram")} />
       </a>
       {/* <a target="_blank" className="button small white appButton iconOnly" href="https://www.youtube.com/user/SefariaProject">
         <img src="/static/icons/youtube.svg" alt={Sefaria._("Sefaria on YouTube")} />
@@ -641,8 +635,8 @@ const AboutCollections = ({hideTitle}) => (
     {hideTitle ? null :
     <ModuleTitle h1={true}>About Collections</ModuleTitle>}
     <InterfaceText>
-        <EnglishText>Collections are user generated bundles of sheets which can be used privately, shared with friends, or made public on Sefaria.</EnglishText>
-        <HebrewText>אסופות הן מקבצים של דפי מקורות שנוצרו על ידי משתמשי האתר. הן ניתנות לשימוש פרטי, לצורך שיתוף עם אחרים או לשימוש ציבורי באתר ספריא.</HebrewText>
+        <EnglishText>Collections are user generated bundles of sheets which can be used privately, shared with friends, or made public on Seforim.app.</EnglishText>
+        <HebrewText>אסופות הן מקבצים של דפי מקורות שנוצרו על ידי משתמשי האתר. הן ניתנות לשימוש פרטי, לצורך שיתוף עם אחרים או לשימוש ציבורי באתר Seforim.app.</HebrewText>
     </InterfaceText>
     {hideTitle ? null :
     <div>
