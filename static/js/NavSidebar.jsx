@@ -573,14 +573,14 @@ const JoinTheCommunity = ({wide}) => {
 const GetTheApp = () => (
   <Module>
     <ModuleTitle>Get the Mobile App</ModuleTitle>
-    <InterfaceText>Access the Jewish library anywhere and anytime with the</InterfaceText> <a href="/mobile" className="inTextLink"><InterfaceText>Sefaria mobile app.</InterfaceText></a>
+    <InterfaceText>Placeholder text</InterfaceText>
     <br />
-    <a target="_blank" className="button small white appButton ios" href="https://itunes.apple.com/us/app/sefaria/id1163273965?ls=1&mt=8">
-      <img src="/static/icons/ios.svg" alt={Sefaria._("Sefaria app on IOS")} />
+    <a target="_blank" className="button small white appButton ios" href="/">
+      <img src="/static/icons/ios.svg" alt={Sefaria._("Placeholder text")} />
       <InterfaceText>iOS</InterfaceText>
     </a>
-    <a target="_blank" className="button small white appButton" href="https://play.google.com/store/apps/details?id=org.sefaria.sefaria">
-      <img src="/static/icons/android.svg" alt={Sefaria._("Sefaria app on Android")} />
+    <a target="_blank" className="button small white appButton" href="/">
+      <img src="/static/icons/android.svg" alt={Sefaria._("Placeholder text")} />
       <InterfaceText>Android</InterfaceText>
     </a>
   </Module>
