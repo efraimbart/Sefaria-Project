@@ -338,6 +338,7 @@ class ConnectionsPanel extends Component {
               masterPanelSheetId={this.props.masterPanelSheetId}
             /> :
             <div className="topToolsButtons">
+              <ToolsButton en="From the Rebbe" he="שיחות ומאמרים" image="webpages.svg" count={counts["webpages"]} urlConnectionsMode="WebPages" onClick={() => setConnectionsMode("WebPages")} />
               <ToolsButton en="About this Text" he="אודות הטקסט" image="about-text.svg" urlConnectionsMode="About" onClick={() => this.props.setConnectionsMode("About")} />
               <ToolsButton en="Table of Contents" he="תוכן העניינים" image="text-navigation.svg" urlConnectionsMode="Navigation" onClick={() => this.props.setConnectionsMode("Navigation")} />
               <ToolsButton en="Search in this Text" he="חפש בטקסט" image="compare.svg" urlConnectionsMode="SidebarSearch" onClick={() => this.props.setConnectionsMode("SidebarSearch")} />
@@ -1310,8 +1311,8 @@ class WebPagesList extends Component {
 
     const linkerMessage = Sefaria._siteSettings.TORAH_SPECIFIC ?
       <div className="webpagesLinkerMessage sans-serif">
-        <span className="int-en">Sites that are listed here use the <a href="/linker">Sefaria Linker</a>.</span>
-        <span className="int-he">אתרים המפורטים כאן משתמשים <a href="/linker">במרשתת ההפניות</a>.</span>
+        <span className="int-en">Pages listed here were automatically aggregated. <a href="mailto:hello@seforim.app">Get in touch</a> to see how you can contribute.</span>
+        <span className="int-en">Pages listed here were automatically aggregated. <a href="mailto:hello@seforim.app">Get in touch</a> to see how you can contribute.</span>
       </div> : null;
 
     return <div className="webpageList">

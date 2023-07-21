@@ -104,7 +104,7 @@ const AboutSefaria = ({hideTitle}) => (
         Seforim.app is a work in progress, aiming to accelerate and enhance Torah accessibility, by developing tools to extract the wisdom from the text. Stay tuned!
         </HebrewText>
     </InterfaceText>
-    <a href="/about" className="inTextLink">
+    <a href="/collections/skqQ0cLc" className="inTextLink">
       <InterfaceText>
           <EnglishText>Learn More ›</EnglishText>
           <HebrewText>לקריאה נוספת ›</HebrewText>
