@@ -47,14 +47,6 @@ class Header extends Component {
       <>
         <div className="headerNavSection">
 
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLTJW380SC"></script>
-          <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments)}
-            gtag('js', new Date());
-
-            gtag('config', 'G-FLTJW380SC');
-          </script>
 
           { Sefaria._siteSettings.TORAH_SPECIFIC ?
           <a className="home" href="/" >{logo}</a> : null }
