@@ -1571,7 +1571,7 @@ class ReaderDisplayOptionsMenu extends Component {
 
     let colorOptions = [
       {name: "light", content: "", role: "radio", ariaLabel: "Toggle light mode" },
-      {name: "sepia", content: "", role: "radio", ariaLabel: "Toggle sepia mode" },
+      /*{name: "sepia", content: "", role: "radio", ariaLabel: "Toggle sepia mode" },*/
       {name: "dark", content: "", role: "radio", ariaLabel: "Toggle dark mode" }
     ];
     let colorToggle = (
