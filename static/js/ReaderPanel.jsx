@@ -1583,7 +1583,7 @@ class ReaderDisplayOptionsMenu extends Component {
           options={colorOptions}
           setOption={this.props.setOption}
           currentValue={this.props.settings.color} />);
-    /*colorToggle = this.props.multiPanel ? null : colorToggle;*/
+    colorToggle = this.props.multiPanel ? null : colorToggle;
 
     let sizeOptions = [
       {name: "smaller", content: Sefaria._("Aa"), role: "button", ariaLabel: Sefaria._("Decrease font size") },
