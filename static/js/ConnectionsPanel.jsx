@@ -337,8 +337,7 @@ class ConnectionsPanel extends Component {
               setConnectionsMode={this.props.setConnectionsMode}
               masterPanelSheetId={this.props.masterPanelSheetId}
             /> :
-            <div className="topToolsButtons">
-              <ToolsButton en="From the Rebbe" he="שיחות ומאמרים" image="webpages.svg" count={counts["webpages"]} urlConnectionsMode="WebPages" onClick={() => setConnectionsMode("WebPages")} />
+            <div className="topToolsButtons">              
               <ToolsButton en="About this Text" he="אודות הטקסט" image="about-text.svg" urlConnectionsMode="About" onClick={() => this.props.setConnectionsMode("About")} />
               <ToolsButton en="Table of Contents" he="תוכן העניינים" image="text-navigation.svg" urlConnectionsMode="Navigation" onClick={() => this.props.setConnectionsMode("Navigation")} />
               <ToolsButton en="Search in this Text" he="חפש בטקסט" image="compare.svg" urlConnectionsMode="SidebarSearch" onClick={() => this.props.setConnectionsMode("SidebarSearch")} />
