@@ -1311,7 +1311,7 @@ class WebPagesList extends Component {
     const linkerMessage = Sefaria._siteSettings.TORAH_SPECIFIC ?
       <div className="webpagesLinkerMessage sans-serif">
         <span className="int-en">Pages listed here were automatically aggregated. <a href="mailto:hello@seforim.app">Get in touch</a> to see how you can contribute.</span>
-        <span className="int-en">Pages listed here were automatically aggregated. <a href="mailto:hello@seforim.app">Get in touch</a> to see how you can contribute.</span>
+        <span className="int-he">Pages listed here were automatically aggregated. <a href="mailto:hello@seforim.app">Get in touch</a> to see how you can contribute.</span>
       </div> : null;
 
     return <div className="webpageList">
