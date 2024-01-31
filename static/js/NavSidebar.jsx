@@ -413,6 +413,20 @@ const WeeklyTorahPortion = () => {
 };
 
 
+const DafYomi = () => {
+  return (
+    <Module>
+      <ModuleTitle>Daily Learning</ModuleTitle>
+      <div className="readingsSection">
+        <span className="readingsSectionTitle">
+          <InterfaceText >Daf Yomi</InterfaceText>
+        </span>
+        <DafLink />
+      </div>
+    </Module>
+  );
+};
+ 
 const Visualizations = ({categories}) => {
   const visualizations = [
     {en: "Tanakh & Talmud", 
