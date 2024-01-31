@@ -421,10 +421,10 @@ const getSidebarModules = (categories) => {
   const modules = {
     "Tanakh": [
       {type: "WeeklyTorahPortion"},
-    ],
+    ]/* ,
     "Talmud|Bavli": [
-      {type: "SupportSefaria"},
-    ]
+      {type: "DafYomi"},
+    ] */
   };
 
   const customModules = path in modules ? modules[path] : [];
