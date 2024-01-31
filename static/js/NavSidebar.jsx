@@ -37,7 +37,7 @@ const Modules = ({type, props}) => {
     "LearningSchedules":      LearningSchedules,
     "Translations":           Translations,
     "WeeklyTorahPortion":     WeeklyTorahPortion,
-    "DafYomi":                DafYomi,
+/*     "DafYomi":                DafYomi, */
     "AboutTopics":            AboutTopics,
     "TrendingTopics":         TrendingTopics,
     "RelatedTopics":          RelatedTopics,
