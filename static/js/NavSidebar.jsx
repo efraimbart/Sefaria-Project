@@ -413,7 +413,7 @@ const WeeklyTorahPortion = () => {
   );
 };
 
-
+/* 
 const DafYomi = () => {
   return (
     <Module>
@@ -427,7 +427,7 @@ const DafYomi = () => {
     </Module>
   );
 };
-
+ */
 
 const Visualizations = ({categories}) => {
   const visualizations = [
