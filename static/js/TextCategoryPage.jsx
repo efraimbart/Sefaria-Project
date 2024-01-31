@@ -423,7 +423,7 @@ const getSidebarModules = (categories) => {
       {type: "WeeklyTorahPortion"},
     ],
     "Talmud|Bavli": [
-      {type: "DafYomi"},
+      {type: "SupportSefaria"},
     ]
   };
 
