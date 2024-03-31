@@ -9,7 +9,6 @@ import $ from './sefaria/sefariaJquery';
 import EditCollectionPage from './EditCollectionPage';
 import Footer from './Footer';
 import SearchState from './sefaria/searchState';
-import OppositeSidebar from './OppositeSidebar'; // Note: Importing from OppositeSidebar.js
 import {ContentLanguageContext, AdContext} from './context';
 import {
   ContestLandingPage,

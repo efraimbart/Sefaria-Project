@@ -20,7 +20,6 @@ import ReactDOM  from 'react-dom';
 import $  from './sefaria/sefariaJquery';
 import Sefaria  from './sefaria/sefaria';
 import { NavSidebar, Modules } from './NavSidebar';
-import { OppositeSidebar, OppositeSidebarModules } from './OppositeSidebar'; // Note: Importing from OppositeSidebar.js
 import DictionarySearch  from './DictionarySearch';
 import VersionBlock  from './VersionBlock';
 import ExtendedNotes from './ExtendedNotes';
@@ -236,9 +235,6 @@ class BookPage extends Component {
 
         <div className="content">
           <div className="sidebarLayout">
-          <OppositeSidebar modules={[
-              { type: "AboutSefaria" },
-            ]} />
             <div className="contentInner followsContentLang">
               {this.props.compare ? null :
               <div className="tocTop">
@@ -303,7 +299,6 @@ class BookPage extends Component {
             </div>
             {this.isBookToc() && ! this.props.compare ? 
             <NavSidebar modules={sidebarModules} /> : null}
-
           </div>
           {this.isBookToc() && ! this.props.compare ?
           <Footer /> : null}
