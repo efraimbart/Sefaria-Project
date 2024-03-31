@@ -1599,6 +1599,15 @@ div.interfaceLinks-row a {
   border-bottom: 120px solid #FBFBFA;
   margin: -80px 0 0 0;
 }
+.oppositeSidebar {
+  width: 420px; /* Same as navSidebar, you can adjust as required */
+  background-color: #FBFBFA;
+  /* You might need to adjust these margins depending on your layout */
+  margin: -80px 0 0 0; /* Top margin negative like the navSidebar, if needed */
+  /* No right margin since it's going on the left */
+}
+
+/* You may need to add more specific styling for oppositeSidebar here if necessary */
 .singlePanel .navSidebar {
   width: 100%;
   margin: 20px 0 0 0;

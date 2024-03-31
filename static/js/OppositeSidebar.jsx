@@ -11,8 +11,8 @@ import {DonateLink, EnglishText, HebrewText, NewsletterSignUpForm} from './Misc'
 import {InterfaceText, ProfileListing, Dropdown} from './Misc';
 import { Promotions } from './Promotions'
 
-const NavSidebar = ({modules}) => {
-  return <div className="navSidebar sans-serif">
+const OppositeSidebar = ({modules}) => {
+  return <div className="OppositeSidebar sans-serif">
     {modules.map((m, i) => 
       <Modules 
         type={m.type} 
@@ -786,6 +786,6 @@ const DownloadVersions = ({sref}) => {
 
 
 export {
-  NavSidebar,
+  OppositeSidebar,
   Modules,
 };
