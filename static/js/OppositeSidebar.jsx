@@ -23,7 +23,7 @@ const OppositeSidebar = ({modules}) => {
 };
 
 
-const Modules = ({type, props}) => {
+const OppositeSidebarModules = ({type, props}) => {
   // Choose the appropriate module component to render by `type`
   const moduleTypes = {
     "AboutSefaria":           AboutSefaria,
@@ -210,10 +210,10 @@ const AboutTextCategory = ({cats}) => {
   }
 
   return (
-    <Module>
+    <OppositeSidebarModules>
       <h3><InterfaceText text={{en: enTitle, he: heTitle}} /></h3>
       <InterfaceText text={{en: tocObject.enDesc, he: tocObject.heDesc}} />
-    </Module>
+    </OppositeSidebarModules>
   );
 };
 
@@ -787,5 +787,5 @@ const DownloadVersions = ({sref}) => {
 
 export {
   OppositeSidebar,
-  Modules,
+  OppositeSidebarModules,
 };
