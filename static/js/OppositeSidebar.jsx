@@ -783,7 +783,6 @@ const DownloadVersions = ({sref}) => {
         </Module>
     );
 };
-export default OppositeSidebar;
 
 
 export {

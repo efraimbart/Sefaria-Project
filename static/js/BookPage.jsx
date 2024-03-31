@@ -20,7 +20,7 @@ import ReactDOM  from 'react-dom';
 import $  from './sefaria/sefariaJquery';
 import Sefaria  from './sefaria/sefaria';
 import { NavSidebar, Modules } from './NavSidebar';
-import OppositeSidebar from './OppositeSidebar'; // Note: Importing from OppositeSidebar.js
+import { OppositeSidebar, Modules } from './OppositeSidebar'; // Note: Importing from OppositeSidebar.js
 import DictionarySearch  from './DictionarySearch';
 import VersionBlock  from './VersionBlock';
 import ExtendedNotes from './ExtendedNotes';
