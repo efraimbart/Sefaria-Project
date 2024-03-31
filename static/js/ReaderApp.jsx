@@ -9,6 +9,7 @@ import $ from './sefaria/sefariaJquery';
 import EditCollectionPage from './EditCollectionPage';
 import Footer from './Footer';
 import SearchState from './sefaria/searchState';
+import NavSidebar from './OppositeSidebar'; // Note: Importing from OppositeSidebar.js
 import {ContentLanguageContext, AdContext} from './context';
 import {
   ContestLandingPage,
@@ -2114,6 +2115,11 @@ class ReaderApp extends Component {
       <AdContext.Provider value={this.getUserContext()}>
       <div id="readerAppWrap">
         {interruptingMessage}
+        <NavSidebar modules={[
+  { type: "AboutSefaria" },
+  { type: "Promo" },
+  // ... other modules ...
+]} />
         <div className={classes} onClick={this.handleInAppLinkClick}>
           {header}
           {panels}
