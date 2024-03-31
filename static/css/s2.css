@@ -1573,8 +1573,14 @@ div.interfaceLinks-row a {
 }
 .readerNavMenu h1 .navTitleTab.current img {filter: brightness(0.5);}
 .sidebarLayout {
-  display: flex;
-  flex-direction: row;
+  display: flex;  /* Use flexbox to layout children */
+  flex-direction: row; /* Align children horizontally */
+  justify-content: space-between; /* Put space between the sidebars */
+}
+
+/* Make sure the main content area takes up the remaining space */
+.contentInner.followsContentLang {
+  flex-grow: 1; /* Grow to fill available space */
 }
 @media (max-width: 700px) {
   .sidebarLayout {

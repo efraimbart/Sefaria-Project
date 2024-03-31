@@ -236,6 +236,9 @@ class BookPage extends Component {
 
         <div className="content">
           <div className="sidebarLayout">
+          <OppositeSidebar modules={[
+              { type: "AboutSefaria" },
+            ]} />
             <div className="contentInner followsContentLang">
               {this.props.compare ? null :
               <div className="tocTop">
@@ -300,11 +303,6 @@ class BookPage extends Component {
             </div>
             {this.isBookToc() && ! this.props.compare ? 
             <NavSidebar modules={sidebarModules} /> : null}
-                    <OppositeSidebar modules={[
-  { type: "AboutSefaria" },
-  { type: "Promo" },
-  // ... other modules ...
-]} />
 
           </div>
           {this.isBookToc() && ! this.props.compare ?
