@@ -82,36 +82,10 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
 
   return (
     <div className="sidebarSearch lexicon-content">
-    <div className={searchBoxClasses}>
+<div id="customgpt_chat"></div>
+<script src="https://cdn.customgpt.ai/js/sge.js" div_id="customgpt_chat" p_id="14201" p_key="4d027a76463af44205d39cda7ec12df4" height="278px"></script>
 
-    { isDictionary ?
-       <DictionarySearch
-            lexiconName={lexiconName}
-            title={title}
-            navigatePanel={navigatePanel}
-            contextSelector=".lexicon-content"/>
-      :
-      <>
-        <SearchButton onClick={handleSearchButtonClick} />
-        <input className={inputClasses}
-          placeholder={Sefaria._("Search in this text")}
-          id="searchQueryInput"
-          maxLength={75}
-          onKeyUp={
-            (event) => {
-              if (event.keyCode === 13) {
-                handleSearchButtonClick()
-              }
-            }
-          }
-          title={Sefaria._("Search in this text")} />
-      </>
-      }
-
-    </div>
-
-
-      {query ?
+{/*       {query ?
         <SearchResultList
           query={query}
           compare={false}
@@ -127,7 +101,7 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
 
         null
 
-    }
+    } */}
 
 
     </div>
