@@ -81,27 +81,10 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
 
 
   return (
-    <div className="sidebarSearch lexicon-content">
-<div id="customgpt_chat"></div>
-<script src="https://cdn.customgpt.ai/js/sge.js" div_id="customgpt_chat" p_id="14201" p_key="4d027a76463af44205d39cda7ec12df4" height="278px"></script>
+    <div >
+      <div id="customgpt_chat" className="sidebarSearch lexicon-content"></div>
+      <script src="https://cdn.customgpt.ai/js/sge.js" div_id="customgpt_chat" p_id="14201" p_key="4d027a76463af44205d39cda7ec12df4"></script>
 
-{/*       {query ?
-        <SearchResultList
-          query={query}
-          compare={false}
-          searchInBook={true}
-          tab="text"
-          types={["text"]}
-          textSearchState={searchState}
-          updateTotalResults={n => console.log(n)}
-          registerAvailableFilters={n => console.log(n)}
-          updateAppliedOptionSort={updateAppliedOptionSort}
-          onResultClick={onSidebarSearchClick}
-        /> :
-
-        null
-
-    } */}
 
 
     </div>
