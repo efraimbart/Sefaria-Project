@@ -6,6 +6,16 @@ body {
 *::selection {
   background-color: #D2DCFF;
 }
+
+/* Selection color for dark mode */
+body.dark *::selection {
+  background-color: #272727; /* Black color */
+}
+
+/* Selection color for sepia mode */
+body.sepia *::selection {
+  background-color: #000000; /* Black color */
+}
 body.sepia {
   background-color: #FBFBFA;
 }
