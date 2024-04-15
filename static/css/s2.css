@@ -9,7 +9,7 @@ body {
 
 /* Selection color for dark mode */
 body.dark *::selection {
-  background-color: #272727; /* Black color */
+  background-color: #272727  !important; /* Black color */
 }
 
 /* Selection color for sepia mode */
