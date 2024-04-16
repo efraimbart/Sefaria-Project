@@ -7,20 +7,22 @@ body {
   background-color: #D2DCFF;
 }
 
-/* Selection color for dark mode */
-body.dark *::selection {
-  background-color: #272727  !important; /* Black color */
-}
 
+
+
+body.sepia {
+  background-color: #FBFBFA;
+}
 /* Selection color for sepia mode */
 body.sepia *::selection {
   background-color: #000000; /* Black color */
 }
-body.sepia {
-  background-color: #FBFBFA;
-}
 body.dark {
   background-color: #333331;
+}
+/* Selection color for dark mode */
+body.dark *::selection {
+  background-color: #272727  !important; /* Black color */
 }
 body:not(.user-is-tabbing) *:focus {
   outline: none;
