@@ -81,7 +81,7 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
 
 
   return (
-    <div className="sidebarSearch lexicon-content">
+/*     <div className="sidebarSearch lexicon-content">
     <div className={searchBoxClasses}>
 
     { isDictionary ?
@@ -107,8 +107,6 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
           title={Sefaria._("Search in this text")} />
       </>
       }
-      <div id="customgpt_chat" className="sidebarSearch lexicon-content"></div>
-      <script src="https://cdn.customgpt.ai/js/sge.js" div_id="customgpt_chat" p_id="14201" p_key="4d027a76463af44205d39cda7ec12df4"></script>
     </div>
 
 
@@ -131,6 +129,11 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
     }
 
 
+    </div> */
+    <div className="sidebarSearch lexicon-content">
+    <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
+    <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
+    <iframe is="x-frame-bypass" src="https://app.klu.ai/public/actions/c823cb64-162a-4873-ac76-14c3e1a81c9b"></iframe>
     </div>
   );
 

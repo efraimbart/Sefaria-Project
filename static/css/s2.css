@@ -18,7 +18,7 @@ body.sepia *::selection {
   background-color: #000000; /* Black color */
 }
 body.dark {
-  background-color: #333331;
+  background-color: #333330;
 }
 /* Selection color for dark mode */
 body.dark *::selection {
@@ -5262,6 +5262,7 @@ But not to use a display block directive that might break continuous mode for ot
 .dark .segment .linkCount {
   filter: invert(100%);
   -webkit-filter: invert(100%);
+  color: white;
 }
 .readerPanel .segment .segmentNumber .en,
 .readerPanel .segment .segmentNumber .he {
