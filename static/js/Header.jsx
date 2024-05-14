@@ -56,7 +56,6 @@ class Header extends Component {
           <a href="/calendars" className="textLink"><InterfaceText>Daily Study</InterfaceText></a>
           <a href="/community" className="textLink"><InterfaceText>Community</InterfaceText></a>
           <a href="https://cash.app/$seforimapp" className="textLink" target="_blank"><InterfaceText context="Header">Donate</InterfaceText></a>
-          <script src="https://chatthing.ai/chat-widget.js" type="text/javascript" id="58c0fa83-f88b-4ae3-b07c-e6f92a211be4" async defer></script>
          </div>
 
         <div className="headerLinksSection">
