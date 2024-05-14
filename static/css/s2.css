@@ -6,23 +6,11 @@ body {
 *::selection {
   background-color: #D2DCFF;
 }
-
-
-
-
 body.sepia {
   background-color: #FBFBFA;
 }
-/* Selection color for sepia mode */
-body.sepia *::selection {
-  background-color: #000000; /* Black color */
-}
 body.dark {
-  background-color: #333330;
-}
-/* Selection color for dark mode */
-body.dark *::selection {
-  background-color: #272727  !important; /* Black color */
+  background-color: #333331;
 }
 body:not(.user-is-tabbing) *:focus {
   outline: none;
@@ -1398,7 +1386,7 @@ div.interfaceLinks-row a {
   text-align: right;
   unicode-bidi: initial;
 }
-}
+
 .interface-hebrew .readerPanel .en {
   direction: ltr;
 }
@@ -1585,14 +1573,8 @@ div.interfaceLinks-row a {
 }
 .readerNavMenu h1 .navTitleTab.current img {filter: brightness(0.5);}
 .sidebarLayout {
-  display: flex;  /* Use flexbox to layout children */
-  flex-direction: row; /* Align children horizontally */
-  justify-content: space-between; /* Put space between the sidebars */
-}
-
-/* Make sure the main content area takes up the remaining space */
-.contentInner.followsContentLang {
-  flex-grow: 1; /* Grow to fill available space */
+  display: flex;
+  flex-direction: row;
 }
 @media (max-width: 700px) {
   .sidebarLayout {
@@ -1617,15 +1599,6 @@ div.interfaceLinks-row a {
   border-bottom: 120px solid #FBFBFA;
   margin: -80px 0 0 0;
 }
-.oppositeSidebar {
-  width: 420px; /* Same as navSidebar, you can adjust as required */
-  background-color: #FBFBFA;
-  /* You might need to adjust these margins depending on your layout */
-  margin: -80px 0 0 0; /* Top margin negative like the navSidebar, if needed */
-  /* No right margin since it's going on the left */
-}
-
-/* You may need to add more specific styling for oppositeSidebar here if necessary */
 .singlePanel .navSidebar {
   width: 100%;
   margin: 20px 0 0 0;
@@ -5262,7 +5235,6 @@ But not to use a display block directive that might break continuous mode for ot
 .dark .segment .linkCount {
   filter: invert(100%);
   -webkit-filter: invert(100%);
-  color: white;
 }
 .readerPanel .segment .segmentNumber .en,
 .readerPanel .segment .segmentNumber .he {

@@ -81,7 +81,7 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
 
 
   return (
-/*     <div className="sidebarSearch lexicon-content">
+    <div className="sidebarSearch lexicon-content">
     <div className={searchBoxClasses}>
 
     { isDictionary ?
@@ -129,12 +129,12 @@ const SidebarSearch = ({ title, updateAppliedOptionSort, navigatePanel, sidebarS
     }
 
 
-    </div> */
-    <div className="sidebarSearch lexicon-content">
+    </div>
+/*     <div className="sidebarSearch lexicon-content">
     <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
     <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
     <iframe is="x-frame-bypass" src="https://app.klu.ai/public/actions/c823cb64-162a-4873-ac76-14c3e1a81c9b"></iframe>
-    </div>
+    </div> */
   );
 
 
