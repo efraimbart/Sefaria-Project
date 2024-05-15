@@ -3,12 +3,23 @@ sitemap.py - generate sitemaps of all available texts for search engines.
 
 Outputs sitemaps and sitemapindex to the first entry of STATICFILES_DIRS by default, a custom directory can be supplied.
 """
-import os, errno
+print("Starting sitemap generation...")
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import django
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'sefaria.settings'
+
+# Initialize Django
+django.setup()
+
 from datetime import datetime
 
 from sefaria.model import *
 from sefaria.system.database import db
-from .settings import STATICFILES_DIRS, STATIC_URL
+from sefaria.settings import STATICFILES_DIRS, STATIC_URL
 
 
 def chunks(l, n):
@@ -62,6 +73,8 @@ class SefariaSiteMapGenerator(object):
             self._hostname = SefariaSiteMapGenerator.hostnames.get(hostSuffix).get("hostname")
             self.output_directory = output_directory
             path = self.output_directory + "sitemaps/" + self._interfaceLang
+            print("Output directory:", self.output_directory)
+            print("Sitemap path:", path)
             if not os.path.exists(path):
                 os.makedirs(path)
         else:

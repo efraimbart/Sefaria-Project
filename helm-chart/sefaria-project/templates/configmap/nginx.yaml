@@ -38,12 +38,20 @@ data:
       {{- end }}
 
       # Requests hitting the root domains should be redirected to the 'www' subdomain
-      server {
+    server {
+        if ($host = seforim.app) {
+            return 301 https://$host$request_uri;
+        } # managed by Certbot
+
+        if ($host = www.seforim.app) {
+            return 301 https://$host$request_uri;
+        } # managed by Certbot
+
         listen 80;
         listen [::]:80;
-        server_name seforim.app;
-        return 301 https://www.$host$request_uri;
-      }
+        server_name seforim.app www.seforim.app;
+        return 404; # managed by Certbot
+    }
 
       upstream elasticsearch_upstream {
         server ${SEARCH_HOST}:9200;
