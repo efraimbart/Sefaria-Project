@@ -381,11 +381,15 @@ def do_data_source():
         },
         {
             "slug": "sefaria-users",
-            "displayName": "Sefaria Users"
+            "displayName": "Seforim.app Users"
         },
         {
             "slug": "sefaria",
-            "displayName": "Sefaria"
+            "displayName": "Seforim.app"
+        },
+        {
+            "slug": "ai",
+            "displayName": "Seforim.app AI"
         }
     ]
     for d in data_sources:

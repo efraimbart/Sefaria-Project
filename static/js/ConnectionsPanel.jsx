@@ -325,6 +325,7 @@ class ConnectionsPanel extends Component {
         manuscripts: Sefaria.manuscriptsByRef(this.props.srefs).length,
         translations: this.state.availableTranslations.length, //versions dont come from the related api, so this one looks a bit different than the others.
       }
+      console.log(Sefaria.topicsByRefCount(this.props.srefs));
       const showResourceButtons = Object.values(resourcesButtonCounts).some(elem => elem > 0);
       const toolsButtonsCounts = {
         notes: Sefaria.notesTotalCount(this.props.srefs),
