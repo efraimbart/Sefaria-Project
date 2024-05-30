@@ -15,7 +15,7 @@ export const TextColumnBannerChooser = ({ setTranslationLanguagePreference, open
         return transLangPrefAccepted || (!cookie("translation_language_preference_suggested") && translation_language_preference_suggestion);
     };
     const shouldOpenTransBannerRender = () => {
-        return openTransBannerApplies() && !cookie("open_trans_banner_shown"); // && textMode in (bilingual, english) && category in (Tanakh, Mishnah, Bavli)
+        return openTransBannerApplies() //&& !cookie("open_trans_banner_shown");  && textMode in (bilingual, english) && category in (Tanakh, Mishnah, Bavli)
     }
 
     if (shouldTransPrefBannerRender())  {

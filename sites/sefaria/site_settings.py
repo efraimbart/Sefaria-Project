@@ -10,7 +10,7 @@ SITE_SETTINGS = {
 		"en": "The Seforim.app Library",
 		"he": "האוסף של Seforim.app",
 	},
-	"SUPPORTED_TRANSLATION_LANGUAGES": ['en', 'es', 'fr', 'de'],
+	"SUPPORTED_TRANSLATION_LANGUAGES": ['en'],
 	"COLLECTIONS_BUCKET": "sefaria-collection-images",
 	"PROFILES_BUCKET": 'sefaria-profile-pictures',
 	"UGC_BUCKET": 'sheet-user-uploaded-media'
