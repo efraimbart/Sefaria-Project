@@ -41,7 +41,7 @@ class Footer extends Component {
       <footer id="footer" className="static sans-serif">
         <div id="footerInner">
             <Section en="About" he="אודות">
-                <Link href="/collections/skqQ0cLc" en="What is Seforim.app?" he="מהי Seforim.app" />
+                <Link href="/sheets/14.1?lang=bi&with=all&lang2=bi" en="What is Seforim.app?" he="מהי Seforim.app" />
                 <Link href="/collections/7GMAmJgl" en="Help" he="עזרה" />
                 {/* <Link href="/team" en="Team" he="צוות" /> 
                 <Link href="/testimonials" en="Testimonials" he="חוות דעת" />
